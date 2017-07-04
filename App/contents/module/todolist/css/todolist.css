@@ -1,0 +1,500 @@
+@charset 'utf-8';
+
+
+/* 工作清单 */
+.os-work-list-mod {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 200;
+	display: flex;
+}
+.os-date-box {
+	display: flex;
+	flex-direction: column;
+	width: 220px;
+	border-right: 1px solid #e4e4e4;
+	box-sizing: border-box;
+	background: rgba(255, 255, 255, .5);
+}
+.os-day-works-box {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	background-color: #fff;
+	overflow: hidden;
+	position: relative;
+}
+
+.fixed-calendar-mod {
+	border-top: 1px solid #e4e4e4;
+}
+
+.calendar-box {
+	font-size: 0;
+	padding: 3px;
+}
+.calendar-box ul:first-child {
+	font-weight: bold;
+}
+
+.calendar-body li {
+	display: inline-block;
+	width: 14.28%;
+	height: 24px;
+	text-align: center;
+	font-size: 10px;
+	color: #333;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: pointer;
+}
+
+.calendar-days.day-1 #calDay-1,
+.calendar-days.day-2 #calDay-2,
+.calendar-days.day-3 #calDay-3,
+.calendar-days.day-4 #calDay-4,
+.calendar-days.day-5 #calDay-5,
+.calendar-days.day-6 #calDay-6,
+.calendar-days.day-7 #calDay-7,
+.calendar-days.day-8 #calDay-8,
+.calendar-days.day-9 #calDay-9,
+.calendar-days.day-10 #calDay-10,
+.calendar-days.day-11 #calDay-11,
+.calendar-days.day-12 #calDay-12,
+.calendar-days.day-13 #calDay-13,
+.calendar-days.day-14 #calDay-14,
+.calendar-days.day-15 #calDay-15,
+.calendar-days.day-16 #calDay-16,
+.calendar-days.day-17 #calDay-17,
+.calendar-days.day-18 #calDay-18,
+.calendar-days.day-19 #calDay-19,
+.calendar-days.day-20 #calDay-20,
+.calendar-days.day-21 #calDay-21,
+.calendar-days.day-22 #calDay-22,
+.calendar-days.day-23 #calDay-23,
+.calendar-days.day-24 #calDay-24,
+.calendar-days.day-25 #calDay-25,
+.calendar-days.day-26 #calDay-26,
+.calendar-days.day-27 #calDay-27,
+.calendar-days.day-28 #calDay-28,
+.calendar-days.day-29 #calDay-29,
+.calendar-days.day-30 #calDay-30,
+.calendar-days.day-31 #calDay-31 {
+	color: #f44336;
+}
+.calendar-body li.current span, 
+.calendar-body li.day span {
+	display: inline-block;
+	width: 1.6em;
+	height: 1.6em;
+	line-height: 1.6em;
+	color: #fff;
+	border-radius: 100%;
+	transition: background-color .3s ease;
+}
+.calendar-body li.current span {
+	background-color: #333;
+}
+.calendar-body li.day span {
+	background-color: rgba(244, 67, 54, .5);
+}
+.calendar-body li.day.current span {
+	background-color: rgba(244, 67, 54, 1);
+}
+
+.calendar-control {
+	font-size: 14px;
+	display: flex;
+	margin: 5px 0;
+}
+.calendar-control,
+.calendar-control .tbtn {
+	color: #333;
+}
+.calendar-control span {
+	flex: 1;
+	text-align: center;
+	cursor: default;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.calendar-btns {
+	padding: 3px 0 0;
+	font-size: 0;
+    border-top: 1px solid #ddd;
+}
+.calendar-btns button {
+    display: inline-block;
+    font-size: 12px;
+    color: #333;
+    width: 50%;
+    border: none;
+    outline: none;
+    line-height: 26px;
+    background: transparent;
+    cursor: pointer;
+	transition: background .3s ease, color .3s ease;
+}
+.calendar-btns button:hover {
+	background: #f5f5f5;
+	color: #f65f54;
+}
+
+
+.my-works-desktop {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	font-size: 14px;
+	line-height: 24px;
+	box-sizing: border-box;
+	color: #333;
+}
+.my-works-desktop h1 {
+	font-weight: 400;
+	font-size: 18px;
+	color: #aaa;
+	margin: 20px 0px 17px;
+	padding: 0 0 0 10px;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+.my-works-desktop h1 button {
+	float: right;
+	height: 1.2em;
+	width: 1.2em;
+	margin-right: 5px;
+}
+.my-works-desktop h1 button path {
+	fill: #AAA;
+}
+
+.my-works-desktop ul {
+	flex: 1;
+	overflow: auto;
+	margin: 0 -1px 0 0;
+}
+.my-works-desktop li {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.my-works-desktop li input {
+	display: block;
+	width: 100%;
+	padding: 0 10px;
+	border: none;
+	outline: none;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+.my-works-desktop li.current input {
+	background-color: #f65f54;
+	color: #fff;
+}
+.my-works-desktop li.ready input {
+	outline: 2px solid #f65f54;
+}
+
+/* 清单区 */
+.os-day-header {
+	height: 42px;
+	margin: 8px 10px 0 10px;
+	padding: 0 0 10px;
+	border-bottom: 1px solid #eee;
+	color: #f44336;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+	position: relative;
+}
+.hd-day-inner {
+	display: flex;
+	max-width: calc(100% - 60px);
+	flex: 1;
+}
+.os-day-header .title {
+	height: 100%;
+	width: 100%;
+	padding: 0 5px 0 0;
+	font-size: 32px;
+	color: inherit;
+	line-height: 1.2em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	outline: none;
+	border: none;
+	background: transparent;
+}
+.os-day-header .title.search {
+	font-size: 24px;
+	padding: 8px 0;
+}
+.os-day-header .title.day {
+	text-align: right;
+	width: 40px;
+}
+.os-day-header .inner {
+	flex: 1;
+	margin-top: 5px;
+}
+
+.hd-btns-box {
+	/*width: 60px;*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 10;
+}
+.hd-btns-box .tbtn {
+	font-size: 18px;
+	line-height: 18px;
+}
+.hd-btns-box .tbtn path {
+	fill: #aaa;
+	transition: fill .3s ease;
+}
+.hd-btns-box .tbtn:hover path {
+	fill: #333;
+}
+
+.todo-list-box {
+	flex: 1;
+	overflow: auto;
+	position: relative;
+}
+.todo-list-box > ul {
+	height: 100%;
+}
+.todo-list-box > li {
+	position: relative;
+}
+.todo-list-box li.hold {
+	position: inherit;
+}
+.todo-list-box .header {
+	display: flex;
+	color: #333;
+	position: sticky;
+	right: 0;
+	left: 0;
+	top: 0;
+	background: #fff;
+}
+.todo-list-box li.hold .header {
+	top: 61px;
+	left: 40px;
+}
+
+.no-work-plane {
+	visibility: hidden;
+	height: 100%;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	color: #999;
+	flex-direction: column;
+
+	position: absolute;
+}
+.no-work-plane.show {
+	visibility: visible;
+}
+.no-work-plane.fadeOut {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-100px);
+	transition: visibility .4s ease, transform .4s ease, opacity .4s ease;
+}
+.no-work-plane h3 {
+	font-size: 14px;
+	transform: translateY(-60px);
+}
+.no-work-plane .remid-msg {
+	transform: translateY(-50px);
+}
+
+.todo-list-box .inner {
+	height: 0;
+	margin: 0 0 0 40px;
+	color: #999;
+	overflow: hidden;
+	box-sizing: border-box;
+	background-color: #eee;
+	border-bottom: 1px solid #eee;
+}
+.todo-list-box .inner.animate {
+	transition: height .3s ease, background-color .3s ease;
+}
+
+.todo-list-box li.show .inner {
+	background-color: transparent;
+}
+
+.todo-list-box .inner-box {
+	outline: none;
+	border: 0;
+	color: #333;
+	font: inherit;
+	width: 100%;
+	resize: none;
+	line-height: 22px;
+	background-color: transparent;
+}
+
+.todo-list-box li label {
+	display: flex;
+	width: 40px;
+	height: 42px;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+}
+.todo-list-box .is-done {
+	-webkit-appearance: none;
+	width: 14px;
+	height: 14px;
+	border: 1px solid #f44336;
+	border-radius: 100%;
+	position: relative;
+	outline: none;
+}
+.todo-list-box .is-done::after {
+	content: '';
+	display: block;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%,-50%,0);
+	background-color: transparent;
+	border-radius: 100%;
+	transition: background-color .3s ease;
+}
+.todo-list-box .is-done:checked::after {
+	background-color: #f44336;
+}
+
+.todo-list-box li .title-box {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	font-size: 12px;
+}
+.todo-list-box li .title {
+	flex: 1;
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	border: none;
+	outline: none;
+	background-color: transparent;
+}
+.todo-list-box li .title-help-info {
+	height: 14px;
+	color: #a0a0a0;
+	padding-bottom: 5px;
+	margin-top: -6px;
+	font-size: 10px;
+	visibility: visible;
+	opacity: 1;
+	transition: height .3s ease, visibility .3s ease, opacity .3s ease;
+}
+.todo-list-box li .title-help-info.hide {
+	height: 0;
+	opacity: 0;
+	visibility: hidden;
+}
+.todo-list-box li .title-help-info span:not(:empty) {
+	margin-right: 10px;
+}
+.todo-list-box li .title:focus {
+	outline: none;
+}
+.todo-list-box li .li-btns-box {
+	width: 40px;
+	text-align: center;
+}
+.li-btns-box .tbtn {
+	width: 1.8em;
+	height: 1.8em;
+	margin: 10px 0 0;
+	transition: transform .3s ease;
+}
+.tbtn.arrow-ico:after {
+	color: #aaa;
+}
+.show .li-btns-box .tbtn {
+	transform: rotateZ(135deg);
+}
+
+#add-todo-event {
+	transition: transform .3s ease;
+}
+#add-todo-event.clear-search {
+	transform: rotateZ(45deg);
+}
+
+.event-make-col {
+	display: flex;
+}
+.event-make-col dt,
+.event-make-col dd {
+	display: inline-block;
+	line-height: 20px;
+}
+.event-make-col dt {
+	margin: 0 5px 0 0;
+}
+.event-make-col dd {
+	color: #333;
+	flex: 1;
+}
+
+.et-make-btn {
+	float: right;
+	background: transparent;
+	border: none;
+	color: #09f;
+	line-height: 20px;
+	margin-right: 10px;
+}
+
+/* 浮动时间组件 */
+.fixed-date-mod {
+	display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 400;
+}
+.fixed-date-inner {
+	position: absolute;
+	top: 0;
+	left: 40px;
+	width: 230px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, .9);
+}

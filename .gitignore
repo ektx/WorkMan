@@ -1,0 +1,12 @@
+*/node_module*
+
+*yarn.lock
+*package-lock.json
+*yarn-error.log
+
+
+# Mac
+*.DS_Store
+
+# windows
+Thumbs.db

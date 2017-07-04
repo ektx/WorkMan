@@ -1,0 +1,19 @@
+{
+  "name": "workman",
+  "version": "0.0.1",
+  "description": "workman",
+  "main": "main.js",
+  "scripts": {
+    "start": "NODE_ENV=development ./node_modules/.bin/electron .",
+    "build:mac": "electron-packager --platform=darwin --arch=x64 --electronVersion=1.7.4 --overwrite --ignore=dev-settings --prune . myWork --icon=app.icns --app-version=$npm_package_version",
+    "build:win": "electron-packager --platform=win32 --arch=x64 --electronVersion=1.7.4 --overwrite --ignore=dev-settings --prune . myWork --icon=app.icns --app-version=$npm_package_version"
+  },
+  "author": "ektx",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^1.7.4"
+  },
+  "dependencies": {
+    "async": "^2.1.5"
+  }
+}
