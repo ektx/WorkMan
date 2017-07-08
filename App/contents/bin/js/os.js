@@ -11,7 +11,7 @@ const async = nodeRequire('async');
 const _doc = document;
 
 // 关闭窗口功能
-let closeBtn = _doc.getElementById('close-btn');
+let closeBtn = _doc.getElementById('window-close-btn');
 if (closeBtn) {
 	closeBtn.addEventListener('click', function() {
 	  window.close();

@@ -3,24 +3,79 @@
 <head>
 	<meta charset="utf-8">
 	<title>Welcome!</title>
-	<link rel="stylesheet" href="contents/css/layout.css">
-	<link rel="stylesheet" href="contents/css/welcome.css">
+	<link rel="stylesheet" href="contents/bin/css/layout.css">
+	<link rel="stylesheet" href="contents/bin/css/welcome.css">
 </head>
 <body>
-    <button id="close-btn"></button>
+    <button id="window-close-btn" class="win-close-btn"></button>
 
 	<section class="welcome-box">
-		<header>星期三</header>
-		<main>
-			<p class="wel-time">30</p>
-		</main>
-		<footer>
-			<p class="wel-date">11<i></i>2016</p>
-			<p class="wel-remind">今日安排: <span>18</span>/100</p>
-		</footer>
+		<figure>
+			<img src="contents/bin/img/logo.png" alt="logo">
+		</figure>
+
+		<form id="logo-form" class="logo-form" action="">
+			<p class="logo-error">帐号或密码错误!</p>
+
+			<dl>
+				<dd>
+					<input type="text" placeholder="帐号">
+				</dd>
+			</dl>
+
+			<dl>
+				<dd><input type="password" placeholder="密码"></dd>
+			</dl>
+
+			<dl><button type="submit">登录</button></dl>
+		</form>
 	</section>
 
-    <script type="text/javascript" src="contents/js/os.js"></script>
-    <script type="text/javascript" src="contents/js/wlecome.js"></script>
+    <!-- <script type="text/javascript" src="contents/bin/js/os.js"></script> -->
+    <!-- <script type="text/javascript" src="contents/bin/js/wlecome.js"></script> -->
+    <script>
+    	let logoForm = document.getElementById('logo-form');
+    	let submitBtn = logoForm.querySelector('button');
+
+    	logoForm.addEventListener('submit', function(e) {
+    		e.preventDefault();
+
+    		let nameInt = this.querySelector('input[type="text"]');
+    		let pawdInt = this.querySelector('input[type="password"]')
+    		let pawd = pawdInt.value.trim();
+    		let name = nameInt.value.trim();
+
+    		if (!name) {
+    			nameInt.focus(); 
+    			return;
+    		}
+
+    		if (!pawd) {
+    			pawdInt.focus(); 
+    			return;
+    		}
+
+    		console.log(name, pawd);
+
+    		fetch('http://localhost:8000/loginIn', {
+    			method: 'POST',
+    			headers: {
+    				'Content-Type': 'application/json'
+    			},
+    			body: JSON.stringify({
+    				user: name,
+    				passwd: pawd
+    			})
+    		})
+    		.then(res => res.json())
+    		.then((data) => {
+    			console.log(data)
+    		})
+    		.catch(err=> {
+    			console.error(err)
+    		})
+
+    	})
+    </script>
 </body>
 </html>

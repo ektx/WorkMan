@@ -76,25 +76,25 @@ function createWindow(options) {
 
 app.on('ready', ()=>{
 	// 创建一个窗口
-	// createWindow({
-	// 	w: 325,
-	// 	h: 400,
-	//  frame: false,
-	//  titleBarStyle: 'dafault',
-	// 	url: `file://${__dirname}/welcome.html`
-	// })
+	createWindow({
+		w: 355,
+		h: 420,
+		frame: false,
+		titleBarStyle: 'dafault',
+		url: `file://${__dirname}/welcome.html`
+	})
 	
 	// const appIcon = new Tray('contents/bin/img/usr/kings.png');
 
-	createWindow({
-		w: 900,
-		mw: 400,
-		h: 620,
-		mh: 400,
-		frame: true,
-		titleBarStyle: 'hidden',
-		url: `file://${__dirname}/index.html`
-	})
+	// createWindow({
+	// 	w: 900,
+	// 	mw: 400,
+	// 	h: 620,
+	// 	mh: 400,
+	// 	frame: true,
+	// 	titleBarStyle: 'hidden',
+	// 	url: `file://${__dirname}/index.html`
+	// })
 });
 
 app.on('window-all-closed', ()=> {
