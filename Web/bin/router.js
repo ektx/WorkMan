@@ -1,31 +1,10 @@
+
 const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
+const router = express.Router()
 
-// const MModels = require('./bin/mongooseModel');
+const routerEvt = require('./routerEvt')
 
-console.log(usercenterServer)
-router.get('/login', function(req, res) {
-	// res.send('sklajslka');
 
-		
-	// MModels.user.find(
-	// 	{'account': 'ektx'},
-	// 	{},
-	// 	(err, data)=> {
-	// 		if (err) {
-	// 			console.error(err);
-	// 			return;
-	// 		}
-
-	// 		if (data) {
-	// 			console.log(data)
-	// 		} else {
-	// 			console.log('Not')
-	// 		}
-	// 	}
-	// )
-
-})
+router.post('/login', routerEvt.login)
 
 module.exports = router;
