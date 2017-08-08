@@ -57,14 +57,14 @@
 
     		console.log(name, pawd);
 
-    		fetch('http://localhost:8000/loginIn', {
+    		fetch('http://localhost:4000/login', {
     			method: 'POST',
     			headers: {
     				'Content-Type': 'application/json'
     			},
     			body: JSON.stringify({
     				user: name,
-    				passwd: pawd
+    				paswd: pawd
     			})
     		})
     		.then(res => res.json())
