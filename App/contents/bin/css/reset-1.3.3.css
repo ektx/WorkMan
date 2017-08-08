@@ -1,11 +1,13 @@
-/**
-* reset.css
-* 重置浏览器的常用样式
-* zwl 2016-12-1
-* @version 1.3.2
+@charset "utf8";
+
+/*
+	reset.css
+	重置浏览器的常用样式
+	zwl 2017-6-11
+	@version 1.3.3
 */
 
-html, body, div, span, /* structural elements 结构元素 */
+html, body, div, section, header, span, /* structural elements 结构元素 */
 applet, object, iframe, /* 嵌入元素 */
 h1, h2, h3, h4, h5, h6,  p, q, blockquote, pre,
 a, abbr, address, acronym, big, cite, code,
@@ -76,84 +78,3 @@ button, input {
 		background-color: #ccc;
 	}
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

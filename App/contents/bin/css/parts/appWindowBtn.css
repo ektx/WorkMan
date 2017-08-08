@@ -1,0 +1,22 @@
+@charset "utf-8";
+
+/*
+	自定义窗口按钮
+*/
+
+.win-close-btn {
+	width: 12px;
+	height: 12px;
+	border-radius: 100%;
+	border: 1px solid #F44336;
+	background-color: #FF5722;
+	position: fixed;
+	top: 8px;
+	left: 8px;
+	z-index: 100;
+	outline: none;
+	cursor: pointer;
+}
+.win-close-btn:hover {
+	background-color: #e91312;
+}

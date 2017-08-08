@@ -6,23 +6,6 @@ form button {
 	-webkit-app-region: no-drag;
 }
 
-.win-close-btn {
-	width: 12px;
-	height: 12px;
-	border-radius: 100%;
-	border: 1px solid #F44336;
-	background-color: #FF5722;
-	position: fixed;
-	top: 8px;
-	left: 8px;
-	z-index: 100;
-	outline: none;
-	cursor: pointer;
-}
-.win-close-btn:hover {
-	background-color: #e91312;
-}
-
 .data-day-ico {
 	width: 38px;
 	height: 38px;
