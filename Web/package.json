@@ -1,0 +1,11 @@
+{
+  "name": "workman-server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "ektx",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.3",
+    "mongoose": "^4.11.1"
+  }
+}
