@@ -3,11 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<title>Welcome!</title>
-    <link rel="stylesheet" href="contents/bin/css/reset-1.3.3.css">
+	<link rel="stylesheet" href="contents/bin/css/reset-1.3.3.css">
 	<link rel="stylesheet" href="contents/bin/css/welcome.css">
 </head>
 <body>
-    <button id="window-close-btn" class="win-close-btn"></button>
+	<button id="window-close-btn" class="win-close-btn"></button>
 
 	<section class="welcome-box">
 		<figure>
@@ -31,57 +31,73 @@
 		</form>
 	</section>
 
-    <!-- <script type="text/javascript" src="contents/bin/js/os.js"></script> -->
-    <!-- <script type="text/javascript" src="contents/bin/js/wlecome.js"></script> -->
-    <script>
-    	let logoForm = document.getElementById('logo-form');
-    	let submitBtn = logoForm.querySelector('button');
+	<!-- <script type="text/javascript" src="contents/bin/js/os.js"></script> -->
+	<!-- <script type="text/javascript" src="contents/bin/js/wlecome.js"></script> -->
+	<script>
+		const ipcRenderer = require('electron').ipcRenderer;
 
-    	logoForm.addEventListener('submit', function(e) {
-    		e.preventDefault();
+		// 关闭窗口功能
+		let closeBtn = document.getElementById('window-close-btn');
+		if (closeBtn) {
+			closeBtn.addEventListener('click', function() {
+			  window.close();
+			})
+		}
 
-    		let nameInt = this.querySelector('input[type="text"]');
-    		let pawdInt = this.querySelector('input[type="password"]')
-    		let pawd = pawdInt.value.trim();
-    		let name = nameInt.value.trim();
+		let logoForm = document.getElementById('logo-form');
+		let submitBtn = logoForm.querySelector('button');
 
-    		if (!name) {
-    			nameInt.focus(); 
-    			return;
-    		}
+		logoForm.addEventListener('submit', function(e) {
+			e.preventDefault();
 
-    		if (!pawd) {
-    			pawdInt.focus(); 
-    			return;
-    		}
+			let nameInt = this.querySelector('input[type="text"]');
+			let pawdInt = this.querySelector('input[type="password"]')
+			let pawd = pawdInt.value.trim();
+			let name = nameInt.value.trim();
 
-    		console.log(name, pawd);
+			if (!name) {
+				nameInt.focus(); 
+				return;
+			}
 
-    		fetch('http://localhost:4000/login', {
-    			method: 'POST',
-    			headers: {
-    				'Content-Type': 'application/json'
-    			},
-    			body: JSON.stringify({
-    				user: name,
-    				pwd: pawd
-    			})
-    		})
-    		.then(res => res.json())
-    		.then((data) => {
-    			console.log(data)
-    		})
-    		.catch(err=> {
-    			console.error(err)
-    		})
+			if (!pawd) {
+				pawdInt.focus(); 
+				return;
+			}
 
-            // let xhr = new XMLHttpRequest();
-            // xhr.open('POST', 'http://localhost:4000/login', false)
-            // xhr.send(JSON.stringify({
-            //     user: name,
-            //     pwd: pawd
-            // }))
-    	})
-    </script>
+			console.log(name, pawd);
+
+			fetch('http://localhost:4000/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					user: name,
+					pwd: pawd
+				})
+			})
+			.then(res => res.json())
+			.then((data) => {
+				console.log(data)
+				if (data.status) {
+					ipcRenderer.send('show-main-windows', true)
+				}
+
+				closeBtn.click()
+			})
+			.catch(err=> {
+				console.error(err)
+			})
+
+			// let xhr = new XMLHttpRequest();
+			// xhr.open('POST', 'http://localhost:4000/login', false)
+			// xhr.send(JSON.stringify({
+			//     user: name,
+			//     pwd: pawd
+			// }))
+		})
+
+	</script>
 </body>
 </html>

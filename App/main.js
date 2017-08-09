@@ -6,9 +6,10 @@ const { app, Tray } = electron;
 // 创建原生浏览器窗口的模块
 const { BrowserWindow } = electron;
 
+let loginStatus = false;
 
-let mainWindow , 
-	mainWindBounds;
+
+
 
 const ipcMain = require('electron').ipcMain;
 
@@ -28,6 +29,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 	})
 });
 
+let mainWindow = {};
 /*
 	创建新的窗口
 	------------------------------
@@ -39,7 +41,7 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 	@bg: {string} 背景色或其它什么
 	@url: {string} 地址 
 */
-function createWindow(options) {
+function createWindow(name, options) {
 
 	let defOptions = {
 		width: options.w, 
@@ -58,43 +60,36 @@ function createWindow(options) {
 		defOptions.y = options.y;
 	}
 
-	mainWindow = new BrowserWindow( defOptions );
+	mainWindow[name] = new BrowserWindow( defOptions );
+	mainWindow[name].url = options.url;
+	mainWindow[name].key = name
 
-	mainWindow.loadURL(options.url);
+	mainWindow[name].loadURL(options.url);
 
 	// 默认开启调试工具
 	// mainWindow.webContents.openDevTools();
 
-	mainWindow.on('close', (e)=> {
-		mainWindBounds = mainWindow.getBounds();
+	mainWindow[name].on('close', function(e) {
+		this.bounds = this.getBounds();
 	});
 
-	mainWindow.on('closed', ()=> {
-		mainWindow = null;
-	});
+	// mainWindow.name.on('closed', ()=> {
+	// 	mainWindow.name = null;
+	// });
 }
 
 app.on('ready', ()=>{
+
+
 	// 创建一个窗口
-	createWindow({
+	createWindow('login', {
 		w: 355,
 		h: 420,
 		frame: false,
 		titleBarStyle: 'dafault',
 		url: `file://${__dirname}/welcome.html`
 	})
-	
-	// const appIcon = new Tray('contents/bin/img/usr/kings.png');
-
-	// createWindow({
-	// 	w: 900,
-	// 	mw: 400,
-	// 	h: 620,
-	// 	mh: 400,
-	// 	frame: true,
-	// 	titleBarStyle: 'hidden',
-	// 	url: `file://${__dirname}/index.html`
-	// })
+		
 });
 
 app.on('window-all-closed', ()=> {
@@ -105,26 +100,51 @@ app.on('window-all-closed', ()=> {
 
 // 当用户点击 dock 图标时
 app.on('activate', () => {
-	if (mainWindow === null) {
-		createWindow({
-			x: mainWindBounds.x,
-			y: mainWindBounds.y,
-			w: mainWindBounds.width,
-			mw: 400,
-			h: mainWindBounds.height,
-			mh: 400,
-			frame: true,
-			titleBarStyle: 'hidden',
-			url: `file://${__dirname}/index.html`
-		})
+	let winName = 'login';
+
+	if (loginStatus) {
+		winName = 'main'
 	}
+
+	createWindow(winName, {
+		x: mainWindow[winName].bounds.x,
+		y: mainWindow[winName].bounds.y,
+		w: mainWindow[winName].bounds.width,
+		mw: 400,
+		h: mainWindow[winName].bounds.height,
+		mh: 400,
+		frame: loginStatus,
+		titleBarStyle: loginStatus ? 'hidden' : 'default',
+		url: mainWindow[winName].url
+	})
 });
 
 // 打开控制台
 ipcMain.on('show-development-tool', (event, arg)=> {
 	console.log(`异步信息为: ${arg}`);
-	mainWindow.webContents.openDevTools();
+	mainWindow['main'].webContents.openDevTools();
 });
+
+// 打开窗口
+ipcMain.on('show-main-windows', (event, arg) => {
+
+	createWindow('main', {
+		w: 900,
+		mw: 400,
+		h: 620,
+		mh: 400,
+		frame: true,
+		titleBarStyle: 'hidden',
+		url: `file://${__dirname}/index.html`
+	})
+
+	// 创建一个窗口
+	loginStatus = true;
+
+	// 
+	mainWindow['login'] = null;
+
+})
 
 // Mac OS dock
 // 提醒
