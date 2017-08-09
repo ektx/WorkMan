@@ -70,12 +70,14 @@ function createWindow(name, options) {
 	// mainWindow.webContents.openDevTools();
 
 	mainWindow[name].on('close', function(e) {
+		console.log('close', this)
+		this.status_close = true;
 		this.bounds = this.getBounds();
 	});
 
-	// mainWindow.name.on('closed', ()=> {
-	// 	mainWindow.name = null;
-	// });
+	mainWindow[name].on('closed', ()=> {
+		this.statusClosed = true;
+	});
 }
 
 app.on('ready', ()=>{
@@ -106,17 +108,22 @@ app.on('activate', () => {
 		winName = 'main'
 	}
 
-	createWindow(winName, {
-		x: mainWindow[winName].bounds.x,
-		y: mainWindow[winName].bounds.y,
-		w: mainWindow[winName].bounds.width,
-		mw: 400,
-		h: mainWindow[winName].bounds.height,
-		mh: 400,
-		frame: loginStatus,
-		titleBarStyle: loginStatus ? 'hidden' : 'default',
-		url: mainWindow[winName].url
-	})
+	let winGetBounds = mainWindow[winName].bounds;
+
+	if (mainWindow[winName].status_close) {
+
+		createWindow(winName, {
+			x: winGetBounds.x,
+			y: winGetBounds.y,
+			w: winGetBounds.width,
+			mw: 400,
+			h: winGetBounds.height,
+			mh: 400,
+			frame: loginStatus,
+			titleBarStyle: loginStatus ? 'hidden' : 'default',
+			url: mainWindow[winName].url
+		})
+	}
 });
 
 // 打开控制台
