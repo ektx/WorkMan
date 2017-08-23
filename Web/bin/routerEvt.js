@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const Schemas = require('./schemas');
 
 // 1.连接
-global.usercenterServer = mongoose.createConnection('mongodb://localhost/iserver');
+let usercenterServer = mongoose.createConnection('mongodb://localhost/iserver');
 let iserverApp = mongoose.createConnection('mongodb://localhost/workman');
 
 // 输出状态方法
