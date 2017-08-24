@@ -20,104 +20,7 @@
 		</ul>
 	</aside>
 
-	<section class="os-main-mod">
-
-		<div class="os-work-list-mod">
-			<aside class="os-date-box">
-
-				<div class="my-works-desktop">
-					<h1>计划列表 
-						<button id="addToDoType" class="tbtn">
-							<svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 12 16" width="12">
-								<path d="M12 9H7v5H5V9H0V7h5V2h2v5h5z"></path>
-							</svg>
-						</button>
-					</h1>
-					<ul id="todo-type-list"></ul>
-				</div>
-				
-				<div id="events-calendar-mod" class="calendar-box fixed-calendar-mod">
-					<header class="calendar-control">
-						<button id="prev" class="tbtn"><</button>
-						<span>2016年12月</span>
-						<button id="next" class="tbtn">></button>
-					</header>
-					<div class="calendar-body">
-						<ul>
-							<li>日</li>
-							<li>一</li>
-							<li>二</li>
-							<li>三</li>
-							<li>四</li>
-							<li>五</li>
-							<li>六</li>
-						</ul>
-						<ul id="events-calendar-days" class="calendar-days"></ul>
-					</div>
-				</div>
-						
-			</aside>
-
-			<div class="os-day-works-box">
-				<header class="os-day-header">
-					<div class="hd-day-inner">
-						<div class="title">1</div>
-						<div class="inner">
-							<p>星期?</p>
-							<p>????年??月</p>
-						</div>
-					</div>
-					<div class="hd-btns-box">
-						<button id="add-todo-event" class="tbtn">
-							<svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 12 16" width="12">
-								<path d="M12 9H7v5H5V9H0V7h5V2h2v5h5z"></path>
-							</svg>
-						</button>
-					</div>
-				</header>
-				
-				<div class="todo-list-box">
-					<div class="no-work-plane">
-						<h3>没有工作安排!</h3>
-						<p class="remid-msg">小技巧: 你可以点击右上角的加号,自行添加哟!</p>
-					</div>
-						<!-- li*30>label>input[type="checkbox"]^span.title>lorem^span.li-btns-box>button.tbtn.arrow-ico.down-arrow -->
-					<ul></ul>
-				</div>
-				
-				<!-- 浮动时间组件 -->
-				<div id="fixed-date-mod" class="fixed-date-mod">
-					<div class="fixed-date-inner">
-						<div class="calendar-box">
-							<header class="calendar-control">
-								<button id="prev" class="tbtn"><</button>
-								<span>2016年12月</span>
-								<button id="next" class="tbtn">></button>
-							</header>
-							<div class="calendar-body">
-								<ul>
-									<li>日</li>
-									<li>一</li>
-									<li>二</li>
-									<li>三</li>
-									<li>四</li>
-									<li>五</li>
-									<li>六</li>
-								</ul>
-								<ul class="calendar-days"></ul>
-							</div>
-							<footer class="calendar-btns">
-								<button>关闭</button>
-								<button>确认</button>
-							</footer>
-						</div>
-					</div>
-				</div>  
-				
-			</div>
-		</div>
-			
-	</section>
+	<section id="os-main-windows" class="os-main-mod"></section>
 
 
 	<script>
@@ -130,6 +33,7 @@
 
 	<script src="os/lib/jQuery/jquery-3.1.0.min.js"></script>
 	<script src="os/lib/Vue/vue.js"></script>
+	<script src="os/lib/Vue-Router/vue-router.js"></script>
 	<script src="os/js/calendar.js"></script>
 	<script src="os/js/os.js"></script>
 	<script src="os/js/indexedDB.js"></script>

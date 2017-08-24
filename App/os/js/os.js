@@ -176,3 +176,10 @@ if (process.platform === 'darwin') {
 
 const macmenu = Menu.buildFromTemplate( template );
 Menu.setApplicationMenu( macmenu );
+
+// 读取计划列表功能
+let todoListHTML = fs.readFileSync('./app/todolist/main.html', 'utf8');
+let mainWindows = document.getElementById('os-main-windows');
+
+mainWindows.innerHTML = todoListHTML;
+
