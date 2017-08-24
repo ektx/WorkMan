@@ -27,4 +27,4 @@ const _usrs = new Schema({
 	reset  : String
 }, {collection: 'usrs', versionKey: false});
 
-exports.usrs_m = usercenterServer.model('usrs2', _usrs);
+exports.usrs_m = USERCENTER_SERVER.model('usrs2', _usrs);

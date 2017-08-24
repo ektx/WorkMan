@@ -1,32 +1,6 @@
-// Module
-const mongoose = require('mongoose')
 
 // Work
-const Schemas = require('./schemas');
-
-// 1.连接
-global.usercenterServer = mongoose.createConnection('mongodb://localhost/iserver');
-let iserverApp = mongoose.createConnection('mongodb://localhost/workman');
-mongoose.set('debug', true);
-
-// 输出状态方法
-function getDBStatus (dbs) {
-	for (let i = 0,l=dbs.length; i < l; i++) {
-
-		dbs[i].on('error', console.error.bind(console, `${dbs[i]}connection error:`));
-
-		dbs[i].once('open', ()=>{
-			console.log(`${dbs[i].name} Mongodb OK!`)
-		})
-	}
-}
-
-// 调用
-getDBStatus([usercenterServer, iserverApp]);
-
-// 2. 检索 model
-let ucs_m_usrs = usercenterServer.model('usrs', Schemas.usrs);
-let iserver_m_usrs = iserverApp.model('usrs', Schemas.usrs);
+const db_schemas = require('../models/user');
 
 
 /*
@@ -43,7 +17,7 @@ function login (req, res) {
 		})
 	}
 	
-	ucs_m_usrs.findOne(
+	db_schemas.usrs_m.findOne(
 		{'account': req.body.user},
 		{},
 		(err, data)=> {
