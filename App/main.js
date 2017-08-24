@@ -8,9 +8,6 @@ const { BrowserWindow } = electron;
 
 let loginStatus = false;
 
-
-
-
 const ipcMain = require('electron').ipcMain;
 
 ipcMain.on('asynchronous-message', (event, arg) => {
