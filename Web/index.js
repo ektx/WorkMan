@@ -1,7 +1,7 @@
 
 const express = require('express')
+const graphqlHTTP = require('express-graphql')
 const bodyParser = require('body-parser')
-
 const router = require('./bin/router');
 const app = express();
 
@@ -11,6 +11,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // 解析 application/json
 app.use(bodyParser.json())
+
+
+const schema = require('./API/')
+
+app.use('/graphql', graphqlHTTP({
+	schema,
+	graphiql: true
+}))
+
 
 // 注意 router 要在 bodyParser 之后调用
 // 否则无法取到 req.body

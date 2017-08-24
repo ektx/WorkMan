@@ -5,8 +5,9 @@ const mongoose = require('mongoose')
 const Schemas = require('./schemas');
 
 // 1.连接
-let usercenterServer = mongoose.createConnection('mongodb://localhost/iserver');
+global.usercenterServer = mongoose.createConnection('mongodb://localhost/iserver');
 let iserverApp = mongoose.createConnection('mongodb://localhost/workman');
+mongoose.set('debug', true);
 
 // 输出状态方法
 function getDBStatus (dbs) {

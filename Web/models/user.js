@@ -1,5 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = require('./schemas')
+
+const mongoose = require('mongoose')
+mongoose.Promise = Promise;
+
+const Schema = mongoose.Schema;
 
 /*
 	用户信息
@@ -24,4 +27,4 @@ const _usrs = new Schema({
 	reset  : String
 }, {collection: 'usrs', versionKey: false});
 
-exports.usrs = _usrs;
+exports.usrs_m = usercenterServer.model('usrs2', _usrs);
