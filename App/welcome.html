@@ -44,6 +44,7 @@
 
 		let logoForm = document.getElementById('logo-form');
 		let submitBtn = logoForm.querySelector('button');
+		let errorMsg = document.querySelector('.logo-error');
 
 		logoForm.addEventListener('submit', function(e) {
 			e.preventDefault();
@@ -80,9 +81,13 @@
 				console.log(data)
 				if (data.status) {
 					ipcRenderer.send('show-main-windows', true)
+					errorMsg.classList.remove('show')
+					closeBtn.click()
+				} else {
+					errorMsg.classList.add('show')
+					errorMsg.innerText = data.msg
 				}
 
-				closeBtn.click()
 			})
 			.catch(err=> {
 				console.error(err)

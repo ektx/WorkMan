@@ -29,6 +29,10 @@
 	font-size: 12px;
 	color: red;
 	padding: 10px 10px 0;
+	transform: opacity .3s ease;
+}
+.logo-error.show {
+	opacity: 1;
 }
 
 .logo-form input {
