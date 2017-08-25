@@ -18,7 +18,11 @@ const Schema = mongoose.Schema;
 	文档: usrs
 */
 const _usrs = new Schema({
-	account: String,
+	account: {
+		type: String,
+		require: true,
+		unique: true
+	},
 	name   : String,
 	pwd	   : String,
 	email  : String,

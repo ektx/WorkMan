@@ -40,3 +40,23 @@ const userType = new GraphQLObjectType({
 });
 
 exports.userType = userType;
+
+
+const userIntputType = new GraphQLInputObjectType({
+	name: 'userIntType',
+	fields: () => ({
+		account: {
+			type: new GraphQLNonNull(GraphQLString),
+			description: '帐号'
+		},
+		name: {
+			type: GraphQLString,
+			description: '用户名'
+		},
+		pwd: {
+			type: new GraphQLNonNull(GraphQLString),
+			description: '密码'
+		}
+	})
+})
+exports.userIntputType = userIntputType;
