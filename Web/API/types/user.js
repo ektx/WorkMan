@@ -20,10 +20,6 @@ const userType = new GraphQLObjectType({
 		  type: GraphQLString,
 		  description: '名称',
 		},
-		pwd: {
-		  type: GraphQLString,
-		  description: '密码',
-		},
 		email: {
 		  type: GraphQLString,
 		  description: '邮箱',
