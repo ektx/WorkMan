@@ -1,8 +1,8 @@
 
 const add = require('./add')
-const del = require('./del')
+const remove = require('./remove')
 
 module.exports = {
 	add,
-	del
+	remove
 }
