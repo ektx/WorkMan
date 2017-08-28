@@ -46,7 +46,7 @@ const userIntputType = new GraphQLInputObjectType({
 	name: 'userIntType',
 	fields: () => ({
 		account: {
-			type: new GraphQLNonNull(GraphQLString),
+			type: GraphQLString,
 			description: '帐号'
 		},
 		name: {
@@ -54,8 +54,24 @@ const userIntputType = new GraphQLInputObjectType({
 			description: '用户名'
 		},
 		pwd: {
-			type: new GraphQLNonNull(GraphQLString),
+			type: GraphQLString,
 			description: '密码'
+		},
+		email: {
+		  type: GraphQLString,
+		  description: '邮箱',
+		},
+		ico: {
+		  type: GraphQLString,
+		  description: '图标',
+		},
+		power: {
+		  type: GraphQLString,
+		  description: '用户权限',
+		},
+		reset: {
+		  type: GraphQLString,
+		  description: '找回密码Code',
 		}
 	})
 })

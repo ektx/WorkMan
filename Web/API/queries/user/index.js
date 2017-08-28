@@ -6,13 +6,13 @@ const {
 	GraphQLObjectType
 } = require('graphql/type');
 
-const getProjection = require('../../getProjection');
 const db = require('../../../models/user')
 
 const { userType } = require('../../types/user')
 
 module.exports = {
-	type: new GraphQLList(userType),
+	type: userType,
+	description: '查询用户信息',
 	args: {
 		// 帐号
 		account: {
@@ -27,20 +27,21 @@ module.exports = {
 			description: '用户名'
 		} 
 	},
-	resolve(root, {account, name}, source, fieldASTs) {
-		// 处理要获取的信息
-		let projections = getProjection(fieldASTs);
+	resolve(root, params) {
 		// 回调
 	    let foundItems = new Promise((resolve, reject) => {
 	    	// mongoose 查询方式
 	    	// 查询用户名或帐号
-			db.usrs_m.find(
-			{ $or: [ {account}, {name} ] }, 
-			projections,
+			db.usrs_m.findOne(
+			{ $or: [ 
+				{account: params.account }, 
+				{name: params.name} 
+			] }, 
 			(err, data) => {
 				err ? reject(err) : resolve(data)
 			})
 		})
+
 
 		return foundItems 
 	}
