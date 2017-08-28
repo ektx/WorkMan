@@ -1,31 +1,40 @@
 const {
-	GraphQLString
+	GraphQLString,
+	GraphQLNonNull
 } = require('graphql')
 
 const DM = require('../../../models/todolist/workType')
+const { workType, workTypeIntType } = require('../../types/workType')
 
 module.exports = {
-	type: GraphQLString,
+	type: workType,
 	description: '删除提醒分类',
 	args: {
 		id: {
 			name: 'id',
-			type: GraphQLString,
+			type: new GraphQLNonNull(GraphQLString),
 			description: 'id'
+		},
+		name: {
+			name: 'name',
+			type: GraphQLString,
+			description: '重新命名'
 		}
 	},
-	resolve(root, parmas) {
+	resolve(root, params) {
 		
 		let remove = new Promise((resolve, reject) => {
-			DM.workType_M.remove(
-				{id: parmas.id },
+			DM.workType_M.findOneAndUpdate(
+				{ id: params.id },
+				{name: params.name},
 				(err, data) => {
+					console.log(err);
+
 					if (err) {
 						reject(err);
 						return;
 					}
-
-					resolve( JSON.stringify(data.result) )
+					resolve(data)
 				}
 			)
 		})

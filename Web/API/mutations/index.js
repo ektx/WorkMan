@@ -8,5 +8,6 @@ module.exports = {
 	updateUser: user.update,
 
 	addTodoListType: todolist.add,
-	removeTodoListType: todolist.remove
+	removeTodoListType: todolist.remove,
+	updateTodoListType: todolist.update
 }
