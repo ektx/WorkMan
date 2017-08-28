@@ -8,7 +8,7 @@ const { workType, workTypeIntType } = require('../../types/workType')
 
 module.exports = {
 	type: workType,
-	description: '删除提醒分类',
+	description: '更新提醒分类',
 	args: {
 		id: {
 			name: 'id',
