@@ -4,7 +4,7 @@ const {
 	GraphQLList, 
 	GraphQLString,
 	GraphQLObjectType
-} = require('graphql/type');
+} = require('graphql');
 
 const db = require('../../../models/user')
 

@@ -1,10 +1,8 @@
 
-const add = require('./add')
-const remove = require('./remove')
-const update = require('./update')
+const workType = require('./workType')
 
 module.exports = {
-	add,
-	remove,
-	update
+	addWorkType: workType.add,
+	removeWorkType: workType.remove,
+	updateWorkType: workType.update,
 }

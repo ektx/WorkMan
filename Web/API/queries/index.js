@@ -1,5 +1,7 @@
 const user = require('./user');
+const todoList = require('./todoList')
 
 module.exports = {
-	user
+	user,
+	workTypes: todoList.workTypes,
 }
