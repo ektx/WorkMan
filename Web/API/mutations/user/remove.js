@@ -8,18 +8,26 @@ module.exports = {
 	type: GraphQLString,
 	description: '删除用户',
 	args: {
-		data: {
-			name: 'data',
-			// 用于规定提交数据 
-			type: userIntputType
+		account: {
+			name: 'account',
+			type: GraphQLString,
+			description: '帐号'
+		},
+		passwd: {
+			name: 'passwd',
+			type: GraphQLString,
+			description: '密码'
 		}
 	},
 	resolve(root, params) {
 		
 		let removeUser = new Promise( (resolve, reject) => {
-			db.usrs_m.remove(params.data, (err, data) => {
-				data.result.n ? resolve('remove user!') : reject(err);
-			})
+			db.usrs_m.remove(
+				{account: params.account, pwd: params.passwd}, 
+				(err, data) => {
+					data.result.n ? resolve('remove user!') : reject(err);
+				}
+			)
 		})
 
 		return removeUser

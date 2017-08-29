@@ -95,26 +95,6 @@ const update = {
 	},
 	resolve(root, postData) {
 
-		let find = () => {
-			return new Promise((resolve, reject) => {
-				db.findOne(
-					{
-						account: postData.account,
-						eventTypeID: postData.id,
-						time: postData.time
-					},
-					(err, data) => {
-						if (err) {
-							reject(err);
-							return;
-						}
-	console.log(data, '.......');
-						resolve(data)
-					}
-				)
-			})
-		}
-
 		let update = new Promise((resolve, reject) => {
 			db.update(
 				{
@@ -130,23 +110,10 @@ const update = {
 						reject(JSON.stringify(err))
 						return;
 					}
-					resolve(JSON.stringify(data) )
+					resolve( JSON.stringify(data) )
 				}
 			)
 		})
-
-		async function getFindInfo () {
-			let a = await find();
-			
-			if (a) {
-				// update
-			} else {
-				
-			}
-			console.log('xxx', a)
-		}
-
-getFindInfo()
 
 		return update
 	}
