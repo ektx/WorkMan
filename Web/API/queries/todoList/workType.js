@@ -4,7 +4,7 @@ const {
 } = require('graphql')
 
 const db = require('../../../models/todolist/workType')
-const { workType } = require('../../types/workType')
+const { workType } = require('../../types/todolist/workType')
 
 module.exports = {
 	type: new GraphQLList(workType),
@@ -17,7 +17,6 @@ module.exports = {
 		}
 	},
 	resolve(root, params) {
-		console.log(params.account)
 
 		let dataPromise = new Promise((resolve, reject) => {
 			db.workType_M.find(

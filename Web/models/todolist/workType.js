@@ -5,7 +5,7 @@ mongoose.Promise = Promise;
 const Schema = mongoose.Schema;
 
 /*
-	用户信息
+	提醒类别
 	======================================
 
 	文档: workType
