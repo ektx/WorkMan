@@ -7,7 +7,12 @@ module.exports = {
 	removeUser: user.remove,
 	updateUser: user.update,
 
+
 	addTodoListType: todolist.addWorkType,
 	removeTodoListType: todolist.removeWorkType,
 	updateTodoListType: todolist.updateWorkType,
+
+	addCalendarEvent: todolist.addCalendarEvent,
+	removeCalendarEvent: todolist.removeCalendarEvent,
+	updateCalendarEvent: todolist.updateCalendarEvent,
 }

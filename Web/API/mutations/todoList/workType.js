@@ -78,7 +78,7 @@ const update = {
 	},
 	resolve(root, params) {
 		
-		let remove = new Promise((resolve, reject) => {
+		let update = new Promise((resolve, reject) => {
 			DM.workType_M.update(
 				{ id: params.id },
 				{name: params.name},
@@ -93,7 +93,7 @@ const update = {
 			)
 		})
 
-		return remove
+		return update
 	}
 
 }
