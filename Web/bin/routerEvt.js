@@ -2,6 +2,8 @@
 // Work
 const db_schemas = require('../models/user');
 
+const jwt = require('jsonwebtoken')
+const tokenKey = 'expressTokenTest'
 
 /*
 	登录功能
@@ -19,7 +21,6 @@ function login (req, res) {
 	
 	db_schemas.usrs_m.findOne(
 		{'account': req.body.user},
-		{},
 		(err, data)=> {
 			if (err) {
 				res.send({
@@ -31,10 +32,18 @@ function login (req, res) {
 
 			if (data) {
 				if (data.pwd === req.body.pwd) {
+
+					// 添加一个 token
+					let token = jwt.sign(req.body, tokenKey, {
+						expiresIn: 1800 // 在 .5 小时后过期
+					})
+
 					res.send({
 						status: true,
-						msg: 'welcome use workMan!'
+						msg: 'welcome use workMan!',
+						token
 					})
+
 				} else {
 					res.send({
 						status: false,

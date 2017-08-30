@@ -25,7 +25,7 @@ const _ = new Schema({
 	// 时间 格式: 年-月,如:2018-2
 	time   : String,
 	// 数据 用于保存一组对应天的事件
-	data	: Array
+	data	: String
 }, {collection: 'todoList_calendarEvent', versionKey: false});
 
 module.exports = WORKMAN_SERVER.model('todoList_calendarEvent', _);

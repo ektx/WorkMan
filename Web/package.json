@@ -9,6 +9,7 @@
     "express": "^4.15.3",
     "express-graphql": "^0.6.7",
     "graphql": "^0.10.5",
+    "jsonwebtoken": "^7.4.3",
     "mongoose": "^4.11.7"
   }
 }

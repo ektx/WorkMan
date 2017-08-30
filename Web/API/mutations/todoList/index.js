@@ -1,6 +1,7 @@
 
 const workType = require('./workType')
 const calendarEvent = require('./calendarEvent')
+const events = require('./events')
 
 module.exports = {
 	addWorkType: workType.add,
@@ -10,4 +11,8 @@ module.exports = {
 	addCalendarEvent: calendarEvent.add,
 	removeCalendarEvent: calendarEvent.remove,
 	updateCalendarEvent: calendarEvent.update,
+
+	addTodoListEvent: events.add,
+	updateTodoListEvent: events.update,
+	removeTodoListEvent: events.remove,
 }
