@@ -1,15 +1,21 @@
 <div class="os-work-list-mod">
 	<aside class="os-date-box">
 
-		<div class="my-works-desktop">
+		<div id="todo-type-list" class="my-works-desktop">
 			<h1>计划列表 
-				<button id="addToDoType" class="tbtn">
+				<button @click="addNewType" class="tbtn">
 					<svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 12 16" width="12">
 						<path d="M12 9H7v5H5V9H0V7h5V2h2v5h5z"></path>
 					</svg>
 				</button>
 			</h1>
-			<ul id="todo-type-list"></ul>
+			<ul>
+				<li v-for="val in typeList" 
+					:class="val.hold" 
+					:contenteditable="val.edit">
+					{{val.name}}
+				</li>
+			</ul>
 		</div>
 		
 		<div id="events-calendar-mod" class="calendar-box fixed-calendar-mod">
