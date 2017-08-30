@@ -19,12 +19,14 @@
 
 			<dl>
 				<dd>
-					<input type="text" placeholder="帐号">
+					<input type="text" placeholder="帐号" value="ektx">
 				</dd>
 			</dl>
 
 			<dl>
-				<dd><input type="password" placeholder="密码"></dd>
+				<dd>
+					<input type="password" placeholder="密码" value="1111">
+				</dd>
 			</dl>
 
 			<dl><button type="submit">登录</button></dl>
@@ -78,9 +80,14 @@
 			})
 			.then(res => res.json())
 			.then((data) => {
-				console.log(data)
+
 				if (data.status) {
-					ipcRenderer.send('show-main-windows', true)
+					ipcRenderer.send('show-main-windows', {
+						status: true,
+						token: data.token
+					})
+
+					// 添加 token
 					errorMsg.classList.remove('show')
 					closeBtn.click()
 				} else {
@@ -92,28 +99,6 @@
 			.catch(err=> {
 				console.error(err)
 			})
-
-			// fetch('http://localhost:4000/graphql', {
-			// 	method: 'POST',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 		'Accept': 'application/json'
-			// 	},
-			// 	body: JSON.stringify({
-			// 		query: `mutation { removeUser(data: {
-			// 			account: "zwl2",
-			// 			pwd: "assa"
-			// 		}) { name }}
-			// 		`
-			// 	})
-			// })
-			// .then(res => res.json())
-			// .then(data => {
-			// 	console.log(data)
-			// })
-			// .catch( err => {
-			// 	console.error(err)
-			// })
 
 			// let xhr = new XMLHttpRequest();
 			// xhr.open('POST', 'http://localhost:4000/login', false)

@@ -8,6 +8,9 @@ const { BrowserWindow } = electron;
 
 let loginStatus = false;
 
+// 登录状态
+let SERVER_TOKEN;
+
 const ipcMain = require('electron').ipcMain;
 
 ipcMain.on('asynchronous-message', (event, arg) => {
@@ -145,9 +148,17 @@ ipcMain.on('show-main-windows', (event, arg) => {
 	// 创建一个窗口
 	loginStatus = true;
 
+	SERVER_TOKEN = arg.token;
+
 	// 
 	mainWindow['login'] = null;
 
+})
+
+// 发送 TOKEN
+ipcMain.on('GET_ISERVER_TOKEN', (event,arg) => {
+	console.log('ssss', SERVER_TOKEN)
+	event.sender.send('GET_FROM_SERVER_TOKEN', SERVER_TOKEN)
 })
 
 // Mac OS dock

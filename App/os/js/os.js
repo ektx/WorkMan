@@ -1,7 +1,7 @@
 // 系统能用方法
 
 const {app, Menu, dialog} = nodeRequire('electron').remote;
-const ipcRenderer = nodeRequire('electron').ipcRenderer;
+const { ipcRenderer, ipcMain } = nodeRequire('electron');
 
 // require node modules
 const fs = nodeRequire('fs');
@@ -182,4 +182,68 @@ let todoListHTML = fs.readFileSync('./app/todolist/main.html', 'utf8');
 let mainWindows = document.getElementById('os-main-windows');
 
 mainWindows.innerHTML = todoListHTML;
+
+// 请求,获取 token
+// 用于后面的用户认证
+ipcRenderer.send('GET_ISERVER_TOKEN')
+ipcRenderer.on('GET_FROM_SERVER_TOKEN', (e, args) => {
+	localStorage.setItem('token', args)
+})
+
+// function test() {
+// 	fetch('http://localhost:4000/api', {
+// 		method: 'POST',
+// 		headers: {
+// 			'Content-Type': 'application/json',
+// 		},
+// 		body: JSON.stringify({
+// 			query: `{ workTypes(account: "baobao") { name }}
+// 			`
+// 		})
+// 	})
+// 	.then(res => res.json())
+// 	.then(data => {
+// 		console.log(data)
+// 	})
+// 	.catch( err => {
+// 		console.error(err)
+// 	})
+// }
+
+
+function iFetch(options) {
+	return new Promise((resolve, reject) => {
+		fetch(options.url, {
+			method: options.method,
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'x-access-token': localStorage.token
+			},
+			body: JSON.stringify(options.data)
+		})
+		.then(res => res.json())
+		.then(data => {
+			if (data.status) resolve(data)
+			else reject(data)
+		})
+		.catch(err => {
+			reject(err)
+		})
+	})
+}
+
+
+iFetch({
+	url: 'http://localhost:4000/api',
+	method: 'POST',
+	data: {
+		query: `{ workTypes(account: "baobao") { name }}`
+	}
+}).then(resolve => {
+	console.log(resolve)
+}, reject => {
+	console.log(reject)
+})
+
 
