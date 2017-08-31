@@ -10,12 +10,13 @@
 				</button>
 			</h1>
 			<ul>
-				<li v-for="val in typeList" 
+				<li v-for="(val,index) in typeList" 
 					:class="val.hold">
 					<input type="text" 
 						:value="val.name"
+						:data-index="index" 
 						v-on:keyup.enter="saveTodoType"
-						v-on:blur="saveTodoType" 
+						v-on:blur="saveTodoType"
 						readonly>
 				</li>
 			</ul>

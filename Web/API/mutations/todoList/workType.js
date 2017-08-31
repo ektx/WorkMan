@@ -17,7 +17,11 @@ const add = {
 			type: workTypeIntType
 		}
 	},
-	resolve(root, parmas) {
+	resolve(root, parmas, req) {
+
+		// 添加用户
+		parmas.data.account = req.decoded.user;
+
 		const model = new DM.workType_M(parmas.data)
 		const newData = model.save()
 
