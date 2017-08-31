@@ -177,57 +177,69 @@ if (process.platform === 'darwin') {
 const macmenu = Menu.buildFromTemplate( template );
 Menu.setApplicationMenu( macmenu );
 
-// 读取计划列表功能
-let todoListHTML = fs.readFileSync('./app/todolist/main.html', 'utf8');
-let mainWindows = document.getElementById('os-main-windows');
-
-mainWindows.innerHTML = todoListHTML;
-
-
 // 请求,获取 token
 // 用于后面的用户认证
 ipcRenderer.send('GET_ISERVER_TOKEN')
 ipcRenderer.on('GET_FROM_SERVER_TOKEN', (e, args) => {
-	localStorage.setItem('token', args)
+	localStorage.setItem('token', args);
 })
 
 
+// 读取计划列表功能
+let todoListHTML = fs.readFileSync('./app/todolist/main.html', 'utf8');
+let mainWindows = document.getElementById('os-main-windows');
+let scripts = nodeRequire('./app/todolist/config.json').scripts;
+
+mainWindows.innerHTML = todoListHTML;
+
+for (let i = 0, l = scripts.length; i < l; i++) {
+	let script = document.createElement('script');
+	script.src = 'app/todolist/' + scripts[i] + '.js';
+
+	document.body.appendChild(script)
+}
+
+
+
 /*
-	封装 fetch 请求
+	封装 APIFetch 请求
 	------------------------
 	options
-	@url  		请求地址
-	@method 	请求方式
 	@data 		发送数据
 */
-function iFetch(options) {
+function APIFetch(data) {
 	return new Promise((resolve, reject) => {
-		fetch(options.url, {
-			method: options.method,
+		fetch('http://localhost:4000/api', {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
 				'x-access-token': localStorage.token
 			},
-			body: JSON.stringify(options.data)
+			body: JSON.stringify( data )
 		})
 		.then(res => res.json())
-		.then(data => resolve(data))
+		.then(data => resolve(data.data))
 		.catch(err => reject(err))
 	})
 }
 
-
-iFetch({
-	url: 'http://localhost:4000/api',
-	method: 'POST',
-	data: {
+(async function () {
+	data = {
 		query: `{ workTypes(account: "baobao") { name }}`
 	}
-}).then(resolve => {
-	console.log(resolve)
-}, reject => {
-	console.log(reject)
-})
+
+	const result = await APIFetch(data);
+
+	console.log(result)
+})()
+
+// APIFetch({
+// 	query: `{ workTypes(account: "baobao") { name }}`
+// }).then(resolve => {
+// 	console.log(resolve)
+// }, reject => {
+// 	console.log(reject)
+// })
 
 

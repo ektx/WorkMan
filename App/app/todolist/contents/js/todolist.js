@@ -1,43 +1,44 @@
+
 let todolistType = new Vue({
 	el: '#todo-type-list',
 	data: {
 		typeList: []
 	},
 	mounted: function() {
-		let url = 'http://localhost:4000/api';
-		let method = 'POST';
-		let data = {
+		// 设置提醒列表
+		(async () => {
+			let data = {
 				query: `{ workTypes(account: "baobao") { id,name }}`
 			};
 
-		fetch(url, {
-			method: method,
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'x-access-token': localStorage.token
-			},
-			body: JSON.stringify(data)
-		})
-		.then(res => res.json())
-		.then(data => {
-
-			this.typeList = data.data.workTypes;
-			// console.log(data.data.workTypes)
-		})
-		.catch(err => {
-			console.error(err)
-		})
+			let result = await APIFetch(data);
+			this.typeList = result.workTypes;
+			console.log(result.workTypes)
+		})()
+		// setWorkWorkType()
 	},
 	methods: {
 		addNewType: function() {
-			console.log(1)
 			this.typeList.push({
 				name: 'ss',
 				id: new Date().toISOString(),
-				edit: true,
 				hold: 'current'
 			})
+			
+			this.$nextTick(function() {
+				let int = this.$el.querySelector('.current input');
+				int.removeAttribute('readonly')
+				int.focus()
+			})
+
+		},
+
+		// 保存分类
+		saveTodoType: function(evt) {
+			let name = evt.target.value;
+
+			console.log(evt.target.value)
 		}
 	}
 })
+

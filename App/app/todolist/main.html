@@ -11,9 +11,12 @@
 			</h1>
 			<ul>
 				<li v-for="val in typeList" 
-					:class="val.hold" 
-					:contenteditable="val.edit">
-					{{val.name}}
+					:class="val.hold">
+					<input type="text" 
+						:value="val.name"
+						v-on:keyup.enter="saveTodoType"
+						v-on:blur="saveTodoType" 
+						readonly>
 				</li>
 			</ul>
 		</div>
@@ -98,3 +101,4 @@
 		
 	</div>
 </div>
+

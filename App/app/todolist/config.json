@@ -1,0 +1,8 @@
+
+{
+	"name": "todoList-app",
+	"scripts": [
+		"contents/js/todolist_fun",
+		"contents/js/todolist"
+	]
+}

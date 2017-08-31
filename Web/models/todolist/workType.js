@@ -20,12 +20,7 @@ const _workType = new Schema({
 	// 用户
 	account: String,
 	// 名称
-	name   : String,
-	// 创建时间
-	ctime	: Date,
-	// 修改时间
-	mtime	: Date
-
+	name   : String
 }, {collection: 'workType', versionKey: false});
 
 exports.workType_M = WORKMAN_SERVER.model('workType', _workType);
