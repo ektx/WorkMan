@@ -45,7 +45,7 @@ let todolistType = new Vue({
 				query: `mutation {
 					addTodoListType(data: {
 						id: "${saveData.id}",
-						name: "${saveData.name}"
+						name: "${name}"
 					}){id}
 				}`
 			}).then(res => console.log(res), err => console.error(err))
