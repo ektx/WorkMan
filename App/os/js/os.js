@@ -1,6 +1,11 @@
 // 系统能用方法
-
-const {app, Menu, dialog} = nodeRequire('electron').remote;
+const { remote } = nodeRequire('electron');
+const { 
+	app, 
+	Menu, 
+	MenuItem, 
+	dialog 
+} = nodeRequire('electron').remote;
 const { ipcRenderer, ipcMain } = nodeRequire('electron');
 
 // require node modules
@@ -181,7 +186,7 @@ Menu.setApplicationMenu( macmenu );
 // 用于后面的用户认证
 ipcRenderer.send('GET_ISERVER_TOKEN')
 ipcRenderer.on('GET_FROM_SERVER_TOKEN', (e, args) => {
-	localStorage.setItem('token', args);
+	localStorage.setItem('TOKEN', args);
 })
 
 
@@ -214,7 +219,7 @@ function APIFetch(data) {
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
-				'x-access-token': localStorage.token
+				'x-access-token': localStorage.TOKEN
 			},
 			body: JSON.stringify( data )
 		})
@@ -243,3 +248,14 @@ function APIFetch(data) {
 // })
 
 
+/*
+	右键菜单功能
+*/
+function createMouseRightClickMenu (menuArr) {
+	const menu = new Menu();
+
+	for (let i = 0, l = menuArr.length; i < l; i++) {
+		menu.append(new MenuItem( menuArr[i] ))
+	}
+	menu.popup(remote.getCurrentWindow())
+}

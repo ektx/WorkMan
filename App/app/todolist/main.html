@@ -10,14 +10,20 @@
 				</button>
 			</h1>
 			<ul>
-				<li v-for="(val,index) in typeList" 
-					:class="val.hold">
-					<input type="text" 
+				<li v-for="(val,index) in typeList"
+					:key="val.id" 
+					:class="val.hold"
+					:data-index="index" 
+					@click="findThisTypeIndex"
+					@contextmenu.prevent="rightClick"
+				>
+					<input type="text"
+						v-if="val.readonly" 
 						:value="val.name"
-						:data-index="index" 
-						v-on:keyup.enter="saveTodoType"
+						v-on:keyup.enter="willSaveTodoType"
 						v-on:blur="saveTodoType"
-						readonly>
+						>
+					<span v-else >{{val.name}}</span>
 				</li>
 			</ul>
 		</div>

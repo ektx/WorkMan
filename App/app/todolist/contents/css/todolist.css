@@ -177,26 +177,30 @@
 	margin: 0 -1px 0 0;
 }
 .my-works-desktop li {
+	padding: 0 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	-webkit-user-select: none;
 	user-select: none;
 }
+.my-works-desktop li span {
+	pointer-events: none;
+}
 .my-works-desktop li input {
 	display: block;
 	width: 100%;
-	padding: 0 10px;
 	border: none;
 	outline: none;
+	color: #fff;
 	box-sizing: border-box;
 	background-color: transparent;
 }
-.my-works-desktop li.current input {
+.my-works-desktop li.current {
 	background-color: #f65f54;
 	color: #fff;
 }
-.my-works-desktop li.ready input {
+.my-works-desktop li.ready {
 	outline: 2px solid #f65f54;
 }
 
