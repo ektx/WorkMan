@@ -19,8 +19,10 @@ const add = {
 	},
 	resolve(root, parmas, req) {
 
+		// 如果有 token 的解码,证明来自客户端口,非测试
 		// 添加用户
-		parmas.data.account = req.decoded.user;
+		if (req.decoded)
+			parmas.data.account = req.decoded.user;
 
 		const model = new DM.workType_M(parmas.data)
 		const newData = model.save()
