@@ -26,11 +26,14 @@ let todolistType = new Vue({
 	},
 	watch: {
 		holdTypeIndex: function(val, oldVal) {
+			// 如果没有列表
+			if (!this.typeList.length) return;
 			// 移除之前的选中对象
 			if (oldVal >= 0)
 				this.$set(this.typeList[oldVal], 'hold', '');
 			// 为当前对象添加选中效果
-			this.$set(this.typeList[val], 'hold', 'current');
+			if (val > -1)
+				this.$set(this.typeList[val], 'hold', 'current');
 		}
 	},
 	methods: {
@@ -63,7 +66,7 @@ let todolistType = new Vue({
 		saveTodoType: function(evt) {
 			let name = evt.target.value;
 			let saveData = this.typeList[this.holdTypeIndex];
-			let saveQuery = `mutation { addTodoListType(data: { id: "${saveData.id}", name: "${name}" }){id}}`;
+			let saveQuery = `mutation { addTodoListType(data: { id: "${saveData.id}", name: "${name}" })}`;
 			let updateQuery = `mutation { updateTodoListType(id: "${saveData.id}", name: "${name}")}`;
 
 			saveData.readonly = false;
@@ -114,7 +117,25 @@ let todolistType = new Vue({
 					// 删除类型
 					label: '删除',
 					click() {
-						delListDom('#todo-type-list', 'todoType');
+						
+						APIFetch({
+							query: `mutation {
+								removeTodoListType(id: "${todolistType.typeList[index].id}", account: "MY_ACCOUNT")
+							}`
+						}).then(data => {
+							// 如果有删除数据
+							if (JSON.parse(data.removeTodoListType).n) {
+								// 如果删除的是选中效果,移除
+								if (todolistType.holdTypeIndex === index) {
+									todolistType.holdTypeIndex = -1
+								}
+
+								// 删除数据
+								todolistType.typeList.splice(index, 1)
+							}
+						}, err => {
+							console.error(err)
+						})
 					}
 				}
 			];

@@ -9,7 +9,7 @@ const DM = require('../../../models/todolist/workType')
 
 
 const add = {
-	type: workType,
+	type: GraphQLString,
 	description: '添加分类',
 	args: {
 		data: {
@@ -24,12 +24,14 @@ const add = {
 		if (req.decoded)
 			parmas.data.account = req.decoded.user;
 
+		if (!parmas.data.name) return `not have 'name' value`;
+
 		const model = new DM.workType_M(parmas.data)
 		const newData = model.save()
 
 		if (!newData) throw new Error('添加提醒分类出错')
 
-		return newData
+		return `{"success": true}`
 	}
 
 }
@@ -43,13 +45,21 @@ const remove = {
 			name: 'id',
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'id'
+		},
+		account: {
+			name: 'account',
+			type: GraphQLString,
+			description: '删除用户'
 		}
 	},
-	resolve(root, parmas) {
-		
+	resolve(root, parmas, req) {
+		// 如果有 token 的解码,证明来自客户端口,非测试
+		// 添加用户
+		let account = req.decoded ? req.decoded.user : '';
+
 		let remove = new Promise((resolve, reject) => {
 			DM.workType_M.remove(
-				{id: parmas.id },
+				{id: parmas.id, account },
 				(err, data) => {
 					if (err) {
 						reject(JSON.stringify(err));
