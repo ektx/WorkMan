@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Welcome!</title>
+	<title>login workman</title>
 	<link rel="stylesheet" href="os/css/reset-1.3.3.css">
 	<link rel="stylesheet" href="os/css/welcome.css">
 </head>
@@ -33,81 +33,6 @@
 		</form>
 	</section>
 
-	<script>
-		const ipcRenderer = require('electron').ipcRenderer;
-
-		// 关闭窗口功能
-		let closeBtn = document.getElementById('window-close-btn');
-		if (closeBtn) {
-			closeBtn.addEventListener('click', function() {
-			  window.close();
-			})
-		}
-
-		let logoForm = document.getElementById('logo-form');
-		let submitBtn = logoForm.querySelector('button');
-		let errorMsg = document.querySelector('.logo-error');
-
-		logoForm.addEventListener('submit', function(e) {
-			e.preventDefault();
-
-			let nameInt = this.querySelector('input[type="text"]');
-			let pawdInt = this.querySelector('input[type="password"]')
-			let pawd = pawdInt.value.trim();
-			let name = nameInt.value.trim();
-
-			if (!name) {
-				nameInt.focus(); 
-				return;
-			}
-
-			if (!pawd) {
-				pawdInt.focus(); 
-				return;
-			}
-
-			console.log(name, pawd);
-
-			fetch('http://localhost:4000/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					user: name,
-					pwd: pawd
-				})
-			})
-			.then(res => res.json())
-			.then((data) => {
-
-				if (data.status) {
-					ipcRenderer.send('show-main-windows', {
-						status: true,
-						token: data.token
-					})
-
-					// 添加 token
-					errorMsg.classList.remove('show')
-					closeBtn.click()
-				} else {
-					errorMsg.classList.add('show')
-					errorMsg.innerText = data.msg
-				}
-
-			})
-			.catch(err=> {
-				console.error(err)
-			})
-
-			// let xhr = new XMLHttpRequest();
-			// xhr.open('POST', 'http://localhost:4000/login', false)
-			// xhr.send(JSON.stringify({
-			//     user: name,
-			//     pwd: pawd
-			// }))
-		})
-
-	</script>
+	<script src="os/js/login.js"></script>
 </body>
 </html>
