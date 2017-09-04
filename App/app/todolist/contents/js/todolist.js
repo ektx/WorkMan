@@ -1,4 +1,4 @@
-
+// 事件列表
 let todolistType = new Vue({
 	el: '#todo-type-list',
 	data: {
@@ -9,7 +9,7 @@ let todolistType = new Vue({
 		// 重命名状态
 		renameStatus: false
 	},
-	mounted: function() {
+	beforeCreate: function() {
 		// 设置提醒列表
 		(async () => {
 			let data = {
@@ -26,6 +26,9 @@ let todolistType = new Vue({
 	},
 	watch: {
 		holdTypeIndex: function(val, oldVal) {
+
+			let thisVal = this.typeList[val];
+
 			// 如果没有列表
 			if (!this.typeList.length) return;
 			// 移除之前的选中对象
@@ -33,7 +36,15 @@ let todolistType = new Vue({
 				this.$set(this.typeList[oldVal], 'hold', '');
 			// 为当前对象添加选中效果
 			if (val > -1)
-				this.$set(this.typeList[val], 'hold', 'current');
+				this.$set(thisVal, 'hold', 'current');
+
+			// 如果存在 readonly 则是在新建,新建则不要查询他的数据
+			if (!thisVal.readonly) {
+				// 
+				console.log('get calendar events')
+
+				console.log(`get this type event list`, thisVal)
+			}
 		}
 	},
 	methods: {
@@ -103,10 +114,11 @@ let todolistType = new Vue({
 
 						// 设置为 重命名
 						todolistType.renameStatus = true;
+						todolistType.holdTypeIndex = index;
 
-						// focus 输入框
+						// // focus 输入框
 						Vue.nextTick(function() {
-							todolistType.$el.querySelector('.current input').focus()
+							todolistType.$el.querySelector('input').focus()
 						})
 					}
 				},
@@ -145,3 +157,13 @@ let todolistType = new Vue({
 	}
 })
 
+
+let todoEventsListApp = new Vue({
+	el: '#todo-eventsList-app',
+	data: {
+		events: []
+	},
+	beforeCreate: function() {
+		
+	}
+})
