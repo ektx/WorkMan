@@ -11,8 +11,9 @@ const Schema = mongoose.Schema;
 const _ = new Schema({
 	// 唯一的区别
 	id: {
-		type: Number,
-		require: true
+		type: String,
+		require: true,
+		unique: true
 	},
 	// 用户
 	account: {

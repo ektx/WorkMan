@@ -16,6 +16,11 @@ module.exports = {
 			type: GraphQLString,
 			description: '查询的用户'
 		},
+		types: {
+			name: 'types',
+			type: GraphQLString,
+			description: '查询的类别'
+		},
 		start: {
 			name: 'start',
 			type: GraphQLInt,
@@ -39,7 +44,7 @@ module.exports = {
 
 		let dataPromise = new Promise((resolve, reject) => {
 			db.find(
-				{account: params.account},
+				{account: params.account, eventTypeID: params.types},
 				null,
 				{ skip: params.start, limit: params.limit},
 				(err, data) => {

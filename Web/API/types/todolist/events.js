@@ -8,7 +8,7 @@ const {
 
 const fieldsObj = {
 	id: {
-		type: GraphQLInt,
+		type: GraphQLString,
 		description: '事件ID'
 	},
 	account: {
