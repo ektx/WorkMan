@@ -338,13 +338,7 @@
 	box-sizing: border-box;
 	background-color: #eee;
 	border-bottom: 1px solid #eee;
-}
-.todo-list-box .inner.animate {
 	transition: height .3s ease, background-color .3s ease;
-}
-
-.todo-list-box li.show .inner {
-	background-color: transparent;
 }
 
 .todo-list-box .inner-box {
@@ -443,7 +437,7 @@
 .tbtn.arrow-ico:after {
 	color: #aaa;
 }
-.show .li-btns-box .tbtn {
+.li-btns-box .tbtn.show {
 	transform: rotateZ(135deg);
 }
 

@@ -75,7 +75,6 @@ form button {
 .date-select-ui {
 	display: inline-block;
 	height: 20px;
-	font-size: 0;
 	box-sizing: border-box;
 	cursor: pointer;
     border-bottom: 1px solid transparent;
@@ -94,7 +93,7 @@ form button {
 	display: inline-block;
 	margin: 0 0 0 3px;
 }
-.date-select-ui li.year:after {
+/*.date-select-ui li.year:after {
 	content: '年';
 }
 .date-select-ui li.month:after {
@@ -102,7 +101,7 @@ form button {
 }
 .date-select-ui li.day:after {
 	content: '日';
-}
+}*/
 .date-select-ui:hover {
 	color: #f65f54;
     border-bottom-color: #f65f54;

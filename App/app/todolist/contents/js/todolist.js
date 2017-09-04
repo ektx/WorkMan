@@ -1,4 +1,7 @@
-// 事件列表
+/*
+	事件列表
+	------------------------------
+*/
 let todolistType = new Vue({
 	el: '#todo-type-list',
 	data: {
@@ -42,6 +45,7 @@ let todolistType = new Vue({
 			if (!thisVal.readonly) {
 				// 
 				console.log('get calendar events')
+				getEvents()
 
 				console.log(`get this type event list`, thisVal)
 			}
@@ -158,12 +162,75 @@ let todolistType = new Vue({
 })
 
 
+/*
+	创建事件清单
+	-------------------------------
+*/
 let todoEventsListApp = new Vue({
 	el: '#todo-eventsList-app',
 	data: {
 		events: []
 	},
-	beforeCreate: function() {
-		
+	methods: {
+		showEventsInfo: function(evt) {
+			
+			let _ = evt.target;
+			let index = _.dataset.parentindex;
+			let parentEl = document.querySelector(`[data-id="${_.dataset.parentid}"]`);
+			let innerEl  = parentEl.querySelector('.inner')
+			let innerH = innerEl.scrollHeight;
+
+			if (this.events[index].showInfo) {
+				_.classList.remove('show');
+				innerEl.style.height = 0;
+				this.events[index].showInfo = false;
+			}
+			else {
+				_.classList.add('show');
+				innerEl.style.height = innerH+'px';
+
+				this.events[index].showInfo = true
+			}
+
+		}
 	}
 })
+
+
+/*
+	读取具体类型的事件
+	----------------------------------
+*/
+async function getEvents () {
+	let result = [];
+	// 获取当前选中类别
+	let getFindType = todolistType.typeList[todolistType.holdTypeIndex].id;
+	let data = {
+		query: `{ todolistEvetns(account: "MY_ACCOUNT", types: "${getFindType}"){id, eventTypeID, title, complete, ctime, mtime, ttime, stime, etime, inner}}`
+	}
+
+	// 格式化数据
+	let resetTime = (str) => {
+		let _result = [];
+
+		if (str) {
+			_result = calendar.format('YY年MM月DD日 h:m:s', str)
+		}
+
+		return _result;
+	}
+
+	// 得到结果
+	result = await APIFetch(data);
+
+	// 处理列表时间
+	todoEventsListApp.events = result.todolistEvetns.map((val, i) => {
+		let inEventsData = result.todolistEvetns[i];
+
+		inEventsData.stimeF = resetTime(val.stime);
+		inEventsData.etimeF = resetTime(val.etime);
+
+		return result.todolistEvetns[i];
+	})
+
+}

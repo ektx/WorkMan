@@ -75,46 +75,52 @@
 			</div>
 				<!-- li*30>label>input[type="checkbox"]^span.title>lorem^span.li-btns-box>button.tbtn.arrow-ico.down-arrow -->
 			<ul>
-				<li v-for="event in events"
+				<li v-for="(event, index) in events"
 					class="event-rows"
-					data-id="${_id}" 
+					:data-id="event.id" 
+					:data-index="index"
 					data-parent="${data.parent}" 
 					data-time="${data.startTime}"
 				>
 				<div class="header">
 					<label>
-						<input class="is-done" type="checkbox" ${checked}>
+						<input class="is-done" type="checkbox" :checked="event.complete">
 					</label>
 					<div class="title-box">
-						<input class="title" value="${_title}" />
-						${helpInfo()}
+						<input class="title" :value="event.title" />
 					</div>
 					<span class="li-btns-box">
-						<button class="tbtn arrow-ico down-arrow"></button>
+						<button 
+							@click="showEventsInfo" 
+							class="tbtn arrow-ico down-arrow"
+							:data-parentIndex="index"
+							:data-parentId="event.id"
+						></button>
 					</span>
 				</div>
 				<ul class="inner">
-					${getMoreTypeInfo()}
 					<dl class="event-make-col">
 						<dt>开始:</dt>
 						<dd>
 							<ul class="date-select-ui">
-								<li class="year">${startTime[0]}</li>
+								{{event.stimeF}}
+								<!-- <li class="year">${startTime[0]}</li>
 								<li class="month">${startTime[1]}</li>
-								<li class="day">${startTime[2]}</li>
+								<li class="day">${startTime[2]}</li> -->
 							</ul>
 
 							<button class="et-make-btn add-end-time">添加结束时间</button>
 						</dd>
 					</dl>
 					
-					<dl class="event-make-col">
+					<dl v-show="event.etimeF" class="event-make-col">
 						<dt>结束:</dt>
 						<dd>
 							<ul class="date-select-ui">
-								<li class="year">2017</li>
+								<!-- <li class="year">2017</li>
 								<li class="month">4</li>
-								<li class="day">28</li>
+								<li class="day">28</li> -->
+								{{event.etimeF}}
 							</ul>
 						</dd>
 					</dl>
@@ -122,7 +128,7 @@
 					<dl>
 						<dt>备注:</dt>
 						<dd>
-							<textarea class="inner-box">${_des}</textarea>
+							<textarea class="inner-box">{{event.inner}}</textarea>
 						</dd>
 					</dl>
 				</ul>
