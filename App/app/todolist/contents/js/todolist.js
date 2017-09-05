@@ -197,6 +197,21 @@ let todoEventsListApp = new Vue({
 })
 
 
+let eventsCalendarMod = new Vue({
+	el: '#events-calendar-mod',
+	data: {
+		pickTime: {
+			month: 7,
+			year: 2017
+		}
+	},
+	methods: {
+		getWMDatePicker: function(data) {
+			console.log(data)
+		}
+	}
+})
+
 /*
 	读取具体类型的事件
 	----------------------------------
@@ -234,3 +249,4 @@ async function getEvents () {
 	})
 
 }
+

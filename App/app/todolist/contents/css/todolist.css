@@ -27,6 +27,11 @@
 	border-top: 1px solid #e4e4e4;
 }
 
+
+/*  
+	日历模块                      START
+	-----------------------------------
+*/
 .calendar-box {
 	font-size: 0;
 	padding: 3px;
@@ -48,57 +53,28 @@
 	cursor: pointer;
 }
 
-.calendar-days.day-1 #calDay-1,
-.calendar-days.day-2 #calDay-2,
-.calendar-days.day-3 #calDay-3,
-.calendar-days.day-4 #calDay-4,
-.calendar-days.day-5 #calDay-5,
-.calendar-days.day-6 #calDay-6,
-.calendar-days.day-7 #calDay-7,
-.calendar-days.day-8 #calDay-8,
-.calendar-days.day-9 #calDay-9,
-.calendar-days.day-10 #calDay-10,
-.calendar-days.day-11 #calDay-11,
-.calendar-days.day-12 #calDay-12,
-.calendar-days.day-13 #calDay-13,
-.calendar-days.day-14 #calDay-14,
-.calendar-days.day-15 #calDay-15,
-.calendar-days.day-16 #calDay-16,
-.calendar-days.day-17 #calDay-17,
-.calendar-days.day-18 #calDay-18,
-.calendar-days.day-19 #calDay-19,
-.calendar-days.day-20 #calDay-20,
-.calendar-days.day-21 #calDay-21,
-.calendar-days.day-22 #calDay-22,
-.calendar-days.day-23 #calDay-23,
-.calendar-days.day-24 #calDay-24,
-.calendar-days.day-25 #calDay-25,
-.calendar-days.day-26 #calDay-26,
-.calendar-days.day-27 #calDay-27,
-.calendar-days.day-28 #calDay-28,
-.calendar-days.day-29 #calDay-29,
-.calendar-days.day-30 #calDay-30,
-.calendar-days.day-31 #calDay-31 {
-	color: #f44336;
-}
-.calendar-body li.current span, 
-.calendar-body li.day span {
+.calendar-body li span {
 	display: inline-block;
 	width: 1.6em;
 	height: 1.6em;
 	line-height: 1.6em;
-	color: #fff;
 	border-radius: 100%;
 	transition: background-color .3s ease;
 }
-.calendar-body li.current span {
+.calendar-body li span:empty {
+	font-size: 0;
+}
+.calendar-body li.event span {
+	color: rgba(244, 67, 54, 1);
+	font-weight: bold;
+}
+.calendar-body li.today span {
 	background-color: #333;
+	color: #fff;
 }
-.calendar-body li.day span {
-	background-color: rgba(244, 67, 54, .5);
-}
-.calendar-body li.day.current span {
+.calendar-body li.current span {
 	background-color: rgba(244, 67, 54, 1);
+	color: #fff;
 }
 
 .calendar-control {
@@ -110,12 +86,19 @@
 .calendar-control .tbtn {
 	color: #333;
 }
-.calendar-control span {
+.calendar-control p {
 	flex: 1;
 	text-align: center;
 	cursor: default;
 	-webkit-user-select: none;
 	user-select: none;
+}
+.calendar-topbar-time {
+	cursor: pointer;
+	transition: color .4s ease;
+}
+.calendar-topbar-time:hover {
+	color: #f44336
 }
 .calendar-btns {
 	padding: 3px 0 0;
@@ -138,6 +121,7 @@
 	background: #f5f5f5;
 	color: #f65f54;
 }
+/*  日历模块  -------  END */
 
 
 .my-works-desktop {
