@@ -1,4 +1,27 @@
-let WMDatePickerTem = `
+/*
+	VDatePicker
+	---------------------------------
+	Vue Date Picker(vue 日期选择组件)
+
+	@version: 0.0.1
+	@author: ektx <530675800@qq.com>
+
+	使用:
+	1. 引用 css
+
+	2. 页面调用
+	<v-date-picker 
+		default-val="2017-9-5 12:08:26"
+		format="YYYY年MM月"
+		v-on:send-date="getWMDatePicker"
+	></v-date-picker>
+
+	@default-val 默认时间
+	@format 显示格式
+	@v-on:send-date 回调函数,返回日期对象
+*/
+
+let VDatePickerTem = `
 	<div class="calendar-box">
 		<header class="calendar-control">
 			<button 
@@ -8,11 +31,11 @@ let WMDatePickerTem = `
 				<span 
 					@click="chooseYear"
 					class="calendar-topbar-time"
-				>{{topBarYear}}年</span>
+				>{{year}}年</span>
 				<span 
 					@click="chooseMonth"
 					class="calendar-topbar-time"
-				>{{topBarMonth}}月</span>
+				>{{month}}月</span>
 			</p>
 			<button 
 				@click="nextBtn"
@@ -44,20 +67,20 @@ let WMDatePickerTem = `
 			</ul>
 		</div>
 		<footer class="calendar-btns">
-			<button>关闭</button>
+			<button @click="sendDateToParent('cancel')">关闭</button>
 			<button @click="sendDateToParent('submit')">确认</button>
 		</footer>
 	</div>
 `;
 
-Vue.component('wm-date-picker', {
+Vue.component('v-date-picker', {
 	props: [ 'defaultVal', 'format' ],
-	template: WMDatePickerTem,
+	template: VDatePickerTem,
 	data: function () {
 		return {
-			topBarTime: '',
-			topBarYear: '',
-			topBarMonth: '',
+			time: '',
+			year: '',
+			month: '',
 			topBarStatus: '',
 			// 日历
 			days: [],
@@ -66,27 +89,12 @@ Vue.component('wm-date-picker', {
 		}
 	},
 	created: function() {
-		this.topBarTime = new Date(this.defaultVal);
-		this.topBarYear = this.topBarTime.getFullYear();
-		this.topBarMonth = this.topBarTime.getMonth() + 1;
+		this.time = new Date(this.defaultVal);
+		this.year = this.time.getFullYear();
+		this.month = this.time.getMonth() + 1;
+		// this.format = this.format.split(/\w+/);
 
-		// 获取简单的日历
-		let calendarDays = calendar.str(this.topBarYear, this.topBarMonth);
-		// 今天
-		let todayVal = new Date().getDate()
-
-		// 事件与标识
-		this.days = calendarDays.map(function(val, i) {
-			return {
-				time: val,
-				// 是否是今天
-				isToday: val == todayVal ? true : false,
-				// 是否有事件
-				hasEvent: false,
-				// 是否选中
-				isHold: false
-			}
-		})
+		this.updateCalendar()
 	},
 	watch: {
 		// 跟踪时间变化切换显示与查询功能
@@ -102,29 +110,31 @@ Vue.component('wm-date-picker', {
 
 				this.sendDateToParent('li')
 			}
+		},
+
+		month: function (val, old) {
+			this.updateCalendar()
+		},
+
+		year: function (val, old) {
+			this.updateCalendar()
 		}
 	},
 	methods: {
 		prevBtn: function() {
-			console.log('prev')
-
 			if (this.topBarStatus === 'SELECT_YEAR') {
 				console.log('选择年')
 			} else {
-				console.log('选择月')
-				this.topBarTime.setMonth( this.topBarTime.getMonth() - 1 )
+				this.time.setMonth( this.time.getMonth() - 1 )
 				this.updateTime();
 			}
 		},
 
 		nextBtn: function() {
-			console.log('next');
-
 			if (this.topBarStatus === 'SELECT_YEAR') {
 				console.log('选择年')
 			} else {
-				console.log('选择月')
-				this.topBarTime.setMonth( this.topBarTime.getMonth() + 1 )
+				this.time.setMonth( this.time.getMonth() + 1 )
 				this.updateTime();
 			}
 		},
@@ -146,18 +156,49 @@ Vue.component('wm-date-picker', {
 
 		// 发送数据
 		sendDateToParent: function(from) {
-			this.$emit('send-date', {
-				year: this.topBarYear,
-				month: this.topBarMonth,
-				day: this.days[this.currentIndex].time,
-				from
-			})
+			let index = this.currentIndex;
+
+			if (index > -1) {
+				this.$emit('send-date', {
+					year: this.year,
+					month: this.month,
+					day: this.days[index].time,
+					from
+				})
+			} else {
+				this.$emit('send-date', {
+					mes: from === 'cancel' ? '关闭' : '请选择一个日期',
+					success: false,
+					from
+				})
+			}
 		},
 
 		//
 		updateTime: function() {
-			this.topBarYear = this.topBarTime.getFullYear();
-			this.topBarMonth = this.topBarTime.getMonth() + 1;
-		}
+			this.year = this.time.getFullYear();
+			this.month = this.time.getMonth() + 1;
+		},
+
+		updateCalendar: function () {
+			
+			// 获取简单的日历
+			let calendarDays = calendar.str(this.year, this.month);
+			// 今天
+			let todayVal = new Date().getDate()
+
+			// 事件与标识
+			this.days = calendarDays.map(function(val, i) {
+				return {
+					time: val,
+					// 是否是今天
+					isToday: val == todayVal ? true : false,
+					// 是否有事件
+					hasEvent: false,
+					// 是否选中
+					isHold: false
+				}
+			})
+		} 
 	}
 });
