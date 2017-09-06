@@ -45,6 +45,7 @@ let todolistType = new Vue({
 			if (!thisVal.readonly) {
 				// 
 				console.log('get calendar events')
+
 				getEvents()
 
 				console.log(`get this type event list`, thisVal)
@@ -163,13 +164,48 @@ let todolistType = new Vue({
 
 
 /*
+	日历
+	---------------------------------
+*/
+let eventsCalendarMod = new Vue({
+	el: '#events-calendar-mod',
+	data: {
+		pickTime: {}
+	},
+	watch: {
+		pickTime: function(val, old) {
+			// 更新 事件列表的日期
+			todoEventsListApp.headerTime = val;
+console.log(val)
+			if (val.from !== 'auto') {
+				getEvents();
+
+			}
+		}
+	},
+	methods: {
+		getVDatePicker: function(data) {
+			this.pickTime = data;
+			console.log(data)
+
+		}
+	}
+})
+
+
+
+/*
 	创建事件清单
 	-------------------------------
 */
 let todoEventsListApp = new Vue({
-	el: '#todo-eventsList-app',
+	el: '#todoList-main-app',
 	data: {
-		events: []
+		events: [],
+		headerTime: {}
+	},
+	created: function() {
+		this.headerTime = eventsCalendarMod.pickTime;
 	},
 	methods: {
 		showEventsInfo: function(evt) {
@@ -192,61 +228,93 @@ let todoEventsListApp = new Vue({
 				this.events[index].showInfo = true
 			}
 
+		},
+
+		// 添加事件
+		addOneEvent: function() {
+			console.log('add one event')
+
+			let nowTime = new Date();
+
+			this.events.push( formatEventData([{
+				id: nowTime.getTime(),
+				title: 'test',
+				complete: false,
+				eventTypeID: todolistType.typeList[todolistType.holdTypeIndex].id,
+				inner: '',
+				ctime: nowTime,
+				stime: nowTime,
+				etime: nowTime
+			}])[0] )
 		}
 	}
 })
 
-
-let eventsCalendarMod = new Vue({
-	el: '#events-calendar-mod',
-	data: {
-		pickTime: {
-			month: 7,
-			year: 2017
-		}
-	},
-	methods: {
-		getWMDatePicker: function(data) {
-			console.log(data)
-		}
-	}
-})
 
 /*
 	读取具体类型的事件
 	----------------------------------
 */
 async function getEvents () {
+	console.warn('读取事件...')
 	let result = [];
 	// 获取当前选中类别
 	let getFindType = todolistType.typeList[todolistType.holdTypeIndex].id;
+	let calendarTime = eventsCalendarMod.pickTime;
+	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
+	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date + 1}`;
 	let data = {
-		query: `{ todolistEvetns(account: "MY_ACCOUNT", types: "${getFindType}"){id, eventTypeID, title, complete, ctime, mtime, ttime, stime, etime, inner}}`
+		query: `{ 
+			todolistEvetns(
+				account: "MY_ACCOUNT", 
+				types: "${getFindType}",
+				stime: "${QStime}",
+				etime: "${QEtime}"
+			){id, eventTypeID, title, complete, ctime, mtime, ttime, stime, etime, inner}}`
 	}
 
+	console.log(data)
+
+	// 得到结果
+	result = await APIFetch(data);
+
+	if (!result.todolistEvetns.length) {
+		console.error('Error! 没有发现数据!!');
+		todoEventsListApp.events = []
+		return;
+	}
+
+	// 处理列表时间
+	todoEventsListApp.events = formatEventData(result.todolistEvetns)
+
+}
+
+
+/*
+	对日期的数据进行格式化
+	---------------------------------
+	@obj [array] 要处理的数据
+*/
+function formatEventData(obj) {
 	// 格式化数据
 	let resetTime = (str) => {
 		let _result = [];
 
 		if (str) {
-			_result = calendar.format('YY年MM月DD日 h:m:s', str)
+			_result = calendar.format('YY年MM月DD日 hh:mm:ss', str)
 		}
 
 		return _result;
 	}
 
-	// 得到结果
-	result = await APIFetch(data);
+	return obj.map((val, i, arr) => {
+		let inEventsData = arr[i];
 
-	// 处理列表时间
-	todoEventsListApp.events = result.todolistEvetns.map((val, i) => {
-		let inEventsData = result.todolistEvetns[i];
-
+		// 添加用户方便阅读的时间
 		inEventsData.stimeF = resetTime(val.stime);
 		inEventsData.etimeF = resetTime(val.etime);
 
-		return result.todolistEvetns[i];
+		return arr[i];
 	})
-
 }
 

@@ -60,12 +60,9 @@ module.exports = {
 					stime: {
 						'$lte': new Date(params.stime)
 					},
-					// 结束时间
 					etime: {
-					// 	// 查询开始时间
+						// 查询开始时间
 						'$gte': new Date(params.etime),
-					// 	// 查询结束时间
-						// '$lte': new Date(params.etime)
 					}
 				},
 				null,

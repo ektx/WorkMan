@@ -112,9 +112,8 @@
 }
 .os-day-header .title {
 	height: 100%;
-	width: 100%;
 	padding: 0 5px 0 0;
-	font-size: 32px;
+	font-size: 38px;
 	color: inherit;
 	line-height: 1.2em;
 	text-overflow: ellipsis;
@@ -328,10 +327,10 @@
 	transform: rotateZ(135deg);
 }
 
-#add-todo-event {
+.add-todo-event {
 	transition: transform .3s ease;
 }
-#add-todo-event.clear-search {
+.add-todo-event.clear-search {
 	transform: rotateZ(45deg);
 }
 

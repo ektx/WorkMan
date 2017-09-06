@@ -32,22 +32,23 @@
 			<v-date-picker 
 				default-val="2017-9-5 12:08:26"
 				format="YYYY-MM"
-				v-on:send-date="getWMDatePicker"
+				has-footer="has-footer"
+				v-on:send-date="getVDatePicker"
 			></v-date-picker>
 		</div>
 	</aside>
 
-	<div class="os-day-works-box">
+	<div id="todoList-main-app" class="os-day-works-box">
 		<header class="os-day-header">
 			<div class="hd-day-inner">
-				<div class="title">1</div>
+				<div class="title">{{ headerTime.date }}</div>
 				<div class="inner">
-					<p>星期?</p>
-					<p>????年??月</p>
+					<p>{{ headerTime.dayFormat }}</p>
+					<p>{{ headerTime.year }} 年 {{ headerTime.month }} 月</p>
 				</div>
 			</div>
 			<div class="hd-btns-box">
-				<button id="add-todo-event" class="tbtn">
+				<button class="tbtn add-todo-event" @click="addOneEvent">
 					<svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 12 16" width="12">
 						<path d="M12 9H7v5H5V9H0V7h5V2h2v5h5z"></path>
 					</svg>
@@ -123,35 +124,36 @@
 			</ul>
 		</div>
 		
-		<!-- 浮动时间组件 -->
-		<div id="fixed-date-mod" class="fixed-date-mod">
-			<div class="fixed-date-inner">
-				<div class="calendar-box">
-					<header class="calendar-control">
-						<button id="prev" class="tbtn"><</button>
-						<span>2016年12月</span>
-						<button id="next" class="tbtn">></button>
-					</header>
-					<div class="calendar-body">
-						<ul>
-							<li>日</li>
-							<li>一</li>
-							<li>二</li>
-							<li>三</li>
-							<li>四</li>
-							<li>五</li>
-							<li>六</li>
-						</ul>
-						<ul class="calendar-days"></ul>
-					</div>
-					<footer class="calendar-btns">
-						<button>关闭</button>
-						<button>确认</button>
-					</footer>
-				</div>
-			</div>
-		</div>  
-		
 	</div>
+	
+	<!-- 浮动时间组件 -->
+	<div id="fixed-date-mod" class="fixed-date-mod">
+		<div class="fixed-date-inner">
+			<div class="calendar-box">
+				<header class="calendar-control">
+					<button id="prev" class="tbtn"><</button>
+					<span>2016年12月</span>
+					<button id="next" class="tbtn">></button>
+				</header>
+				<div class="calendar-body">
+					<ul>
+						<li>日</li>
+						<li>一</li>
+						<li>二</li>
+						<li>三</li>
+						<li>四</li>
+						<li>五</li>
+						<li>六</li>
+					</ul>
+					<ul class="calendar-days"></ul>
+				</div>
+				<footer class="calendar-btns">
+					<button>关闭</button>
+					<button>确认</button>
+				</footer>
+			</div>
+		</div>
+	</div> 
+
 </div>
 

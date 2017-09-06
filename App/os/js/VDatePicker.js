@@ -97,9 +97,11 @@ Vue.component('v-date-picker', {
 		this.time = new Date(this.defaultVal);
 		this.year = this.time.getFullYear();
 		this.month = this.time.getMonth() + 1;
-		// this.format = this.format.split(/\w+/);
+		// 更新日历
+		this.updateCalendarAndEvents();
+		// 发送时间
+		this.sendDateToParent('auto')
 
-		this.updateCalendarAndEvents()
 	},
 	watch: {
 		// 跟踪时间变化切换显示与查询功能
@@ -113,7 +115,6 @@ Vue.component('v-date-picker', {
 				
 				thisDay.isHold = true;
 
-				this.sendDateToParent('li')
 			}
 		},
 
@@ -131,7 +132,7 @@ Vue.component('v-date-picker', {
 				console.log('选择年')
 			} else {
 				this.time.setMonth( this.time.getMonth() - 1 )
-				this.updateTime();
+				this.updateTime('prev');
 			}
 		},
 
@@ -140,7 +141,7 @@ Vue.component('v-date-picker', {
 				console.log('选择年')
 			} else {
 				this.time.setMonth( this.time.getMonth() + 1 )
-				this.updateTime();
+				this.updateTime('next');
 			}
 		},
 
@@ -156,18 +157,25 @@ Vue.component('v-date-picker', {
 
 		// 选择日期事件
 		selectDayEvt: function(index) {
-			this.currentIndex = index
+			this.currentIndex = index;
+			this.sendDateToParent('select')
 		},
 
 		// 发送数据
 		sendDateToParent: function(from) {
 			let index = this.currentIndex;
+			let date = this.days[index].time;
+			let d = new Date(this.year, this.month-1, date);
+			let day = d.getDay();
+			let week = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
 
 			if (index > -1) {
 				this.$emit('send-date', {
 					year: this.year,
 					month: this.month,
-					day: this.days[index].time,
+					date: date,
+					day: day,
+					dayFormat: week[day],
 					from
 				})
 			} else {
@@ -180,9 +188,10 @@ Vue.component('v-date-picker', {
 		},
 
 		//
-		updateTime: function() {
+		updateTime: function(btnType) {
 			this.year = this.time.getFullYear();
 			this.month = this.time.getMonth() + 1;
+			this.sendDateToParent(btnType)
 		},
 
 
@@ -192,20 +201,29 @@ Vue.component('v-date-picker', {
 			// 获取简单的日历
 			let calendarDays = calendar.str(this.year, this.month);
 			// 今天
-			let todayVal = new Date().getDate()
+			let todayVal = new Date().getDate();
 
 			// 事件与标识
-			this.days = calendarDays.map(function(val, i) {
+			this.days = calendarDays.map((val, i) => {
+				
+				let isTodayMes = false;
+
+				if (val === todayVal) {
+					this.currentIndex = i;
+					isTodayMes = true;
+				}
+				
 				return {
 					time: val,
 					// 是否是今天
-					isToday: val == todayVal ? true : false,
+					isToday: isTodayMes,
 					// 是否有事件
 					hasEvent: false,
 					// 是否选中
-					isHold: false
+					isHold: isTodayMes
 				}
-			})
+			});
+
 		} 
 	}
 });
