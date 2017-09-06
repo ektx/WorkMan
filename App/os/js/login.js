@@ -1,7 +1,9 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 // 关闭窗口功能
-document.getElementById('window-close-btn').addEventListener('click', function() {
+let closeBtn = document.getElementById('window-close-btn')
+
+closeBtn.addEventListener('click', function() {
   window.close();
 })
 
