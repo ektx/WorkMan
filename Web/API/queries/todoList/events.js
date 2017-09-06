@@ -21,6 +21,16 @@ module.exports = {
 			type: GraphQLString,
 			description: '查询的类别'
 		},
+		stime: {
+			name: 'stime',
+			type: GraphQLString,
+			description: '查询开始时间'
+		},
+		etime: {
+			name: 'etime',
+			type: GraphQLString,
+			description: '查询结束时间'
+		},
 		start: {
 			name: 'start',
 			type: GraphQLInt,
@@ -44,7 +54,20 @@ module.exports = {
 
 		let dataPromise = new Promise((resolve, reject) => {
 			db.find(
-				{account: params.account, eventTypeID: params.types},
+				{
+					account: params.account, 
+					eventTypeID: params.types,
+					stime: {
+						'$lte': new Date(params.stime)
+					},
+					// 结束时间
+					etime: {
+					// 	// 查询开始时间
+						'$gte': new Date(params.etime),
+					// 	// 查询结束时间
+						// '$lte': new Date(params.etime)
+					}
+				},
 				null,
 				{ skip: params.start, limit: params.limit},
 				(err, data) => {

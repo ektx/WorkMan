@@ -19,16 +19,10 @@ const add = {
 	},
 	resolve(root, parmas, req) {
 		
-		// 创建时间
-		parmas.data.ctime = new Date().toISOString();
 		// 复杂化id 用于确保不会有相同
 		parmas.data.account = (req.decoded ? req.decoded.user : parmas.data.account);
 		parmas.data.id = `${parmas.data.id}_${parmas.data.account}`;
 
-		// 没有结束时间时就用创建时间
-		if (!parmas.data.stime) {
-			parmas.data.stime = parmas.data.ctime
-		}
 
 		const model = new db(parmas.data)
 		const newData = model.save()
