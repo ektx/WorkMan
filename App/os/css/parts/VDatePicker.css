@@ -8,15 +8,15 @@
 
 */
 
-.calendar-box {
+.vdate-picker-box {
 	font-size: 0;
 	padding: 3px;
 }
-.calendar-box ul:first-child {
+.vdate-picker-box ul:first-child {
 	font-weight: bold;
 }
 
-.calendar-body li {
+.vdate-picker-body li {
 	display: inline-block;
 	width: 14.28%;
 	height: 24px;
@@ -29,7 +29,7 @@
 	cursor: pointer;
 }
 
-.calendar-body li span {
+.vdate-picker-body li span {
 	display: inline-block;
 	width: 1.6em;
 	height: 1.6em;
@@ -37,51 +37,57 @@
 	border-radius: 100%;
 	transition: background-color .3s ease;
 }
-.calendar-body li span:empty {
+.vdate-picker-body li span:empty {
 	font-size: 0;
 }
-.calendar-body li.event span {
+.vdate-picker-body li.event span {
 	color: rgba(244, 67, 54, 1);
 	font-weight: bold;
 }
-.calendar-body li.today span {
+.vdate-picker-body li.today span {
 	background-color: #333;
 	color: #fff;
 }
-.calendar-body li.current span {
+.vdate-picker-body li.current span {
 	background-color: rgba(244, 67, 54, 1);
 	color: #fff;
 }
 
-.calendar-control {
+.vdate-picker-control {
 	font-size: 14px;
 	display: flex;
 	margin: 5px 0;
 }
-.calendar-control,
-.calendar-control .tbtn {
+.vdate-picker-control,
+.vdate-picker-control .tbtn {
 	color: #333;
 }
-.calendar-control p {
+.vdate-picker-control p {
 	flex: 1;
 	text-align: center;
 	cursor: default;
 	-webkit-user-select: none;
 	user-select: none;
+	position: relative;
 }
-.calendar-topbar-time {
+.vdate-picker-control p .back-btn {
+	position: absolute;
+	left: 0;
+}
+
+.vadate-picker-topbar-time {
 	cursor: pointer;
 	transition: color .4s ease;
 }
-.calendar-topbar-time:hover {
+.vadate-picker-topbar-time:hover {
 	color: #f44336
 }
-.calendar-btns {
+.vdate-picker-btns {
 	padding: 3px 0 0;
 	font-size: 0;
     border-top: 1px solid #ddd;
 }
-.calendar-btns button {
+.vdate-picker-btns button {
     display: inline-block;
     font-size: 12px;
     color: #333;
@@ -93,7 +99,7 @@
     cursor: pointer;
 	transition: background .3s ease, color .3s ease;
 }
-.calendar-btns button:hover {
+.vdate-picker-btns button:hover {
 	background: #f5f5f5;
 	color: #f65f54;
 }

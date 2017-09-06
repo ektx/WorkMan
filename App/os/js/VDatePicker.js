@@ -13,28 +13,33 @@
 	<v-date-picker 
 		default-val="2017-9-5 12:08:26"
 		format="YYYY年MM月"
+		has-footer="hasfooter"
 		v-on:send-date="getWMDatePicker"
 	></v-date-picker>
 
 	@default-val 默认时间
 	@format 显示格式
+	@has-footer 是否要显示底部按钮,以上示例为要,不添加值为不要
 	@v-on:send-date 回调函数,返回日期对象
 */
 
 let VDatePickerTem = `
-	<div class="calendar-box">
-		<header class="calendar-control">
+	<div class="vdate-picker-box">
+		<header class="vdate-picker-control">
 			<button 
 				@click="prevBtn"
 				class="tbtn"><</button>
 			<p>
+			<button
+				class="tbtn back-btn"
+			></button>
 				<span 
 					@click="chooseYear"
-					class="calendar-topbar-time"
+					class="vadate-picker-topbar-time"
 				>{{year}}年</span>
 				<span 
 					@click="chooseMonth"
-					class="calendar-topbar-time"
+					class="vadate-picker-topbar-time"
 				>{{month}}月</span>
 			</p>
 			<button 
@@ -42,7 +47,7 @@ let VDatePickerTem = `
 				class="tbtn"
 			>></button>
 		</header>
-		<div class="calendar-body">
+		<div class="vdate-picker-body">
 			<ul>
 				<li>日</li>
 				<li>一</li>
@@ -52,7 +57,7 @@ let VDatePickerTem = `
 				<li>五</li>
 				<li>六</li>
 			</ul>
-			<ul class="calendar-days">
+			<ul class="vdate-picker-days">
 				<li 
 					v-for="(day, index) in days"
 					:class="{
@@ -66,7 +71,7 @@ let VDatePickerTem = `
 				</li>
 			</ul>
 		</div>
-		<footer class="calendar-btns">
+		<footer v-show="hasFooter" class="vdate-picker-btns">
 			<button @click="sendDateToParent('cancel')">关闭</button>
 			<button @click="sendDateToParent('submit')">确认</button>
 		</footer>
@@ -74,7 +79,7 @@ let VDatePickerTem = `
 `;
 
 Vue.component('v-date-picker', {
-	props: [ 'defaultVal', 'format' ],
+	props: [ 'defaultVal', 'format', 'hasFooter' ],
 	template: VDatePickerTem,
 	data: function () {
 		return {
@@ -94,7 +99,7 @@ Vue.component('v-date-picker', {
 		this.month = this.time.getMonth() + 1;
 		// this.format = this.format.split(/\w+/);
 
-		this.updateCalendar()
+		this.updateCalendarAndEvents()
 	},
 	watch: {
 		// 跟踪时间变化切换显示与查询功能
@@ -113,11 +118,11 @@ Vue.component('v-date-picker', {
 		},
 
 		month: function (val, old) {
-			this.updateCalendar()
+			this.updateCalendarAndEvents()
 		},
 
 		year: function (val, old) {
-			this.updateCalendar()
+			this.updateCalendarAndEvents()
 		}
 	},
 	methods: {
@@ -180,7 +185,9 @@ Vue.component('v-date-picker', {
 			this.month = this.time.getMonth() + 1;
 		},
 
-		updateCalendar: function () {
+
+		// 更新日历与事件
+		updateCalendarAndEvents: function () {
 			
 			// 获取简单的日历
 			let calendarDays = calendar.str(this.year, this.month);
