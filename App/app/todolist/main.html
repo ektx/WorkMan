@@ -69,13 +69,15 @@
 					:data-index="index"
 					data-parent="${data.parent}" 
 					data-time="${data.startTime}"
+					@focusin="focusInGetIndex"
+					@mouseenter="mouseOver"
 				>
 				<div class="header">
 					<label>
 						<input class="is-done" type="checkbox" :checked="event.complete">
 					</label>
 					<div class="title-box">
-						<input class="title" :value="event.title" />
+						<input class="title" :value="event.title" @keyup="insertData('title', $event)" />
 					</div>
 					<span class="li-btns-box">
 						<button 
@@ -92,12 +94,7 @@
 						<dd>
 							<ul class="date-select-ui">
 								{{event.stimeF}}
-								<!-- <li class="year">${startTime[0]}</li>
-								<li class="month">${startTime[1]}</li>
-								<li class="day">${startTime[2]}</li> -->
 							</ul>
-
-							<button class="et-make-btn add-end-time">添加结束时间</button>
 						</dd>
 					</dl>
 					
@@ -105,9 +102,6 @@
 						<dt>结束:</dt>
 						<dd>
 							<ul class="date-select-ui">
-								<!-- <li class="year">2017</li>
-								<li class="month">4</li>
-								<li class="day">28</li> -->
 								{{event.etimeF}}
 							</ul>
 						</dd>
@@ -116,7 +110,10 @@
 					<dl>
 						<dt>备注:</dt>
 						<dd>
-							<textarea class="inner-box">{{event.inner}}</textarea>
+							<textarea 
+								@keyup="insertData('inner', $event)" 
+								class="inner-box"
+							>{{event.inner}}</textarea>
 						</dd>
 					</dl>
 				</ul>

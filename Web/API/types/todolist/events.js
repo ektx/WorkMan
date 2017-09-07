@@ -63,8 +63,45 @@ exports.events_TYPE = events_TYPE;
 
 
 const events_INTTYPE = new GraphQLInputObjectType({
-	name: 'events_',
+	name: 'events_add',
 	description: '提醒事件',
 	fields: () => (fieldsObj)
 })
 exports.events_INTTYPE = events_INTTYPE;
+
+
+const updateEvent_INTTYPE = new GraphQLInputObjectType({
+	name: 'events_update',
+	description: '提醒事件',
+	fields: () => ({
+		eventTypeID: {
+		  type: GraphQLString,
+		  description: '事件类别 ID'
+		},
+		title: {
+			type: GraphQLString,
+			description: '标题'
+		},
+		complete: {
+			type: GraphQLBoolean,
+			description: '是否完成'
+		},
+		ttime: {
+			type: GraphQLString,
+			description: '提醒时间'
+		},
+		stime: {
+			type: GraphQLString,
+			description: '开始时间'
+		},
+		etime: {
+			type: GraphQLString,
+			description: '结束时间'
+		},
+		inner: {
+			type: GraphQLString,
+			description: '备注说明'
+		}		
+	})
+})
+exports.updateEvent_INTTYPE = updateEvent_INTTYPE;

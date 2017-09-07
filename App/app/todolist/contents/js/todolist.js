@@ -10,7 +10,8 @@ let todolistType = new Vue({
 		// 默认选择
 		holdTypeIndex: -1,
 		// 重命名状态
-		renameStatus: false
+		renameStatus: false,
+
 	},
 	beforeCreate: function() {
 		// 设置提醒列表
@@ -176,7 +177,7 @@ let eventsCalendarMod = new Vue({
 		pickTime: function(val, old) {
 			// 更新 事件列表的日期
 			todoEventsListApp.headerTime = val;
-console.log(val)
+
 			if (val.from !== 'auto') {
 				getEvents();
 
@@ -202,7 +203,12 @@ let todoEventsListApp = new Vue({
 	el: '#todoList-main-app',
 	data: {
 		events: [],
-		headerTime: {}
+		headerTime: {},
+		// 当前事件
+		currentEventIndex: -1,
+
+		thisSetTimeoutFun: '',
+
 	},
 	created: function() {
 		this.headerTime = eventsCalendarMod.pickTime;
@@ -232,20 +238,115 @@ let todoEventsListApp = new Vue({
 
 		// 添加事件
 		addOneEvent: function() {
-			console.log('add one event')
+			console.log('add one event', eventsCalendarMod.pickTime)
 
 			let nowTime = new Date();
-
-			this.events.push( formatEventData([{
+			let saveDefTime = new Date(
+				eventsCalendarMod.pickTime.year,
+				eventsCalendarMod.pickTime.month -1,
+				eventsCalendarMod.pickTime.date,
+				nowTime.getHours(),
+				nowTime.getMinutes(),
+				nowTime.getSeconds(),
+				nowTime.getMilliseconds()
+			);
+			let insertData = formatEventData([{
+				insert: true,
 				id: nowTime.getTime(),
 				title: 'test',
 				complete: false,
 				eventTypeID: todolistType.typeList[todolistType.holdTypeIndex].id,
 				inner: '',
-				ctime: nowTime,
-				stime: nowTime,
-				etime: nowTime
-			}])[0] )
+				ctime: saveDefTime,
+				stime: saveDefTime,
+				etime: saveDefTime
+			}])[0];
+			
+			// 绑定当前事件索引
+			this.currentEventIndex = this.events.length
+
+			this.events.push( insertData );
+
+			this.$nextTick(function() {
+				// debugger;
+				this.$el.querySelector('input.title').focus()
+			})
+		},
+
+		mouseOver: function(evt) {
+			console.log(evt.target)
+		},
+
+		focusInGetIndex: function(evt) {
+			// console.log(evt.target)
+		},
+
+		// 添加插入数据更新
+		insertData: function(type, evt) {
+			let _ = evt.target;
+			let val = evt.target.value;
+
+			this.events[this.currentEventIndex][type] = val;
+
+			clearTimeout(this.thisSetTimeoutFun);
+
+			this.thisSetTimeoutFun = setTimeout(this.saveInsertData, 1000)
+		},
+
+		// 保存新加数据
+		saveInsertData: function() {
+			// console.log('Save Event', JSON.stringify( ))
+			let eventData = this.events[this.currentEventIndex];
+			let query;
+			// let queryData = `
+				// eventTypeID: "${eventData.eventTypeID}",
+				// title: "${eventData.title}",
+				// complete: ${eventData.complete},
+				// inner: "${eventData.inner}",
+				// stime: "${eventData.stime}",
+				// etime: "${eventData.etime}",
+				// ttime: "${eventData.ttime}",`;
+
+			let queryData = '';
+			for (let key in eventData) {
+				if (eventData.hasOwnProperty(key)) {
+					// 过滤 insert
+					if (['insert', 'stimeF', 'etimeF'].includes(key)) continue;
+
+					if (key !== 'complete') {
+						queryData += `${key}: "${eventData[key]}",`
+					} else {
+						queryData += `${key}: ${eventData[key]},`
+					}
+				}
+			}
+			console.log( queryData )
+
+			if (eventData.insert) {
+
+				query = `mutation { addTodoListEvent(data: { ${queryData} }) }`;
+
+			} else {
+				query = `mutation { updateTodoListEvent(
+					id: ${eventData.id},
+					account: "MY_ACCOUNT",
+					data: { ${queryData} }
+				) }`
+			}
+
+			APIFetch( { query }).then( data => {
+
+				data = JSON.parse(data.addTodoListEvent);
+
+				if (data.success) {
+					delete eventData.insert;
+				} else {
+					console.error( data )
+				}
+				console.log(data)
+			}, err => {
+				console.error(err)
+			})
 		}
 	}
 })
@@ -261,8 +362,8 @@ async function getEvents () {
 	// 获取当前选中类别
 	let getFindType = todolistType.typeList[todolistType.holdTypeIndex].id;
 	let calendarTime = eventsCalendarMod.pickTime;
-	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
-	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date + 1}`;
+	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date + 1}`;
+	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
 	let data = {
 		query: `{ 
 			todolistEvetns(
@@ -272,8 +373,6 @@ async function getEvents () {
 				etime: "${QEtime}"
 			){id, eventTypeID, title, complete, ctime, mtime, ttime, stime, etime, inner}}`
 	}
-
-	console.log(data)
 
 	// 得到结果
 	result = await APIFetch(data);
@@ -318,3 +417,22 @@ function formatEventData(obj) {
 	})
 }
 
+
+
+function getParents(el, parentSelector) {
+	if (parentSelector === undefined) {
+    	parentSelector = document;
+    }
+
+    var parents = [];
+    var p = el.parentNode;
+    
+    while (p !== parentSelector) {
+        var o = p;
+        parents.push(o);
+        p = o.parentNode;
+    }
+    parents.push(parentSelector); // Push that parentSelector you wanted to stop at
+    
+    return parents;
+}

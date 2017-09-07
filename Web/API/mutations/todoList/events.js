@@ -6,7 +6,7 @@ const {
 } = require('graphql')
 
 const db = require('../../../models/todolist/events')
-const { events_TYPE, events_INTTYPE } = require('../../types/todolist/events')
+const { events_TYPE, events_INTTYPE, updateEvent_INTTYPE } = require('../../types/todolist/events')
 
 const add = {
 	type: GraphQLString,
@@ -29,7 +29,7 @@ const add = {
 
 		if (!newData) throw new Error('添加事件出错')
 
-		return '{"status": true, "msg": "添加成功"}'
+		return '{"success": true, "msg": "添加成功"}'
 	}
 
 }
@@ -73,7 +73,7 @@ const update = {
 	args: {
 		id: {
 			name: 'id',
-			type: new GraphQLNonNull(GraphQLInt),
+			type: new GraphQLNonNull(GraphQLString),
 			description: '更新类型 id'
 		},
 		account: {
@@ -83,7 +83,7 @@ const update = {
 		},
 		data: {
 			name: 'data',
-			type: events_INTTYPE,
+			type: updateEvent_INTTYPE,
 			description: '更新的内容'
 		}
 	},

@@ -350,15 +350,6 @@
 	flex: 1;
 }
 
-.et-make-btn {
-	float: right;
-	background: transparent;
-	border: none;
-	color: #09f;
-	line-height: 20px;
-	margin-right: 10px;
-}
-
 /* 浮动时间组件 */
 .fixed-date-mod {
 	display: none;
