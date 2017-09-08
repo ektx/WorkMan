@@ -197,12 +197,15 @@ let scripts = nodeRequire('./app/todolist/config.json').scripts;
 
 mainWindows.innerHTML = todoListHTML;
 
+// 创建添加容器
+let jsDOMFragment = document.createDocumentFragment();
 for (let i = 0, l = scripts.length; i < l; i++) {
 	let script = document.createElement('script');
 	script.src = 'app/todolist/' + scripts[i] + '.js';
 
-	document.body.appendChild(script)
+	jsDOMFragment.appendChild(script)
 }
+document.body.appendChild( jsDOMFragment )
 
 
 
