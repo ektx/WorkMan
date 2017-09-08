@@ -69,6 +69,7 @@
 					data-parent="${data.parent}" 
 					data-time="${data.startTime}"
 					@mouseenter="mouseOver"
+					@contextmenu.prevent="quickSetEvent"
 				>
 				<div class="header">
 					<label>

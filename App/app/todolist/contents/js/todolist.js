@@ -47,9 +47,8 @@ let todolistType = new Vue({
 				// 
 				console.log('get calendar events')
 
+				// 获取事件
 				getEvents()
-
-				console.log(`get this type event list`, thisVal)
 			}
 		}
 	},
@@ -187,8 +186,6 @@ let eventsCalendarMod = new Vue({
 	methods: {
 		getVDatePicker: function(data) {
 			this.pickTime = data;
-			console.log(data)
-
 		}
 	}
 })
@@ -389,6 +386,48 @@ let todoEventsListApp = new Vue({
 			}, err => {
 				console.error(err)
 			})
+		},
+
+		// 右键功能
+		quickSetEvent: function() {
+			console.log();
+			let index = this.currentEventIndex;
+			let thisID = this.events[this.currentEventIndex].id;
+			let menuArr = [
+				{
+					label: 'Move to ..',
+					click(menuItem, browserWindow, e) {
+
+						
+					}
+				},
+				{
+					type: 'separator'
+				},
+				{
+					// 删除类型
+					label: '删除',
+					click() {
+						
+						APIFetch({
+							query: `mutation {
+								removeTodoListEvent(id: "${thisID}", account: "MY_ACCOUNT")
+							}`
+						}).then(data => {
+							// 如果有删除数据
+							if (JSON.parse(data.removeTodoListEvent).n) {
+								// 删除数据
+								todoEventsListApp.events.splice(index, 1)
+							} 
+						}, err => {
+							console.error(err)
+						})
+					}
+				}
+			];
+
+			// 生成菜单
+			createMouseRightClickMenu( menuArr );
 		}
 	}
 })
@@ -399,7 +438,6 @@ let todoEventsListApp = new Vue({
 	----------------------------------
 */
 async function getEvents () {
-	console.warn('读取事件...')
 	let result = [];
 	// 获取当前选中类别
 	let getFindType = todolistType.typeList[todolistType.holdTypeIndex].id;

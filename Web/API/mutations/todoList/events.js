@@ -43,13 +43,20 @@ const remove = {
 			name: 'id',
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'id'
+		},
+		account: {
+			name: 'account',
+			type: GraphQLString,
+			description: '用户'
 		}
 	},
-	resolve(root, parmas) {
+	resolve(root, getArgs, req) {
 		
+		getArgs.account = (req.decoded ? req.decoded.user : getArgs.account);
+
 		let remove = new Promise((resolve, reject) => {
 			db.remove(
-				{id: parmas.id  },
+				{id: getArgs.id , account: getArgs.account },
 				(err, data) => {
 					if (err) {
 						reject(JSON.stringify(err));
