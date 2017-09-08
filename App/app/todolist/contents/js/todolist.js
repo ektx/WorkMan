@@ -209,6 +209,8 @@ let todoEventsListApp = new Vue({
 
 		thisSetTimeoutFun: '',
 
+		createNewEvent: false
+
 	},
 	created: function() {
 		this.headerTime = eventsCalendarMod.pickTime;
@@ -240,6 +242,11 @@ let todoEventsListApp = new Vue({
 		addOneEvent: function() {
 			console.log('add one event', eventsCalendarMod.pickTime)
 
+			// 如果没有在创建就创建
+			if (this.createNewEvent) {
+				return;
+			};
+
 			let nowTime = new Date();
 			let saveDefTime = new Date(
 				eventsCalendarMod.pickTime.year,
@@ -253,7 +260,7 @@ let todoEventsListApp = new Vue({
 			let insertData = formatEventData([{
 				insert: true,
 				id: nowTime.getTime(),
-				title: 'test',
+				title: '',
 				complete: false,
 				eventTypeID: todolistType.typeList[todolistType.holdTypeIndex].id,
 				inner: '',
@@ -261,24 +268,44 @@ let todoEventsListApp = new Vue({
 				stime: saveDefTime,
 				etime: saveDefTime
 			}])[0];
+
 			
 			// 绑定当前事件索引
 			this.currentEventIndex = this.events.length
 
+			this.createNewEvent = true;
+
 			this.events.push( insertData );
 
 			this.$nextTick(function() {
-				// debugger;
-				this.$el.querySelector('input.title').focus()
+				this.$el.querySelector('li:last-child').querySelector('input.title').focus()
 			})
 		},
 
+
+		// 时时跟踪当前事件索引
 		mouseOver: function(evt) {
-			console.log(evt.target)
+
+			this.currentEventIndex = evt.target.dataset.index;
 		},
 
-		focusInGetIndex: function(evt) {
-			// console.log(evt.target)
+		// 更新完成情况
+		updateCheck: function(evt) {
+			this.events[this.currentEventIndex].complete =evt.target.checked;
+
+			this.saveInsertData()
+		},
+
+		// 如果新建的标题没有内容,我们就撤消
+		blurTitle: function(evt) {
+
+			if (!evt.target.value && this.createNewEvent) {
+			console.log(evt.target.value);
+				// 撤消新数据
+				this.events.pop();
+				// 恢复可新加
+				this.createNewEvent = false;
+			}
 		},
 
 		// 添加插入数据更新
@@ -298,52 +325,67 @@ let todoEventsListApp = new Vue({
 			// console.log('Save Event', JSON.stringify( ))
 			let eventData = this.events[this.currentEventIndex];
 			let query;
-			// let queryData = `
-				// eventTypeID: "${eventData.eventTypeID}",
-				// title: "${eventData.title}",
-				// complete: ${eventData.complete},
-				// inner: "${eventData.inner}",
-				// stime: "${eventData.stime}",
-				// etime: "${eventData.etime}",
-				// ttime: "${eventData.ttime}",`;
 
-			let queryData = '';
-			for (let key in eventData) {
-				if (eventData.hasOwnProperty(key)) {
-					// 过滤 insert
-					if (['insert', 'stimeF', 'etimeF'].includes(key)) continue;
+			let setQueryData = (arr) => {
 
-					if (key !== 'complete') {
-						queryData += `${key}: "${eventData[key]}",`
-					} else {
-						queryData += `${key}: ${eventData[key]},`
+				let queryData = '';
+				for (let key in eventData) {
+					if (eventData.hasOwnProperty(key)) {
+						// 过滤 insert
+						if ( arr.includes(key) ) {
+
+							if (key !== 'complete') {
+								queryData += `${key}: "${eventData[key]}",`
+							} else {
+								queryData += `${key}: ${eventData[key]},`
+							}
+
+						}
 					}
 				}
+
+				return queryData;
 			}
-			console.log( queryData )
+
+			if (!eventData.title.trim()) return;
 
 			if (eventData.insert) {
-
-				query = `mutation { addTodoListEvent(data: { ${queryData} }) }`;
+				let insertQ = setQueryData(['id', 'account', 'eventTypeID', 'title', 'complete', 'inner', 'ctime', 'stime', 'etime']);
+				query = `mutation { addTodoListEvent(data: { ${insertQ} }) }`;
 
 			} else {
+				let updateQ = setQueryData(['eventTypeID', 'title', 'complete', 'inner', 'stime', 'etime'])
 				query = `mutation { updateTodoListEvent(
-					id: ${eventData.id},
+					id: "${eventData.id}",
 					account: "MY_ACCOUNT",
-					data: { ${queryData} }
+					data: { ${updateQ} }
 				) }`
 			}
 
 			APIFetch( { query }).then( data => {
 
-				data = JSON.parse(data.addTodoListEvent);
+				// save
+				if (eventData.insert) {
+					data = JSON.parse(data.addTodoListEvent);
+				} 
+				// update
+				else {
+					data = JSON.parse(data.updateTodoListEvent);
+				}
 
 				if (data.success) {
-					delete eventData.insert;
+
+					if (eventData.insert) {
+						// 恢复可以新加功能
+						this.createNewEvent = false;
+						// 删除新建标识
+						delete eventData.insert;
+					}
+
 				} else {
 					console.error( data )
 				}
-				console.log(data)
+
 			}, err => {
 				console.error(err)
 			})

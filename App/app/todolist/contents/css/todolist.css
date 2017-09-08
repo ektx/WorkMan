@@ -330,6 +330,9 @@
 .add-todo-event {
 	transition: transform .3s ease;
 }
+.add-todo-event svg {
+	pointer-events: none;
+}
 .add-todo-event.clear-search {
 	transform: rotateZ(45deg);
 }
