@@ -390,16 +390,35 @@ let todoEventsListApp = new Vue({
 
 		// 右键功能
 		quickSetEvent: function() {
-			console.log();
+
 			let index = this.currentEventIndex;
 			let thisID = this.events[this.currentEventIndex].id;
-			let menuArr = [
-				{
-					label: 'Move to ..',
-					click(menuItem, browserWindow, e) {
 
+			let moveSubMenu = todolistType.typeList.map((val, i) => {
+				let isSelf = i === todolistType.holdTypeIndex ? true : false;
+				return {
+					label: val.name,
+					type: 'checkbox',
+					checked: isSelf,
+					enabled: !isSelf,
+					click() {
+						console.log(val.id, i)
+						let events = todoEventsListApp.events[ todoEventsListApp.currentEventIndex];
+
+						console.log(events.id)
+						events.id = events.id.replace(/\d+/, val.id)
+
+						console.log(events.id)
+						todoEventsListApp.saveInsertData()
 						
 					}
+				}
+			})
+
+			let menuArr = [
+				{
+					label: '设置',
+					submenu: moveSubMenu
 				},
 				{
 					type: 'separator'
@@ -425,6 +444,9 @@ let todoEventsListApp = new Vue({
 					}
 				}
 			];
+
+			console.log( todolistType.typeList )
+
 
 			// 生成菜单
 			createMouseRightClickMenu( menuArr );
