@@ -377,6 +377,9 @@ let todoEventsListApp = new Vue({
 						this.createNewEvent = false;
 						// 删除新建标识
 						delete eventData.insert;
+
+						// 更新 id
+						eventData.id = data.id
 					}
 
 				} else {

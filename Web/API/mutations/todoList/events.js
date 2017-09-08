@@ -29,7 +29,7 @@ const add = {
 
 		if (!newData) throw new Error('添加事件出错')
 
-		return '{"success": true, "msg": "添加成功"}'
+		return `{"success": true, "msg": "添加成功", "id": "${parmas.data.id}"}`
 	}
 
 }
