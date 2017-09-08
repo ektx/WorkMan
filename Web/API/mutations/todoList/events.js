@@ -87,22 +87,29 @@ const update = {
 			description: '更新的内容'
 		}
 	},
-	resolve(root, params) {
+	resolve(root, getArgs, req) {
 
 		// 更新修改时间
-		params.data.mtime = new Date().toISOString();
+		getArgs.data.mtime = new Date().toISOString();
 		
+		getArgs.account = (req.decoded ? req.decoded.user : getArgs.account);
+
 		let update = new Promise((resolve, reject) => {
 			db.update(
-				{ id: params.id, account: params.account },
-				params.data,
+				{ id: getArgs.id, account: getArgs.account },
+				getArgs.data,
 				(err, data) => {
 
 					if (err) {
 						reject(JSON.stringify(err));
 						return;
 					}
-					resolve(JSON.stringify(data))
+
+					if (data.n) {
+						resolve(`{"success": true, "msg": "更新成功"}`)
+					} else {
+						resolve(`{"success": false, "msg": "没有更新内容"}`)
+					}
 				}
 			)
 		})
