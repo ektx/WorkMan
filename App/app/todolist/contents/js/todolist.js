@@ -318,7 +318,7 @@ let todoEventsListApp = new Vue({
 		},
 
 		// 保存新加数据
-		saveInsertData: function() {
+		saveInsertData: function(callback) {
 			// console.log('Save Event', JSON.stringify( ))
 			let eventData = this.events[this.currentEventIndex];
 			let query;
@@ -386,6 +386,8 @@ let todoEventsListApp = new Vue({
 					console.error( data )
 				}
 
+				if (callback) callback(data)
+
 			}, err => {
 				console.error(err)
 			})
@@ -405,14 +407,18 @@ let todoEventsListApp = new Vue({
 					checked: isSelf,
 					enabled: !isSelf,
 					click() {
-						console.log(val.id, i)
-						let events = todoEventsListApp.events[ todoEventsListApp.currentEventIndex];
 
-						console.log(events.id)
-						events.id = events.id.replace(/\d+/, val.id)
+						let _index = todoEventsListApp.currentEventIndex;
+						let _event = todoEventsListApp.events[_index];
 
-						console.log(events.id)
-						todoEventsListApp.saveInsertData()
+						_event.eventTypeID = val.id; 
+
+						todoEventsListApp.saveInsertData(function(data) {
+							// 如果移动成功,更新
+							if (data.success) {
+								todoEventsListApp.events.splice(_index, 1)
+							}
+						})
 						
 					}
 				}
@@ -447,9 +453,6 @@ let todoEventsListApp = new Vue({
 					}
 				}
 			];
-
-			console.log( todolistType.typeList )
-
 
 			// 生成菜单
 			createMouseRightClickMenu( menuArr );
