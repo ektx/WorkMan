@@ -44,8 +44,8 @@ let todolistType = new Vue({
 
 			// 如果存在 readonly 则是在新建,新建则不要查询他的数据
 			if (!thisVal.readonly) {
-				// 
-				console.log('get calendar events')
+				// 日历标识
+				eventsCalendarMod.getCalendarEvent()
 
 				// 获取事件
 				getEvents()
@@ -181,11 +181,33 @@ let eventsCalendarMod = new Vue({
 				getEvents();
 
 			}
+
+			if (val.from === 'next' || val.from === 'prev') {
+				this.getCalendarEvent()
+			}
 		}
 	},
 	methods: {
+		// 从子组件获取内容
 		getVDatePicker: function(data) {
 			this.pickTime = data;
+		},
+
+		// 获取日历事件
+		getCalendarEvent: function() {
+			console.log('get calendar events')
+			console.log(this.pickTime)
+			let typeID = todolistType.typeList[todolistType.holdTypeIndex].id;
+			let _time = this.pickTime.year + '-'+ this.pickTime.month;
+			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}"){ data }}`;
+
+			APIFetch({
+				query: queryWay
+			}).then(data => {
+				console.log(data.calendarEvent.data.split(','))
+			}, err => {
+				console.error(err)
+			})
 		}
 	}
 })

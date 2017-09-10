@@ -3,6 +3,8 @@ const todoList = require('./todoList')
 
 module.exports = {
 	user,
+
 	workTypes: todoList.workTypes,
 	todolistEvetns: todoList.events,
+	calendarEvent: todoList.calendarEvent,
 }

@@ -14,8 +14,8 @@ const fieldsObj = {
 	  description: '事件类别 ID',
 	},
 	time: {
-	  type: GraphQLString,
-	  description: '创建时间',
+		type: GraphQLString,
+		description: '保存时间'
 	},
 	data: {
 		type: GraphQLString,
