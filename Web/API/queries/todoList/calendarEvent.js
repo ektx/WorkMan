@@ -7,7 +7,7 @@ const db = require('../../../models/todolist/calendarEvent')
 const { calendarEvent_TYPE } = require('../../types/todolist/calendarEvent')
 
 module.exports = {
-	type: calendarEvent_TYPE,
+	type: GraphQLString,
 	description: '查询提醒事件列表',
 	args: {
 		account: {
@@ -38,7 +38,7 @@ module.exports = {
 					time: qargs.time
 				},
 				(err, data) => {
-					err ? reject(err) : resolve(data)
+					err ? reject(err) : resolve(JSON.stringify(data.data))
 				}
 			)
 		})
