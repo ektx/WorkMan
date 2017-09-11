@@ -13,13 +13,13 @@ const fieldsObj = {
 	  type: GraphQLString,
 	  description: '事件类别 ID',
 	},
-	time: {
+	stime: {
 		type: GraphQLString,
-		description: '保存时间'
+		description: '开始时间,如: 2017-9-10'
 	},
-	data: {
+	etime: {
 		type: GraphQLString,
-		description: '数据 用于保存一组对应天的事件'
+		description: '结束时间,如: 2017-10-1'
 	}	
 }
 

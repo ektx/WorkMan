@@ -7,6 +7,7 @@ const {
 
 const db = require('../../../models/todolist/events')
 const { events_TYPE, events_INTTYPE, updateEvent_INTTYPE } = require('../../types/todolist/events')
+const calendarEvt = require('./calendarEvent')
 
 const add = {
 	type: GraphQLString,
@@ -23,6 +24,7 @@ const add = {
 		parmas.data.account = (req.decoded ? req.decoded.user : parmas.data.account);
 		parmas.data.id = `${parmas.data.id}_${parmas.data.account}`;
 
+		console.log('xxx', calendar.howMonths(parmas.data.stime, parmas.data.etime))
 
 		const model = new db(parmas.data)
 		const newData = model.save()
@@ -52,7 +54,7 @@ const remove = {
 	},
 	resolve(root, getArgs, req) {
 		
-		getArgs.account = (req.decoded ? req.decoded.user : getArgs.account);
+		getArgs.account = req.decoded ? req.decoded.user : getArgs.account;
 
 		let remove = new Promise((resolve, reject) => {
 			db.remove(

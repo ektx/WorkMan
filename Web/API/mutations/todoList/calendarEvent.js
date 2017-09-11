@@ -10,6 +10,7 @@ const {
 } = require('../../types/todolist/calendarEvent')
 
 const db = require('../../../models/todolist/calendarEvent')
+const calendar = require('../../../bin/calendar')
 
 const add = {
 	type: calendarEvent_TYPE,
@@ -82,45 +83,102 @@ const update = {
 			type: new GraphQLNonNull(GraphQLString),
 			description: 'eventTypeID 值'
 		},
-		time: {
-			name: 'time',
+		stime: {
+			name: 'stime',
 			type: new GraphQLNonNull(GraphQLString),
-			description: '时间 格式: 年-月,如:2018-2'
+			description: '开始时间,如: 2017-9-10'
 		},
-		data: {
-			name: 'data',
+		etime: {
+			name: 'etime',
 			type: new GraphQLNonNull(GraphQLString),
-			description: '数据 用于保存一组对应天的事件,数组'
+			description: '结束时间,如: 2017-10-1'
 		}
 	},
 	resolve(root, postData) {
 
-		let update = new Promise((resolve, reject) => {
+		// 更新数据库
+		updateDB(postData)
+	}
+}
+
+
+/*
+	options
+	-----------------------------
+	@stime 开始时间
+	@etime 结束时间
+	@account 用户
+	@id 更新类别
+*/
+function updateDB (options) {
+
+	// 获取2个时间点间的日期与天数
+	let updateCalTime = calendar.howMonths(options.stime, options.etime);
+
+	// 更新数据库
+	function setCalendarEvent (account, id, time, data) {
+		
+		return new Promise((resolve, reject) => {
 			db.update(
 				{
-					account: postData.account,
-					eventTypeID: postData.id,
-					time: postData.time
+					account: account,
+					eventTypeID: id,
+					time: time
 				},
-				{
-					data: postData.data
-				},
+				{$inc: data},
+				// 不存在时添加
+				{upsert: true},
 				(err, data) => {
+
 					if (err) {
-						reject(JSON.stringify(err))
+						reject( err )
 						return;
 					}
-					resolve( JSON.stringify(data) )
+
+					resolve( data )
 				}
 			)
 		})
-
-		return update
 	}
+
+	// 遍历天
+	async function loopCalTime (data) {
+
+		let setData = {};
+
+		// 格式化要更新的天数
+		data.day.forEach((val, index) => {
+			setData[`data.${val}`] = 1
+		});
+
+		// 返回要更新的月份
+		return setCalendarEvent(
+			options.account,
+			options.id,
+			data.time,
+			setData 
+		)
+	}
+
+	// 更新
+	async function updateDBCalTime() {
+
+		let updatePromise = [];
+
+		updateCalTime.forEach(val => {
+			updatePromise.push( loopCalTime(val) )
+		})
+
+		const allDay = await Promise.all(updatePromise);
+	}
+
+	updateDBCalTime()	
 }
+
 
 module.exports = {
 	add,
 	remove,
 	update
 }
+

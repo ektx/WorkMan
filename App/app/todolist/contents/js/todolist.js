@@ -204,7 +204,14 @@ let eventsCalendarMod = new Vue({
 			APIFetch({
 				query: queryWay
 			}).then(data => {
-				console.log(data.calendarEvent.data.split(','))
+				let pushPrevDay = new Date(this.pickTime.year, this.pickTime.month-1, 1).getDay();
+				let eventArr = data.calendarEvent.data.split(',');
+
+				for (let i = 0; i < pushPrevDay; i++) {
+					eventArr.unshift('0')
+				}
+				console.log()
+				console.log(eventArr)
 			}, err => {
 				console.error(err)
 			})
