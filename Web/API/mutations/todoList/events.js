@@ -9,6 +9,7 @@ const db = require('../../../models/todolist/events')
 const { events_TYPE, events_INTTYPE, updateEvent_INTTYPE } = require('../../types/todolist/events')
 const calendarEvt = require('./calendarEvent')
 
+
 const add = {
 	type: GraphQLString,
 	description: '添加事件',
@@ -24,7 +25,12 @@ const add = {
 		parmas.data.account = (req.decoded ? req.decoded.user : parmas.data.account);
 		parmas.data.id = `${parmas.data.id}_${parmas.data.account}`;
 
-		console.log('xxx', calendar.howMonths(parmas.data.stime, parmas.data.etime))
+			calendarEvt.updateDB({
+				account: parmas.data.account,
+				id: parmas.data.eventTypeID,
+				stime: parmas.data.stime,
+				etime: parmas.data.etime
+			})
 
 		const model = new db(parmas.data)
 		const newData = model.save()

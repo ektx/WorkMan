@@ -179,6 +179,8 @@ function updateDB (options) {
 module.exports = {
 	add,
 	remove,
-	update
+	update,
+
+	updateDB
 }
 

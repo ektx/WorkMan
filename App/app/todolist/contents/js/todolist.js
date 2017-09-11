@@ -201,20 +201,20 @@ let eventsCalendarMod = new Vue({
 			let _time = this.pickTime.year + '-'+ this.pickTime.month;
 			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}"){ data }}`;
 
-			APIFetch({
-				query: queryWay
-			}).then(data => {
-				let pushPrevDay = new Date(this.pickTime.year, this.pickTime.month-1, 1).getDay();
-				let eventArr = data.calendarEvent.data.split(',');
+			// APIFetch({
+			// 	query: queryWay
+			// }).then(data => {
+			// 	let pushPrevDay = new Date(this.pickTime.year, this.pickTime.month-1, 1).getDay();
+			// 	let eventArr = data.calendarEvent.data.split(',');
 
-				for (let i = 0; i < pushPrevDay; i++) {
-					eventArr.unshift('0')
-				}
-				console.log()
-				console.log(eventArr)
-			}, err => {
-				console.error(err)
-			})
+			// 	for (let i = 0; i < pushPrevDay; i++) {
+			// 		eventArr.unshift('0')
+			// 	}
+			// 	console.log()
+			// 	console.log(eventArr)
+			// }, err => {
+			// 	console.error(err)
+			// })
 		}
 	}
 })
