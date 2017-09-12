@@ -12,6 +12,6 @@ module.exports = {
 	removeCalendarEvent: calendarEvent.remove,
 
 	addTodoListEvent: events.add,
-	updateTodoListEvent: events.update,
+	saveTodoListEvent: events.save,
 	removeTodoListEvent: events.remove,
 }

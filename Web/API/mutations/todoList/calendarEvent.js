@@ -12,6 +12,15 @@ const {
 const db = require('../../../models/todolist/calendarEvent')
 const calendar = require('../../../bin/calendar')
 
+/*
+	使用示例:
+	mutation {
+	  removeCalendarEvent(
+	    account:"ektx",
+	    id: "1504493147795"
+	  )
+	}
+*/
 const remove = {
 	type: GraphQLString,
 	description: '删除日历',
@@ -52,6 +61,18 @@ const remove = {
 	}
 }
 
+/*
+	使用示例:
+	mutation {
+		saveCalendarEvent(
+			account: "ektx",
+			id: "1504493147795",
+			stime: "2017-9-10",
+			etime: "2018-9-11",
+			type: "del"
+		)
+	}
+*/
 const save = {
 	type: GraphQLString,
 	description: '创建或更新',
@@ -85,7 +106,6 @@ const save = {
 	resolve(root, pargs, req) {
 
 		pargs.account = req.decoded ? req.decoded.user : pargs.account;
-		pargs.type = pargs.type && pargs.type === 'del' ? -1 : 1;
 
 		// 更新数据库
 		return (async function () {
@@ -98,12 +118,16 @@ const save = {
 /*
 	options
 	-----------------------------
-	@stime 开始时间
-	@etime 结束时间
 	@account 用户
 	@id 更新类别
+	@type 'add(加,默认) | del(减)'
+	@stime 开始时间
+	@etime 结束时间
 */
 function updateDB (options) {
+
+	// 设置 type
+	options.type = options.type && options.type === 'del' ? -1 : 1;
 
 	// 获取2个时间点间的日期与天数
 	let updateCalTime = calendar.howMonths(options.stime, options.etime);

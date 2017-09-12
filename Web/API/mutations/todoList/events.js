@@ -25,12 +25,12 @@ const add = {
 		parmas.data.account = (req.decoded ? req.decoded.user : parmas.data.account);
 		parmas.data.id = `${parmas.data.id}_${parmas.data.account}`;
 
-			calendarEvt.updateDB({
-				account: parmas.data.account,
-				id: parmas.data.eventTypeID,
-				stime: parmas.data.stime,
-				etime: parmas.data.etime
-			})
+		calendarEvt.updateDB({
+			account: parmas.data.account,
+			id: parmas.data.eventTypeID,
+			stime: parmas.data.stime,
+			etime: parmas.data.etime
+		})
 
 		const model = new db(parmas.data)
 		const newData = model.save()
@@ -82,9 +82,9 @@ const remove = {
 }
 
 
-const update = {
+const save = {
 	type: GraphQLString,
-	description: '更新提醒分类',
+	description: '保存或更新提醒分类',
 	args: {
 		id: {
 			name: 'id',
@@ -102,34 +102,57 @@ const update = {
 			description: '更新的内容'
 		}
 	},
-	resolve(root, getArgs, req) {
+	resolve(root, pargs, req) {
 
 		// 更新修改时间
-		getArgs.data.mtime = new Date().toISOString();
+		pargs.data.mtime = new Date().toISOString();
+		// 应用用户
+		pargs.account = req.decoded ? req.decoded.user : pargs.account;
 		
-		getArgs.account = (req.decoded ? req.decoded.user : getArgs.account);
+		// 保存数据
+		function saveDate () {
+			return new Promise((resolve, reject) => {
+				db.update(
+					{ 
+						id: pargs.id, 
+						account: pargs.account 
+					},
+					pargs.data,
+					{upsert: true},
+					(err, data) => {
 
-		let update = new Promise((resolve, reject) => {
-			db.update(
-				{ id: getArgs.id, account: getArgs.account },
-				getArgs.data,
-				(err, data) => {
+						if (err) {
+							reject(JSON.stringify(err));
+							return;
+						}
 
-					if (err) {
-						reject(JSON.stringify(err));
-						return;
+						resolve(data)
 					}
+				)
+			})
+		}
 
-					if (data.n) {
-						resolve(`{"success": true, "msg": "更新成功"}`)
-					} else {
-						resolve(`{"success": false, "msg": "没有更新内容"}`)
-					}
-				}
-			)
-		})
+		async function willSave () {
+			// 保存新加事件
+			let result = await saveDate()
 
-		return update
+			// 如果是新建的,添加日历
+			if (result.upserted) {
+				result = await calendarEvt.updateDB({
+					account: pargs.account,
+					id: pargs.data.eventTypeID,
+					stime: pargs.data.stime,
+					etime: pargs.data.etime
+				}) 
+			}
+
+			return result
+		}
+
+
+		return (async function () {
+			return JSON.stringify( await willSave() )
+		}())
 	}
 
 }
@@ -137,5 +160,5 @@ const update = {
 module.exports = {
 	add,
 	remove,
-	update,
+	save,
 }
