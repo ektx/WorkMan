@@ -89,7 +89,7 @@ const save = {
 		id: {
 			name: 'id',
 			type: new GraphQLNonNull(GraphQLString),
-			description: '更新类型 id'
+			description: '更新 ID'
 		},
 		account: {
 			name: 'account',
@@ -109,6 +109,24 @@ const save = {
 		// 应用用户
 		pargs.account = req.decoded ? req.decoded.user : pargs.account;
 		
+
+		// 
+		function findData() {
+			return new Promise((resolve, reject) => {
+				db.findOne(
+					{
+						id: pargs.id,
+						account: pargs.account
+					},
+					(err, data) => {
+						if (err) return reject(err);
+						resolve(data)
+					}
+				)
+			})
+		}
+
+
 		// 保存数据
 		function saveDate () {
 			return new Promise((resolve, reject) => {
@@ -132,26 +150,49 @@ const save = {
 			})
 		}
 
-		async function willSave () {
-			// 保存新加事件
-			let result = await saveDate()
 
-			// 如果是新建的,添加日历
-			if (result.upserted) {
+		return (async function () {
+			let findThisData = await findData();
+			let result;
+
+			// 存在数据 
+			if (!!findThisData) {
+				// 只有时间有变化才更新日历
+				if (+new Date(pargs.data.stime) !== +new Date(findThisData.stime) || 
+					+new Date(pargs.data.etime) !== +new Date(findThisData.etime)) {
+
+					let delOldTime = await calendarEvt.updateDB({
+						account: pargs.account,
+						id: pargs.data.eventTypeID,
+						stime: findThisData.stime,
+						etime: findThisData.etime,
+						type: 'del'
+					})
+					
+					let updateTime = await calendarEvt.updateDB({
+						account: pargs.account,
+						id: pargs.data.eventTypeID,
+						stime: pargs.data.stime,
+						etime: pargs.data.etime
+					})
+				}
+			}
+			// 不存在
+			else {
+				// 添加日历
 				result = await calendarEvt.updateDB({
 					account: pargs.account,
 					id: pargs.data.eventTypeID,
 					stime: pargs.data.stime,
 					etime: pargs.data.etime
-				}) 
+				})
+
 			}
 
-			return result
-		}
+			// 保存数据
+			result = await saveDate();
 
-
-		return (async function () {
-			return JSON.stringify( await willSave() )
+			return JSON.stringify( result )
 		}())
 	}
 
