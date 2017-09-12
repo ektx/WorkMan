@@ -37,8 +37,11 @@ module.exports = {
 					eventTypeID: qargs.typeID,
 					time: qargs.time
 				},
+				{data: 1, time: 1, _id: 0},
 				(err, data) => {
-					err ? reject(err) : resolve(JSON.stringify(data.data))
+					err ? reject(err) : resolve(JSON.stringify(
+						data
+						))
 				}
 			)
 		})

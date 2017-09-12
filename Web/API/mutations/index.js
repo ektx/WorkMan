@@ -3,6 +3,7 @@ const user = require('./user')
 const todolist = require('./todolist')
 
 module.exports = {
+	// 用户 API
 	addUser: user.add,
 	removeUser: user.remove,
 	updateUser: user.update,
@@ -12,10 +13,11 @@ module.exports = {
 	removeTodoListType: todolist.removeWorkType,
 	updateTodoListType: todolist.updateWorkType,
 
-	addCalendarEvent: todolist.addCalendarEvent,
+	// todoList - 日历功能
+	saveCalendarEvent: todolist.saveCalendarEvent,
 	removeCalendarEvent: todolist.removeCalendarEvent,
-	updateCalendarEvent: todolist.updateCalendarEvent,
 
+	// todoList - 事件功能
 	addTodoListEvent: todolist.addTodoListEvent,
 	updateTodoListEvent: todolist.updateTodoListEvent,
 	removeTodoListEvent: todolist.removeTodoListEvent,
