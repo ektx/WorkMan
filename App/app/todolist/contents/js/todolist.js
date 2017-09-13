@@ -308,7 +308,6 @@ let todoEventsListApp = new Vue({
 
 		// 时时跟踪当前事件索引
 		mouseOver: function(evt) {
-
 			this.currentEventIndex = evt.target.dataset.index;
 		},
 
@@ -347,7 +346,6 @@ let todoEventsListApp = new Vue({
 		saveInsertData: function(callback) {
 
 			let eventData = this.events[this.currentEventIndex];
-			let query;
 
 			let setQueryData = (arr) => {
 
@@ -372,10 +370,9 @@ let todoEventsListApp = new Vue({
 
 			if (!eventData.title.trim()) return;
 
-
 			let updateQ = setQueryData(['eventTypeID', 'title', 'complete', 'inner', 'stime', 'etime'])
 
-			query = `mutation { 
+			let query = `mutation { 
 				saveTodoListEvent(
 					id: "${eventData.id}", 
 					account: "MY_ACCOUNT", 
@@ -383,7 +380,7 @@ let todoEventsListApp = new Vue({
 				) 
 			}`
 
-			APIFetch( { query }).then( data => {
+			APIFetch({ query }).then( data => {
 				
 				data = JSON.parse(data.saveTodoListEvent);
 
@@ -401,6 +398,9 @@ let todoEventsListApp = new Vue({
 						eventData.id = data.id
 					}
 
+					// 添加日历
+
+
 				} else {
 					console.error( data )
 				}
@@ -409,6 +409,33 @@ let todoEventsListApp = new Vue({
 
 			}, err => {
 				console.error(err)
+			})
+		},
+
+		// 更新日历
+		saveCalendar: function(delArr, addArr) {
+
+			let add = day => {
+				if (!eventsCalendarMod.events[day]) {
+					Vue.set(eventsCalendarMod.events, day, 0)
+				}
+
+				let num = eventsCalendarMod.events[day] + 1;
+				Vue.set(eventsCalendarMod.events, day, num)
+			}
+
+			let del = day => {
+				if (!eventsCalendarMod.events[day]) return;
+				
+				eventsCalendarMod.events[day] -= 1
+			}
+
+			delArr.forEach((val, i, arr) => {
+				del(val)
+			})
+
+			addArr.forEach(val => {
+				add(val)
 			})
 		},
 
