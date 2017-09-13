@@ -212,7 +212,34 @@ let eventsCalendarMod = new Vue({
 			}, err => {
 				console.error(err)
 			})
-		}
+		},
+
+		// 更新日历
+		updateCalendarEvent: function(addArr, delArr) {
+
+			let add = day => {
+				if (!this.events[day]) {
+					this.$set(this.events, day, 0)
+				}
+
+				let num = this.events[day] + 1;
+				this.$set(this.events, day, num)
+			}
+
+			let del = day => {
+				if (!this.events[day]) return;
+				
+				this.events[day] -= 1
+			}
+
+			addArr.forEach(val => {
+				add(val)
+			})
+
+			delArr.forEach((val, i, arr) => {
+				del(val)
+			})
+		},
 	}
 })
 
@@ -399,7 +426,7 @@ let todoEventsListApp = new Vue({
 					}
 
 					// 添加日历
-
+					eventsCalendarMod.updateCalendarEvent([],[])
 
 				} else {
 					console.error( data )
@@ -409,33 +436,6 @@ let todoEventsListApp = new Vue({
 
 			}, err => {
 				console.error(err)
-			})
-		},
-
-		// 更新日历
-		saveCalendar: function(delArr, addArr) {
-
-			let add = day => {
-				if (!eventsCalendarMod.events[day]) {
-					Vue.set(eventsCalendarMod.events, day, 0)
-				}
-
-				let num = eventsCalendarMod.events[day] + 1;
-				Vue.set(eventsCalendarMod.events, day, num)
-			}
-
-			let del = day => {
-				if (!eventsCalendarMod.events[day]) return;
-				
-				eventsCalendarMod.events[day] -= 1
-			}
-
-			delArr.forEach((val, i, arr) => {
-				del(val)
-			})
-
-			addArr.forEach(val => {
-				add(val)
 			})
 		},
 

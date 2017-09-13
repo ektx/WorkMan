@@ -183,10 +183,14 @@ function updateDB (options) {
 	async function updateDBCalTime() {
 		
 		let updatePromise = [];
+		let backDay = [];
 		updateCalTime.forEach(val => {
+			backDay.push( val )
 			updatePromise.push( loopCalTime(val) )
 		})
 		const allDay = await Promise.all(updatePromise);
+
+		allDay[0].day = backDay;
 
 		return allDay
 	}

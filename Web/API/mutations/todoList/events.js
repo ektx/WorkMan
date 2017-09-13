@@ -109,13 +109,14 @@ const save = {
 		// 应用用户
 		pargs.account = req.decoded ? req.decoded.user : pargs.account;
 		
+		let ID = pargs.id.endsWith(pargs.account) ? pargs.id : pargs.id +'_'+ pargs.account;
 
 		// 
 		function findData() {
 			return new Promise((resolve, reject) => {
 				db.findOne(
 					{
-						id: pargs.id,
+						id: ID,
 						account: pargs.account
 					},
 					(err, data) => {
@@ -132,7 +133,7 @@ const save = {
 			return new Promise((resolve, reject) => {
 				db.update(
 					{ 
-						id: pargs.id.endsWith(pargs.account) ? pargs.id : pargs.id +'_'+ pargs.account, 
+						id: ID, 
 						account: pargs.account 
 					},
 					pargs.data,
@@ -153,15 +154,18 @@ const save = {
 
 		return (async function () {
 			let findThisData = await findData();
-			let result;
+			let result = {
+				delTime: [],
+				addTime: []
+			};
 
 			// 存在数据 
 			if (!!findThisData) {
+
 				// 只有时间有变化才更新日历
 				if (+new Date(pargs.data.stime) !== +new Date(findThisData.stime) || 
 					+new Date(pargs.data.etime) !== +new Date(findThisData.etime)) {
-
-					let delOldTime = await calendarEvt.updateDB({
+					result.delTime = await calendarEvt.updateDB({
 						account: pargs.account,
 						id: pargs.data.eventTypeID,
 						stime: findThisData.stime,
@@ -169,7 +173,7 @@ const save = {
 						type: 'del'
 					})
 					
-					let updateTime = await calendarEvt.updateDB({
+					result.addTime = await calendarEvt.updateDB({
 						account: pargs.account,
 						id: pargs.data.eventTypeID,
 						stime: pargs.data.stime,
@@ -180,7 +184,7 @@ const save = {
 			// 不存在
 			else {
 				// 添加日历
-				result = await calendarEvt.updateDB({
+				result.addTime = await calendarEvt.updateDB({
 					account: pargs.account,
 					id: pargs.data.eventTypeID,
 					stime: pargs.data.stime,
@@ -190,7 +194,7 @@ const save = {
 			}
 
 			// 保存数据
-			result = await saveDate();
+			result.save = await saveDate();
 
 			result.id = pargs.id +'_'+ pargs.account
 
