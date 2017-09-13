@@ -132,7 +132,7 @@ const save = {
 			return new Promise((resolve, reject) => {
 				db.update(
 					{ 
-						id: pargs.id, 
+						id: pargs.id.endsWith(pargs.account) ? pargs.id : pargs.id +'_'+ pargs.account, 
 						account: pargs.account 
 					},
 					pargs.data,
@@ -191,6 +191,8 @@ const save = {
 
 			// 保存数据
 			result = await saveDate();
+
+			result.id = pargs.id +'_'+ pargs.account
 
 			return JSON.stringify( result )
 		}())

@@ -13,12 +13,14 @@
 	<v-date-picker 
 		default-val="2017-9-5 12:08:26"
 		format="YYYY年MM月"
+		:events="events"
 		has-footer="hasfooter"
 		v-on:send-date="getWMDatePicker"
 	></v-date-picker>
 
 	@default-val 默认时间
 	@format 显示格式
+	@events [array] 事件
 	@has-footer 是否要显示底部按钮,以上示例为要,不添加值为不要
 	@v-on:send-date 回调函数,返回日期对象
 */
@@ -62,8 +64,8 @@ let VDatePickerTem = `
 					v-for="(day, index) in days"
 					:class="{
 						today: day.isToday,
-						event: day.hasEvent, 
-						current: day.isHold
+						event: events[day.time], 
+						current: day.isHold,
 					}"
 					@click="selectDayEvt(index)"
 				>
@@ -78,8 +80,9 @@ let VDatePickerTem = `
 	</div>
 `;
 
+
 Vue.component('v-date-picker', {
-	props: [ 'defaultVal', 'format', 'hasFooter' ],
+	props: [ 'defaultVal', 'format', 'events', 'hasFooter' ],
 	template: VDatePickerTem,
 	data: function () {
 		return {
@@ -217,8 +220,6 @@ Vue.component('v-date-picker', {
 					time: val,
 					// 是否是今天
 					isToday: isTodayMes,
-					// 是否有事件
-					hasEvent: false,
 					// 是否选中
 					isHold: isTodayMes
 				}

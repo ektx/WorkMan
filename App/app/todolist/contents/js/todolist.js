@@ -170,17 +170,15 @@ let todolistType = new Vue({
 let eventsCalendarMod = new Vue({
 	el: '#events-calendar-mod',
 	data: {
-		pickTime: {}
+		pickTime: {},
+		events: [],
 	},
 	watch: {
 		pickTime: function(val, old) {
 			// 更新 事件列表的日期
 			todoEventsListApp.headerTime = val;
 
-			if (val.from !== 'auto') {
-				getEvents();
-
-			}
+			if (val.from !== 'auto') getEvents();
 
 			if (val.from === 'next' || val.from === 'prev') {
 				this.getCalendarEvent()
@@ -199,22 +197,21 @@ let eventsCalendarMod = new Vue({
 			console.log(this.pickTime)
 			let typeID = todolistType.typeList[todolistType.holdTypeIndex].id;
 			let _time = this.pickTime.year + '-'+ this.pickTime.month;
-			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}"){ data }}`;
+			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}")}`;
 
-			// APIFetch({
-			// 	query: queryWay
-			// }).then(data => {
-			// 	let pushPrevDay = new Date(this.pickTime.year, this.pickTime.month-1, 1).getDay();
-			// 	let eventArr = data.calendarEvent.data.split(',');
+			APIFetch({
+				query: queryWay
+			}).then(data => {
+				
+				let eventArr = JSON.parse( data.calendarEvent );
 
-			// 	for (let i = 0; i < pushPrevDay; i++) {
-			// 		eventArr.unshift('0')
-			// 	}
-			// 	console.log()
-			// 	console.log(eventArr)
-			// }, err => {
-			// 	console.error(err)
-			// })
+				if (eventArr) {
+					this.events = eventArr.data[0];
+				}
+				
+			}, err => {
+				console.error(err)
+			})
 		}
 	}
 })
@@ -348,7 +345,7 @@ let todoEventsListApp = new Vue({
 
 		// 保存新加数据
 		saveInsertData: function(callback) {
-			// console.log('Save Event', JSON.stringify( ))
+
 			let eventData = this.events[this.currentEventIndex];
 			let query;
 
@@ -375,33 +372,26 @@ let todoEventsListApp = new Vue({
 
 			if (!eventData.title.trim()) return;
 
-			if (eventData.insert) {
-				let insertQ = setQueryData(['id', 'account', 'eventTypeID', 'title', 'complete', 'inner', 'ctime', 'stime', 'etime']);
-				query = `mutation { addTodoListEvent(data: { ${insertQ} }) }`;
 
-			} else {
-				let updateQ = setQueryData(['eventTypeID', 'title', 'complete', 'inner', 'stime', 'etime'])
-				query = `mutation { updateTodoListEvent(
-					id: "${eventData.id}",
-					account: "MY_ACCOUNT",
+			let updateQ = setQueryData(['eventTypeID', 'title', 'complete', 'inner', 'stime', 'etime'])
+
+			query = `mutation { 
+				saveTodoListEvent(
+					id: "${eventData.id}", 
+					account: "MY_ACCOUNT", 
 					data: { ${updateQ} }
-				) }`
-			}
+				) 
+			}`
 
 			APIFetch( { query }).then( data => {
+				
+				data = JSON.parse(data.saveTodoListEvent);
 
-				// save
-				if (eventData.insert) {
-					data = JSON.parse(data.addTodoListEvent);
-				} 
-				// update
-				else {
-					data = JSON.parse(data.updateTodoListEvent);
-				}
+				console.log( data )
 
-				if (data.success) {
+				if (data.ok && data.n) {
 
-					if (eventData.insert) {
+					if (eventData.upserted) {
 						// 恢复可以新加功能
 						this.createNewEvent = false;
 						// 删除新建标识
@@ -444,7 +434,7 @@ let todoEventsListApp = new Vue({
 
 						todoEventsListApp.saveInsertData(function(data) {
 							// 如果移动成功,更新
-							if (data.success) {
+							if (data.ok && data.n) {
 								todoEventsListApp.events.splice(_index, 1)
 							}
 						})
