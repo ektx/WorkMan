@@ -26,7 +26,7 @@ function getDBStatus (dbs) {
 }
 
 // 调用
-getDBStatus([USERCENTER_SERVER, USERCENTER_SERVER]);
+getDBStatus([USERCENTER_SERVER, WORKMAN_SERVER]);
 
 // 引用路由
 const router = require('./bin/router')
