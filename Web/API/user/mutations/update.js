@@ -1,7 +1,7 @@
 const { GraphQLNonNull, GraphQLString, GraphQLList } = require('graphql')
 const { userType, userIntputType } = require('../types/user')
 
-const db = require('../../../models/user')
+const db = require('../models/user')
 
 module.exports = {
 	// 返回修改后用户信息

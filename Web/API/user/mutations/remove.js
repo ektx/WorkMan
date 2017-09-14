@@ -1,7 +1,7 @@
 const { GraphQLNonNull, GraphQLString } = require('graphql')
 const { userIntputType } = require('../types/user')
 
-const db = require('../../../models/user')
+const db = require('../models/user')
 
 module.exports = {
 	// 确定返回数据的类型,这里是返回字符串

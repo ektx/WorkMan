@@ -1,6 +1,5 @@
 
-// Work
-const db_schemas = require('../models/user');
+const db_schemas = require('../API/user/models/user');
 
 const jwt = require('jsonwebtoken')
 const tokenKey = 'expressTokenTest'
