@@ -2,11 +2,18 @@
 const {
 	GraphQLString,
 	GraphQLNonNull,
-	GraphQLInt
+	GraphQLInt,
+	GraphQLObjectType
 } = require('graphql')
 
 const db = require('../../../models/todolist/events')
-const { events_TYPE, events_INTTYPE, updateEvent_INTTYPE } = require('../../types/todolist/events')
+const { 
+	events_TYPE, 
+	events_INTTYPE, 
+	updateEvent_INTTYPE,
+	saveFeedback, 
+} = require('../../types/todolist/events')
+
 const calendarEvt = require('./calendarEvent')
 
 
@@ -83,7 +90,7 @@ const remove = {
 
 
 const save = {
-	type: GraphQLString,
+	type: saveFeedback,
 	description: '保存或更新提醒分类',
 	args: {
 		id: {
@@ -193,12 +200,13 @@ const save = {
 
 			}
 
-			// 保存数据
-			result.save = await saveDate();
+			// 保存数据 [string]
+			result.save = JSON.stringify( await saveDate() )
 
+			// 新的id
 			result.id = pargs.id +'_'+ pargs.account
 
-			return JSON.stringify( result )
+			return result
 		}())
 	}
 

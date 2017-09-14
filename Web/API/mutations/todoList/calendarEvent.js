@@ -6,7 +6,8 @@ const {
 
 const { 
 	calendarEvent_TYPE, 
-	calendarEvent_INTTYPE 
+	calendarEvent_INTTYPE,
+	saveCalendar_feedback
 } = require('../../types/todolist/calendarEvent')
 
 const db = require('../../../models/todolist/calendarEvent')
@@ -74,7 +75,7 @@ const remove = {
 	}
 */
 const save = {
-	type: GraphQLString,
+	type: saveCalendar_feedback,
 	description: '创建或更新',
 	args: {
 		account: {
@@ -109,7 +110,7 @@ const save = {
 
 		// 更新数据库
 		return (async function () {
-			return JSON.stringify(await updateDB(pargs));
+			return await updateDB(pargs)
 		}())
 	}
 }
@@ -183,16 +184,21 @@ function updateDB (options) {
 	async function updateDBCalTime() {
 		
 		let updatePromise = [];
-		let backDay = [];
+		let backDay = []; // 返回日期
+		let result = {}; // 返回结果
+
 		updateCalTime.forEach(val => {
 			backDay.push( val )
 			updatePromise.push( loopCalTime(val) )
 		})
-		const allDay = await Promise.all(updatePromise);
 
-		allDay[0].day = backDay;
+		// 保存信息
+		result.save = JSON.stringify( await Promise.all(updatePromise) );
 
-		return allDay
+		// 返回天数
+		result.time = backDay;
+
+		return result
 	}
 
 	return updateDBCalTime()

@@ -6,6 +6,11 @@ const {
 	GraphQLInt
 } = require('graphql');
 
+const {
+	saveCalendar_feedback
+} = require('./calendarEvent')
+
+
 const fieldsObj = {
 	id: {
 		type: GraphQLString,
@@ -52,6 +57,7 @@ const fieldsObj = {
 		description: 'inner'
 	}
 }
+
 
 const events_TYPE = new GraphQLObjectType({
 	name: 'events',
@@ -105,3 +111,33 @@ const updateEvent_INTTYPE = new GraphQLInputObjectType({
 	})
 })
 exports.updateEvent_INTTYPE = updateEvent_INTTYPE;
+
+
+
+// 保存返回信息
+const saveFeedback = new GraphQLObjectType({
+	name: 'saveFeedback',
+	description: '保存返回信息',
+	fields: () => ({
+		id: {
+			type: GraphQLString,
+			description: '事件 ID'
+		},
+		addTime: {
+			// 时间返回 type
+			type: saveCalendar_feedback,
+			description: '日历添加时间'
+		},
+		delTime: {
+			// 时间返回 type
+			type: saveCalendar_feedback,
+			description: '日历删除时间'
+		},
+		save: {
+			type: GraphQLString,
+			description: '事件数据保存信息'
+		}
+	})
+})
+
+exports.saveFeedback = saveFeedback;
