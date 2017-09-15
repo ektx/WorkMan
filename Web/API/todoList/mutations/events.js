@@ -7,10 +7,11 @@ const {
 
 const db = require('../../../models/todolist/events')
 const { 
-	events_INTTYPE, 
-	updateEvent_INTTYPE,
-	saveFeedback, 
-} = require('../types/events')
+	events_INT, 
+	evtUpdate_INT,
+	evtSave_FB,
+	saveCalendar_FB 
+} = require('../types')
 
 const calendarEvt = require('./calendarEvent')
 
@@ -21,7 +22,7 @@ const add = {
 	args: {
 		data: {
 			name: 'data',
-			type: events_INTTYPE
+			type: events_INT
 		}
 	},
 	resolve(root, parmas, req) {
@@ -49,7 +50,7 @@ const add = {
 
 
 const remove = {
-	type: GraphQLString,
+	type: saveCalendar_FB,
 	description: '删除提醒分类',
 	args: {
 		id: {
@@ -75,7 +76,6 @@ const remove = {
 						account: getArgs.account 
 					},
 					(err, data) => {
-						console.log('***', data)
 						if (err || !data) {
 							reject(err);
 							return;
@@ -90,7 +90,7 @@ const remove = {
 		async function removeTime () {
 			let removeEvt;
 			removeEvt = await removeData();
-			console.log('---',removeEvt)
+
 			removeEvt = await calendarEvt.updateDB({
 				account: removeEvt.account,
 				id: removeEvt.id,
@@ -98,12 +98,12 @@ const remove = {
 				etime: removeEvt.etime,
 				type: 'del'
 			})
-			console.log('=====',removeEvt)
+
 			return removeEvt
 		}
 
 		return (async function() {
-			return JSON.stringify(await removeTime())
+			return await removeTime();
 		}())
 	}
 
@@ -111,7 +111,7 @@ const remove = {
 
 
 const save = {
-	type: saveFeedback,
+	type: evtSave_FB,
 	description: '保存或更新提醒分类',
 	args: {
 		id: {
@@ -126,7 +126,7 @@ const save = {
 		},
 		data: {
 			name: 'data',
-			type: updateEvent_INTTYPE,
+			type: evtUpdate_INT,
 			description: '更新的内容'
 		}
 	},

@@ -5,10 +5,10 @@ const {
 } = require('graphql')
 
 const db = require('../../../models/todolist/events')
-const { events_TYPE } = require('../types/events')
+const { events } = require('../types')
 
 module.exports = {
-	type: new GraphQLList(events_TYPE),
+	type: new GraphQLList(events),
 	description: '查询事件列表',
 	args: {
 		account: {
@@ -58,11 +58,11 @@ module.exports = {
 					account: params.account, 
 					eventTypeID: params.types,
 					stime: {
-						'$lte': new Date(params.stime)
+						'$gte': new Date(params.stime)
 					},
 					etime: {
 						// 查询开始时间
-						'$gte': new Date(params.etime),
+						'$lte': new Date(params.etime),
 					}
 				},
 				null,

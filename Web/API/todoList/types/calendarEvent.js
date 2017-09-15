@@ -89,12 +89,3 @@ const saveCalendar_feedback = new GraphQLObjectType({
 	fields: () => (saveAndRemove_fields)
 })
 exports.saveCalendar_feedback = saveCalendar_feedback;
-
-
-// events.js > removefeedback
-const remove_feedback = new GraphQLObjectType({
-	name: 'remove_feedback',
-	description: '删除返回信息',
-	fields: () => (saveAndRemove_fields)
-})
-exports.remove_feedback = remove_feedback;

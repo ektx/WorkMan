@@ -525,8 +525,8 @@ async function getEvents () {
 	// 获取当前选中类别
 	let getFindType = todolistType.typeList[todolistType.holdTypeIndex].id;
 	let calendarTime = eventsCalendarMod.pickTime;
-	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date + 1}`;
-	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
+	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
+	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date  + 1}`;
 	let data = {
 		query: `{ 
 			todolistEvetns(

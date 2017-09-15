@@ -4,7 +4,7 @@ const {
 	GraphQLNonNull
 } = require('graphql')
 
-const { workType, workTypeIntType } = require('../types/workType')
+const { workType_INT } = require('../types')
 const DM = require('../../../models/todolist/workType')
 
 
@@ -14,7 +14,7 @@ const add = {
 	args: {
 		data: {
 			name: 'data',
-			type: workTypeIntType
+			type: workType_INT
 		}
 	},
 	resolve(root, parmas, req) {

@@ -1,8 +1,24 @@
 # todolist API
 
-## 事件添加
+## 事件
 
+### 查询
 
+```shell
+# 查询 ektx 类别为 1504493066740 的 在 2017-9-1 到 2017-10-20 的所有事件(默认100条)
+{
+  todolistEvetns(
+    account:"ektx",
+    types: "1504493066740",
+    stime: "2017-9-1",
+    etime: "2017-10-20"
+  ) {
+    id
+  }
+}
+```
+
+### 添加
 
 ```shell
 # 为用户 ektx 添加一个事件 1504493147797
@@ -49,6 +65,23 @@ mutation {
 ```
 
 关于 addTime 和 delTime 可以想看 **日历 保存 api**
+
+### 删除一个事件
+
+```shell
+# 删除刚才创建的事件,并返回它涉及的日期
+mutation {
+  removeTodoListEvent(
+    id: "1504493147797_ektx",
+    account: "ektx"
+  ) {
+    save
+    time {
+      day
+    }
+  }
+}
+```
 
 
 
@@ -112,6 +145,21 @@ mutation {
     time,
     day
   }
+}
+```
+
+## 事件类别
+
+### 添加
+
+```shell
+# 为 ektx 用户 添加类别为 1 名称为 123
+mutation {
+	addTodoListType(data: {
+    id: "1",
+    account: "ektx",
+    name: "123"
+  })
 }
 ```
 
