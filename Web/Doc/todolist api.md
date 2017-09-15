@@ -46,7 +46,6 @@ mutation {
     }
   }
 }
-
 ```
 
 关于 addTime 和 delTime 可以想看 **日历 保存 api**
@@ -98,6 +97,20 @@ mutation {
         }
       ]
     }
+  }
+}
+```
+
+### 查看日历
+
+```shell
+# 查询用户 ektx 类别为 1504493147795 在 2017-9 的日期事件
+{ calendarEvent(
+  account: "ektx", 
+  typeID: "1504493147795", 
+  time: "2017-9") {
+    time,
+    day
   }
 }
 ```

@@ -44,7 +44,13 @@ module.exports = {
 						return reject(err);
 					}
 
-					console.log(data)
+					// 如果没有找到数据,为 null
+					if (!data) {
+						data = {
+							time: qargs.time,
+							data: [{}]
+						}
+					}
 
 					resolve({
 						time: data.time,

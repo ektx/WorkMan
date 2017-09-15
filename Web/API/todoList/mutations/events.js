@@ -7,7 +7,6 @@ const {
 
 const db = require('../../../models/todolist/events')
 const { 
-	events_TYPE, 
 	events_INTTYPE, 
 	updateEvent_INTTYPE,
 	saveFeedback, 
@@ -68,21 +67,44 @@ const remove = {
 		
 		getArgs.account = req.decoded ? req.decoded.user : getArgs.account;
 
-		let remove = new Promise((resolve, reject) => {
-			db.remove(
-				{id: getArgs.id , account: getArgs.account },
-				(err, data) => {
-					if (err) {
-						reject(JSON.stringify(err));
-						return;
+		let removeData = () => {
+			return new Promise((resolve, reject) => {
+				db.findOneAndRemove(
+					{
+						id: getArgs.id, 
+						account: getArgs.account 
+					},
+					(err, data) => {
+						console.log('***', data)
+						if (err || !data) {
+							reject(err);
+							return;
+						}
+
+						resolve( data )
 					}
+				)
+			})
+		}
 
-					resolve( JSON.stringify(data.result) )
-				}
-			)
-		})
+		async function removeTime () {
+			let removeEvt;
+			removeEvt = await removeData();
+			console.log('---',removeEvt)
+			removeEvt = await calendarEvt.updateDB({
+				account: removeEvt.account,
+				id: removeEvt.id,
+				stime: removeEvt.stime,
+				etime: removeEvt.etime,
+				type: 'del'
+			})
+			console.log('=====',removeEvt)
+			return removeEvt
+		}
 
-		return remove
+		return (async function() {
+			return JSON.stringify(await removeTime())
+		}())
 	}
 
 }
