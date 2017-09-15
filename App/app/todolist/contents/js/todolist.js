@@ -197,16 +197,21 @@ let eventsCalendarMod = new Vue({
 			console.log(this.pickTime)
 			let typeID = todolistType.typeList[todolistType.holdTypeIndex].id;
 			let _time = this.pickTime.year + '-'+ this.pickTime.month;
-			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}")}`;
+			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}"){day}}`;
 
 			APIFetch({
 				query: queryWay
 			}).then(data => {
 				console.warn(data)
-				let eventArr = JSON.parse( data.calendarEvent );
 
-				if (eventArr) {
-					this.events = eventArr.data[0];
+				if (data.calendarEvent.day !== '{}') {
+					let eventArr = JSON.parse( data.calendarEvent.day );
+
+					if (Object.keys(eventArr)) {
+						this.events = eventArr;
+					}
+				} else {
+					this.events = {}
 				}
 				
 			}, err => {
@@ -404,20 +409,18 @@ let todoEventsListApp = new Vue({
 					id: "${eventData.id}", 
 					account: "MY_ACCOUNT", 
 					data: { ${updateQ} }
-				) 
+				) { id, addTime { time {time,day} }, delTime { time{time,day} }, save }
 			}`
 
 			APIFetch({ query }).then( data => {
 				
-				data = JSON.parse(data.saveTodoListEvent);
+				data = data.saveTodoListEvent;
+				let saveInfo = JSON.parse(data.save)
 
-				console.log( data )
+				if (saveInfo.ok && saveInfo.n) {
 
-				if (data.ok && data.n) {
-
-					if (eventData.upserted) {
-						// 恢复可以新加功能
-						this.createNewEvent = false;
+					// 新建情况
+					if (saveInfo.upserted) {
 						// 删除新建标识
 						delete eventData.insert;
 
@@ -425,8 +428,14 @@ let todoEventsListApp = new Vue({
 						eventData.id = data.id
 					}
 
+					// 恢复可以新加功能
+					this.createNewEvent = false;
+
+					let addTimeArr = filterTimeArr(data.addTime.time);
+					let delTimeArr = filterTimeArr(data.delTime.time);
+
 					// 添加日历
-					eventsCalendarMod.updateCalendarEvent([],[])
+					eventsCalendarMod.updateCalendarEvent(addTimeArr,delTimeArr)
 
 				} else {
 					console.error( data )
