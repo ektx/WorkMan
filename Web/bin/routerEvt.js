@@ -17,7 +17,7 @@ function login (req, res) {
 			msg: '没有发现数据!'
 		})
 	}
-	
+
 	db_schemas.usrs_m.findOne(
 		{'account': req.body.user},
 		(err, data)=> {

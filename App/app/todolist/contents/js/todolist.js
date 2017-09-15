@@ -202,7 +202,7 @@ let eventsCalendarMod = new Vue({
 			APIFetch({
 				query: queryWay
 			}).then(data => {
-				
+				console.warn(data)
 				let eventArr = JSON.parse( data.calendarEvent );
 
 				if (eventArr) {

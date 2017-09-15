@@ -8,8 +8,7 @@ const {
 
 const {
 	saveCalendar_feedback
-} = require('./calendarEvent')
-
+} = require('../types/calendarEvent')
 
 const fieldsObj = {
 	id: {

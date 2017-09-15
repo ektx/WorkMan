@@ -4,10 +4,10 @@ const {
 } = require('graphql')
 
 const db = require('../../../models/todolist/calendarEvent')
-const { calendarEvent_TYPE } = require('../types/calendarEvent')
+const { query_calendarEvent_feedback } = require('../types/calendarEvent')
 
 module.exports = {
-	type: GraphQLString,
+	type: query_calendarEvent_feedback,
 	description: '查询提醒事件列表',
 	args: {
 		account: {
@@ -39,9 +39,17 @@ module.exports = {
 				},
 				{data: 1, time: 1, _id: 0},
 				(err, data) => {
-					err ? reject(err) : resolve(JSON.stringify(
-						data
-						))
+					
+					if (err) {
+						return reject(err);
+					}
+
+					console.log(data)
+
+					resolve({
+						time: data.time,
+						day: JSON.stringify( data.data[0] )
+					})
 				}
 			)
 		})
