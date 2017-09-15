@@ -494,13 +494,19 @@ let todoEventsListApp = new Vue({
 						
 						APIFetch({
 							query: `mutation {
-								removeTodoListEvent(id: "${thisID}", account: "MY_ACCOUNT")
+								removeTodoListEvent(id: "${thisID}", account: "MY_ACCOUNT") {save, time {day, time}}
 							}`
 						}).then(data => {
+							data = data.removeTodoListEvent;
+							let saveInfo = JSON.parse(data.save)[0]
+
 							// 如果有删除数据
-							if (JSON.parse(data.removeTodoListEvent).n) {
+							if (saveInfo.n && saveInfo.ok) {
 								// 删除数据
 								todoEventsListApp.events.splice(index, 1)
+
+								// 更新日历
+								eventsCalendarMod.updateCalendarEvent([],data.time[0].day.split(','))
 							} 
 						}, err => {
 							console.error(err)

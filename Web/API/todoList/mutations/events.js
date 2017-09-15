@@ -183,6 +183,8 @@ const save = {
 		return (async function () {
 			let findThisData = await findData();
 			let result = {
+				// 新的id
+				id: pargs.id +'_'+ pargs.account,
 				delTime: [],
 				addTime: []
 			};
@@ -195,7 +197,7 @@ const save = {
 					+new Date(pargs.data.etime) !== +new Date(findThisData.etime)) {
 					result.delTime = await calendarEvt.updateDB({
 						account: pargs.account,
-						id: pargs.data.eventTypeID,
+						id: result.id,
 						stime: findThisData.stime,
 						etime: findThisData.etime,
 						type: 'del'
@@ -203,7 +205,7 @@ const save = {
 					
 					result.addTime = await calendarEvt.updateDB({
 						account: pargs.account,
-						id: pargs.data.eventTypeID,
+						id: result.id,
 						stime: pargs.data.stime,
 						etime: pargs.data.etime
 					})
@@ -214,7 +216,7 @@ const save = {
 				// 添加日历
 				result.addTime = await calendarEvt.updateDB({
 					account: pargs.account,
-					id: pargs.data.eventTypeID,
+					id: result.id,
 					stime: pargs.data.stime,
 					etime: pargs.data.etime
 				})
@@ -223,9 +225,6 @@ const save = {
 
 			// 保存数据 [string]
 			result.save = JSON.stringify( await saveDate() )
-
-			// 新的id
-			result.id = pargs.id +'_'+ pargs.account
 
 			return result
 		}())
