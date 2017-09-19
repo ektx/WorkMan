@@ -6,11 +6,20 @@ const mongoose = require('mongoose')
 
 const tokenAuth = require('./bin/tokenAuth')
 
+// 测试服务器
+const use_test_server = true;
+const MIserver_t = 'mongodb://localhost/iserver_t';
+const MWorkman_t = 'mongodb://localhost/workman_t';
+// 线上服务器
+const MIserver = 'mongodb://localhost/iserver';
+const MWorkman = 'mongodb://localhost/workman';
+
 // 1.连接数据库
 // 1.1 连接用户中心
-global.USERCENTER_SERVER = mongoose.createConnection('mongodb://localhost/iserver');
+global.USERCENTER_SERVER = mongoose.createConnection(use_test_server ? MIserver_t : MIserver);
 // 1.2 连接 workman
-global.WORKMAN_SERVER = mongoose.createConnection('mongodb://localhost/workman');
+global.WORKMAN_SERVER = mongoose.createConnection(use_test_server ? MWorkman_t : MWorkman);
+
 mongoose.set('debug', true);
 
 // 输出状态方法
