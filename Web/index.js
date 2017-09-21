@@ -7,12 +7,13 @@ const mongoose = require('mongoose')
 const tokenAuth = require('./bin/tokenAuth')
 
 // 测试服务器
-const use_test_server = true;
-const MIserver_t = 'mongodb://localhost/iserver_t';
-const MWorkman_t = 'mongodb://localhost/workman_t';
+const webSet = require('./config.json')
+const use_test_server = webSet.db.useDev;
+const MIserver_t = webSet.db.dev.user;
+const MWorkman_t = webSet.db.dev.work;
 // 线上服务器
-const MIserver = 'mongodb://localhost/iserver';
-const MWorkman = 'mongodb://localhost/workman';
+const MIserver = webSet.db.prod.user;
+const MWorkman = webSet.db.prod.work;
 
 // 1.连接数据库
 // 1.1 连接用户中心
