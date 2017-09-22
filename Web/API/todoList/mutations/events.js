@@ -88,12 +88,12 @@ const remove = {
 		}
 
 		async function removeTime () {
-			let removeEvt;
-			removeEvt = await removeData();
+			
+			let removeEvt = await removeData();
 
 			removeEvt = await calendarEvt.updateDB({
 				account: removeEvt.account,
-				id: removeEvt.id,
+				id: removeEvt.eventTypeID,
 				stime: removeEvt.stime,
 				etime: removeEvt.etime,
 				type: 'del'
@@ -181,7 +181,9 @@ const save = {
 
 
 		return (async function () {
+
 			let findThisData = await findData();
+
 			let result = {
 				// 新的id
 				id: pargs.id +'_'+ pargs.account,
@@ -197,7 +199,7 @@ const save = {
 					+new Date(pargs.data.etime) !== +new Date(findThisData.etime)) {
 					result.delTime = await calendarEvt.updateDB({
 						account: pargs.account,
-						id: result.id,
+						id: pargs.data.eventTypeID,
 						stime: findThisData.stime,
 						etime: findThisData.etime,
 						type: 'del'
@@ -205,7 +207,7 @@ const save = {
 					
 					result.addTime = await calendarEvt.updateDB({
 						account: pargs.account,
-						id: result.id,
+						id: pargs.data.eventTypeID,
 						stime: pargs.data.stime,
 						etime: pargs.data.etime
 					})
@@ -216,7 +218,7 @@ const save = {
 				// 添加日历
 				result.addTime = await calendarEvt.updateDB({
 					account: pargs.account,
-					id: result.id,
+					id: pargs.data.eventTypeID,
 					stime: pargs.data.stime,
 					etime: pargs.data.etime
 				})
