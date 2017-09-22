@@ -4,11 +4,7 @@ const {
 	GraphQLNonNull
 } = require('graphql')
 
-const { 
-	calendarEvent_TYPE, 
-	calendarEvent_INTTYPE,
-	saveCalendar_feedback
-} = require('../../types/todolist/calendarEvent')
+const { saveCalendar_FB } = require('../types')
 
 const db = require('../../../models/todolist/calendarEvent')
 const calendar = require('../../../bin/calendar')
@@ -75,7 +71,7 @@ const remove = {
 	}
 */
 const save = {
-	type: saveCalendar_feedback,
+	type: saveCalendar_FB,
 	description: '创建或更新',
 	args: {
 		account: {

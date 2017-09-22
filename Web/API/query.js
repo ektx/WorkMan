@@ -1,5 +1,7 @@
-const user = require('./user');
-const todoList = require('./todoList')
+
+const user = require('./user/queries')
+
+const todoList = require('./todoList/queries')
 
 module.exports = {
 	user,

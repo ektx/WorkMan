@@ -1,4 +1,3 @@
-
 const {
 	GraphQLString,
 	GraphQLNonNull,
@@ -8,11 +7,11 @@ const {
 
 const db = require('../../../models/todolist/events')
 const { 
-	events_TYPE, 
-	events_INTTYPE, 
-	updateEvent_INTTYPE,
-	saveFeedback, 
-} = require('../../types/todolist/events')
+	events_INT, 
+	evtUpdate_INT,
+	evtSave_FB,
+	saveCalendar_FB 
+} = require('../types')
 
 const calendarEvt = require('./calendarEvent')
 
@@ -23,7 +22,7 @@ const add = {
 	args: {
 		data: {
 			name: 'data',
-			type: events_INTTYPE
+			type: events_INT
 		}
 	},
 	resolve(root, parmas, req) {
@@ -51,7 +50,7 @@ const add = {
 
 
 const remove = {
-	type: GraphQLString,
+	type: saveCalendar_FB,
 	description: '删除提醒分类',
 	args: {
 		id: {
@@ -69,28 +68,50 @@ const remove = {
 		
 		getArgs.account = req.decoded ? req.decoded.user : getArgs.account;
 
-		let remove = new Promise((resolve, reject) => {
-			db.remove(
-				{id: getArgs.id , account: getArgs.account },
-				(err, data) => {
-					if (err) {
-						reject(JSON.stringify(err));
-						return;
+		let removeData = () => {
+			return new Promise((resolve, reject) => {
+				db.findOneAndRemove(
+					{
+						id: getArgs.id, 
+						account: getArgs.account 
+					},
+					(err, data) => {
+						if (err || !data) {
+							reject(err);
+							return;
+						}
+
+						resolve( data )
 					}
+				)
+			})
+		}
 
-					resolve( JSON.stringify(data.result) )
-				}
-			)
-		})
+		async function removeTime () {
+			
+			let removeEvt = await removeData();
 
-		return remove
+			removeEvt = await calendarEvt.updateDB({
+				account: removeEvt.account,
+				id: removeEvt.eventTypeID,
+				stime: removeEvt.stime,
+				etime: removeEvt.etime,
+				type: 'del'
+			})
+
+			return removeEvt
+		}
+
+		return (async function() {
+			return await removeTime();
+		}())
 	}
 
 }
 
 
 const save = {
-	type: saveFeedback,
+	type: evtSave_FB,
 	description: '保存或更新提醒分类',
 	args: {
 		id: {
@@ -105,7 +126,7 @@ const save = {
 		},
 		data: {
 			name: 'data',
-			type: updateEvent_INTTYPE,
+			type: evtUpdate_INT,
 			description: '更新的内容'
 		}
 	},
@@ -160,8 +181,12 @@ const save = {
 
 
 		return (async function () {
+
 			let findThisData = await findData();
+
 			let result = {
+				// 新的id
+				id: pargs.id +'_'+ pargs.account,
 				delTime: [],
 				addTime: []
 			};
@@ -202,9 +227,6 @@ const save = {
 
 			// 保存数据 [string]
 			result.save = JSON.stringify( await saveDate() )
-
-			// 新的id
-			result.id = pargs.id +'_'+ pargs.account
 
 			return result
 		}())

@@ -1,12 +1,11 @@
 
-const user = require('./user')
-const todolist = require('./todolist')
+const user = require('./user/mutations')
+const todolist = require('./todolist/mutations')
 
 module.exports = {
-	// 用户 API
-	addUser: user.add,
+	userAdd: user.add,
+	userUpdate: user.update,
 	removeUser: user.remove,
-	updateUser: user.update,
 
 	// todoList APP
 	addTodoListType: todolist.addWorkType,

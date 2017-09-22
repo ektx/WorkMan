@@ -1,3 +1,4 @@
+
 const {
 	GraphQLObjectType,
 	GraphQLInputObjectType,
@@ -43,33 +44,48 @@ exports.calendarEvent_INTTYPE = calendarEvent_INTTYPE;
 /*
 	日历事件添加功能
 */
+const time_type_obj =  {
+	time: {
+		type: GraphQLString,
+		description: '年-月'
+	},
+	day: {
+		type: GraphQLString,
+		description: '日期'
+	}
+}
+// for saveCalendar_feedback
 const saveCalendar_time_type = new GraphQLObjectType({
 	name: 'saveCalendar_time_type',
 	description: '保存日历的时间信息',
-	fields: () => ({
-		time: {
-			type: GraphQLString,
-			description: '年-月'
-		},
-		day: {
-			type: GraphQLString,
-			description: '日期'
-		}
-	})
+	fields: () => (time_type_obj)
 });
+exports.saveCalendar_time_type = saveCalendar_time_type;
+
+// for query_feedback
+const query_calendarEvent_feedback = new GraphQLObjectType({
+	name: 'query_calendarEvent_feedback',
+	description: '查询返回日期信息',
+	fields: () => (time_type_obj)
+})
+exports.query_calendarEvent_feedback = query_calendarEvent_feedback;
+
+
+const saveAndRemove_fields = {
+	save: {
+		type: GraphQLString,
+		description: '数据保存信息',
+	},
+	time: {
+		type: new GraphQLList(saveCalendar_time_type),
+		description: '保存的时间信息'
+	}
+};
+
 
 const saveCalendar_feedback = new GraphQLObjectType({
 	name: 'saveCalendar_feedback',
 	description: '保存后返回信息',
-	fields: () => ({
-		save: {
-			type: GraphQLString,
-			description: '数据保存信息',
-		},
-		time: {
-			type: new GraphQLList(saveCalendar_time_type),
-			description: '保存的时间信息'
-		}
-	})
+	fields: () => (saveAndRemove_fields)
 })
 exports.saveCalendar_feedback = saveCalendar_feedback;

@@ -6,9 +6,9 @@ const {
 	GraphQLObjectType
 } = require('graphql');
 
-const db = require('../../../models/user')
+const db = require('../models/user')
 
-const { userType } = require('../../types/user')
+const { userType } = require('../types/user')
 
 module.exports = {
 	type: userType,

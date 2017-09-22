@@ -4,7 +4,7 @@ const {
 } = require('graphql')
 
 const db = require('../../../models/todolist/workType')
-const { workType } = require('../../types/todolist/workType')
+const { workType } = require('../types/workType')
 
 module.exports = {
 	type: new GraphQLList(workType),

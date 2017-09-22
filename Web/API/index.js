@@ -3,7 +3,7 @@ const {
 	GraphQLSchema
 } = require('graphql');
 
-const queries = require('./queries')
+const queries = require('./query')
 const mutations = require('./mutations')
 
 // 向外提供接口

@@ -1,6 +1,5 @@
 
-// Work
-const db_schemas = require('../models/user');
+const db_schemas = require('../API/user/models/user');
 
 const jwt = require('jsonwebtoken')
 const tokenKey = 'expressTokenTest'
@@ -18,7 +17,7 @@ function login (req, res) {
 			msg: '没有发现数据!'
 		})
 	}
-	
+
 	db_schemas.usrs_m.findOne(
 		{'account': req.body.user},
 		(err, data)=> {
