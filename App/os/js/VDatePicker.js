@@ -20,7 +20,7 @@
 
 	@default-val 默认时间
 	@format 显示格式
-	@events [array] 事件
+	@events [array] 事件 [{29:1, 30: 2, 31: 1}]
 	@has-footer 是否要显示底部按钮,以上示例为要,不添加值为不要
 	@v-on:send-date 回调函数,返回日期对象
 */
@@ -97,7 +97,8 @@ Vue.component('v-date-picker', {
 		}
 	},
 	created: function() {
-		this.time = new Date(this.defaultVal);
+
+		this.time = this.defaultVal ? new Date(this.defaultVal): new Date();
 		this.year = this.time.getFullYear();
 		this.month = this.time.getMonth() + 1;
 		// 更新日历
@@ -126,6 +127,11 @@ Vue.component('v-date-picker', {
 		},
 
 		year: function (val, old) {
+			this.updateCalendarAndEvents()
+		},
+
+		// 添加对默认时间跟踪
+		defaultVal: function(val, old) {
 			this.updateCalendarAndEvents()
 		}
 	},
@@ -203,8 +209,10 @@ Vue.component('v-date-picker', {
 			
 			// 获取简单的日历
 			let calendarDays = calendar.str(this.year, this.month);
+			// 获取默认时间
+			let defDate = this.defaultVal ? new Date(this.defaultVal) : new Date();
 			// 今天
-			let todayVal = new Date().getDate();
+			let todayVal = defDate.getDate();
 
 			// 事件与标识
 			this.days = calendarDays.map((val, i) => {

@@ -356,20 +356,21 @@
 /* 浮动时间组件 */
 .fixed-date-mod {
 	display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 400;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 400;
 }
 .fixed-date-inner {
 	position: absolute;
 	top: 0;
 	left: 40px;
 	width: 230px;
-    border-radius: 2px;
-    border: 1px solid #ddd;
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, .9);
+	min-height: 200px;
+	border-radius: 2px;
+	border: 1px solid #ddd;
+	backdrop-filter: blur(10px);
+	background: rgba(255, 255, 255, .9);
 }

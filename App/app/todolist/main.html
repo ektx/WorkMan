@@ -30,7 +30,6 @@
 		
 		<div id="events-calendar-mod" class="fixed-calendar-mod">
 			<v-date-picker 
-				default-val="2017-9-5 12:08:26"
 				format="YYYY-MM"
 				:events="events"
 				v-on:send-date="getVDatePicker"
@@ -96,7 +95,7 @@
 					<dl class="event-make-col">
 						<dt>开始:</dt>
 						<dd>
-							<ul class="date-select-ui">
+							<ul class="date-select-ui" @click="changeEventDate('start', $event)">
 								{{event.stimeF}}
 							</ul>
 						</dd>
@@ -105,7 +104,10 @@
 					<dl v-show="event.etimeF" class="event-make-col">
 						<dt>结束:</dt>
 						<dd>
-							<ul class="date-select-ui">
+							<ul 
+								class="date-select-ui"
+								@click="changeEventDate('end', $event)"
+							>
 								{{event.etimeF}}
 							</ul>
 						</dd>
@@ -128,33 +130,16 @@
 	</div>
 	
 	<!-- 浮动时间组件 -->
-	<div id="fixed-date-mod" class="fixed-date-mod">
+	<section id="fixed-date-mod" class="fixed-date-mod">
 		<div class="fixed-date-inner">
-			<div class="calendar-box">
-				<header class="calendar-control">
-					<button id="prev" class="tbtn"><</button>
-					<span>2016年12月</span>
-					<button id="next" class="tbtn">></button>
-				</header>
-				<div class="calendar-body">
-					<ul>
-						<li>日</li>
-						<li>一</li>
-						<li>二</li>
-						<li>三</li>
-						<li>四</li>
-						<li>五</li>
-						<li>六</li>
-					</ul>
-					<ul class="calendar-days"></ul>
-				</div>
-				<footer class="calendar-btns">
-					<button>关闭</button>
-					<button>确认</button>
-				</footer>
-			</div>
+			<v-date-picker 
+				:default-val="defVal"
+				format="YYYY-MM"
+				:events="events"
+				has-footer="hasfooter"
+			></v-date-picker>
 		</div>
-	</div> 
+	</section> 
 
 </div>
 

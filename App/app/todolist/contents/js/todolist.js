@@ -517,6 +517,40 @@ let todoEventsListApp = new Vue({
 
 			// 生成菜单
 			createMouseRightClickMenu( menuArr );
+		},
+
+
+		// 时间选择
+		// @type [start|end] 开始或结束时间
+		changeEventDate: function(type, evt) {
+
+			eventChangeDateMod.defVal = this.events[this.currentEventIndex].etime;
+			eventChangeDateMod.$el.style.display = 'block';
+
+			// 获取点击的位置信息
+			eventChangeDateMod.rectInfo = evt.target.getBoundingClientRect();
+
+		}
+	}
+});
+
+
+let eventChangeDateMod = new Vue({
+	el: '#fixed-date-mod',
+	data: {
+		events: [],
+		defVal: '2017-12-6',
+		rectInfo: {
+			top: 0,
+			left: 0
+		}
+	},
+	watch: {
+		rectInfo: function(val, old) {
+			console.log(val, old)
+
+			this.$el.style.top = val.top + 'px';
+			this.$el.style.left = val.left + 'px'
 		}
 	}
 })
