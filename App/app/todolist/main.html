@@ -95,21 +95,21 @@
 					<dl class="event-make-col">
 						<dt>开始:</dt>
 						<dd>
-							<ul class="date-select-ui" @click="changeEventDate('start', $event)">
+							<p class="date-select-ui" @click="changeEventDate('start', $event)">
 								{{event.stimeF}}
-							</ul>
+							</p>
 						</dd>
 					</dl>
 					
 					<dl v-show="event.etimeF" class="event-make-col">
 						<dt>结束:</dt>
 						<dd>
-							<ul 
+							<p 
 								class="date-select-ui"
 								@click="changeEventDate('end', $event)"
 							>
 								{{event.etimeF}}
-							</ul>
+							</p>
 						</dd>
 					</dl>
 					
@@ -130,7 +130,7 @@
 	</div>
 	
 	<!-- 浮动时间组件 -->
-	<section id="fixed-date-mod" class="fixed-date-mod">
+	<section id="fixed-date-mod" class="fixed-date-mod" @click="hideThisLayer">
 		<div class="fixed-date-inner">
 			<v-date-picker 
 				:default-val="defVal"

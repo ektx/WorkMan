@@ -404,7 +404,6 @@ let todoEventsListApp = new Vue({
 									_inner = `"${eventData[key]}"`;
 							}
 							queryData.push( `${key}:${_inner}` )
-							console.log(queryData)
 
 						}
 					}
@@ -562,8 +561,15 @@ let eventChangeDateMod = new Vue({
 
 		// 显示时间选择组件
 		rectInfo: function(val, old) {
-			this.$el.style.top = val.top + 'px';
-			this.$el.style.left = val.left + 'px'
+			console.log(val, old)
+			let timeBox = this.$el.querySelector('.fixed-date-inner');
+			timeBox.style.top = (val.top + 20) + 'px';
+		}
+	},
+	methods: {
+		hideThisLayer: function(e) {
+			if (e.target.matches('#fixed-date-mod'))
+				this.$el.style.display = 'none'
 		}
 	}
 })
