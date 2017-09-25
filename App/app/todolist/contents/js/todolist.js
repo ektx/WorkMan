@@ -381,23 +381,36 @@ let todoEventsListApp = new Vue({
 
 			let setQueryData = (arr) => {
 
-				let queryData = '';
+				let queryData = [];
 				for (let key in eventData) {
 					if (eventData.hasOwnProperty(key)) {
 						// 过滤 insert
 						if ( arr.includes(key) ) {
 
-							if (key !== 'complete') {
-								queryData += `${key}: "${eventData[key]}",`
-							} else {
-								queryData += `${key}: ${eventData[key]},`
+							let _inner = '';
+
+							switch (key) {
+								case 'complete':
+									_inner = eventData[key];
+									break;
+
+								case 'inner':
+									_inner = eventData[key].replace(/\n|\r/ig,'\\n');
+									_inner = `"${_inner}"`
+
+									break;
+
+								default:
+									_inner = `"${eventData[key]}"`;
 							}
+							queryData.push( `${key}:${_inner}` )
+							console.log(queryData)
 
 						}
 					}
 				}
 
-				return queryData;
+				return queryData.join(',');
 			}
 
 			if (!eventData.title.trim()) return;
@@ -546,9 +559,9 @@ let eventChangeDateMod = new Vue({
 		}
 	},
 	watch: {
-		rectInfo: function(val, old) {
-			console.log(val, old)
 
+		// 显示时间选择组件
+		rectInfo: function(val, old) {
 			this.$el.style.top = val.top + 'px';
 			this.$el.style.left = val.left + 'px'
 		}

@@ -17,7 +17,7 @@ module.exports = {
 	removeCalendarEvent: todolist.removeCalendarEvent,
 
 	// todoList - 事件功能
-	addTodoListEvent: todolist.addTodoListEvent,
+	// addTodoListEvent: todolist.addTodoListEvent,
 	saveTodoListEvent: todolist.saveTodoListEvent,
 	removeTodoListEvent: todolist.removeTodoListEvent,
 }
