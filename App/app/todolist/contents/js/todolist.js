@@ -537,8 +537,9 @@ let todoEventsListApp = new Vue({
 		changeEventDate: function(type, evt) {
 
 			eventChangeDateMod.defVal = this.events[this.currentEventIndex].etime;
-			eventChangeDateMod.$el.style.display = 'block';
+			// eventChangeDateMod.$el.style.display = 'block';
 
+			eventChangeDateMod.show = true;
 			// 获取点击的位置信息
 			eventChangeDateMod.rectInfo = evt.target.getBoundingClientRect();
 
@@ -555,21 +556,14 @@ let eventChangeDateMod = new Vue({
 		rectInfo: {
 			top: 0,
 			left: 0
-		}
-	},
-	watch: {
-
-		// 显示时间选择组件
-		rectInfo: function(val, old) {
-			console.log(val, old)
-			let timeBox = this.$el.querySelector('.fixed-date-inner');
-			timeBox.style.top = (val.top + 20) + 'px';
-		}
+		},
+		show: false
 	},
 	methods: {
 		hideThisLayer: function(e) {
-			if (e.target.matches('#fixed-date-mod'))
-				this.$el.style.display = 'none'
+			if (e.target.matches('#fixed-date-mod')) {
+				this.show = false
+			}
 		}
 	}
 })

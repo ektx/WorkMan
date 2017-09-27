@@ -355,17 +355,17 @@
 
 /* 浮动时间组件 */
 .fixed-date-mod {
-	display: none;
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 400;
+	overflow: hidden;
 }
 .fixed-date-inner {
 	position: absolute;
-	top: 0;
+	top: -300px;
 	left: 290px;
 	width: 230px;
 	min-height: 200px;
@@ -374,4 +374,14 @@
 	backdrop-filter: blur(10px);
 	background: rgba(255, 255, 255, .9);
 	box-shadow: 3px 4px 2px 0px rgba(0, 0, 0, 0.11);
+	animation: fixed-data-fade .4s ease;
+}
+
+@keyframes fixed-data-fade {
+	from {
+		transform: translateY(30px);
+	}
+	to {
+		transform: translateY(0);
+	}
 }
