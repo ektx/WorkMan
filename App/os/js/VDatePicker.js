@@ -166,8 +166,11 @@ Vue.component('v-date-picker', {
 
 		// 选择日期事件
 		selectDayEvt: function(index) {
-			this.currentIndex = index;
-			this.sendDateToParent('select')
+			// 没有时间的区域不能选择
+			if (this.days[index].time) {
+				this.currentIndex = index;
+				this.sendDateToParent('select')
+			}
 		},
 
 		// 发送数据
@@ -206,13 +209,18 @@ Vue.component('v-date-picker', {
 
 		// 更新日历与事件
 		updateCalendarAndEvents: function () {
-			
+
 			// 获取简单的日历
 			let calendarDays = calendar.str(this.year, this.month);
+			let maxDayInThisMonth = new Date(this.year, this.month, 0).getDate();
 			// 获取默认时间
 			let defDate = this.defaultVal ? new Date(this.defaultVal) : new Date();
 			// 今天
 			let todayVal = defDate.getDate();
+
+			// 如果今天的日期比当前选择的日期大,就用当前月最大的日期
+			// 比如在1月30号跳转到2月,2月最大只有28这时2月就是28选中
+			todayVal = todayVal > maxDayInThisMonth ? maxDayInThisMonth : todayVal;
 
 			// 事件与标识
 			this.days = calendarDays.map((val, i) => {
