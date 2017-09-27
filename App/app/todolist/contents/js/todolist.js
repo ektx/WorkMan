@@ -548,6 +548,10 @@ let todoEventsListApp = new Vue({
 });
 
 
+/*
+	事件时间选择功能
+	--------------------------------------
+*/
 let eventChangeDateMod = new Vue({
 	el: '#fixed-date-mod',
 	data: {
@@ -560,9 +564,21 @@ let eventChangeDateMod = new Vue({
 		show: false
 	},
 	methods: {
+		// 点击非时间选择区关闭时间选择层
 		hideThisLayer: function(e) {
 			if (e.target.matches('#fixed-date-mod')) {
 				this.show = false
+			}
+		},
+
+		// 得到用户选择的时间
+		getUserDatePicker: function(time) {
+			console.log(time)
+			// 点击关闭时
+			if (time.from === 'cancel') {
+				this.show = false;
+			} else {
+				
 			}
 		}
 	}
