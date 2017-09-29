@@ -580,13 +580,41 @@ let eventChangeDateMod = new Vue({
 			// 点击关闭时
 			if (time.from === 'submit') {
 				let _i = todoEventsListApp.currentEventIndex;
+				let thisEvent = todoEventsListApp.events[_i];
+				let newTime = new Date(time.year, time.month -1, time.date);
+				let newTimeGMT = newTime.toGMTString();
+				// 是否要移除
+				let needRemove = false;
 
-				// 修改时间
-				todoEventsListApp.events[_i][this.saveTimeType] = new Date(
-					time.year, 
-					time.month -1, 
-					time.date
-				).toGMTString();
+				// 开始时间大于以前的结束时间
+				if (this.saveTimeType === 'stime') {
+					if (newTime > thisEvent.etime) {
+						// 之前的结束时间成了开始时间
+						thisEvent.stime = thisEvent.etime;
+						thisEvent.etime = newTimeGMT;
+
+						needRemove = true
+					} else {
+						thisEvent.stime = newTimeGMT
+					}
+				} 
+				else {
+					// 结束时间小于之前的开始时间
+					if (newTime < thisEvent.stime) {
+						// 之前的开始时间成了现在的结束时间
+						thisEvent.etime = thisEvent.stime;
+						thisEvent.stime = newTimeGMT;
+
+						needRemove = true
+					} else {
+						thisEvent.etime = newTimeGMT
+					}
+				}
+
+
+				if (needRemove) {
+					todoEventsListApp.events.splice(_i, 1)
+				}
 
 				// 保存时间
 				todoEventsListApp.saveInsertData();
