@@ -128,6 +128,7 @@ function updateDB (options) {
 
 	// 获取2个时间点间的日期与天数
 	let updateCalTime = calendar.howMonths(options.stime, options.etime);
+console.log('>>>>', options.stime, options.etime, updateCalTime)
 
 	// 更新数据库
 	function setCalendarEvent (account, id, time, data) {
@@ -164,7 +165,6 @@ function updateDB (options) {
 		data.day.forEach((val, index) => {
 			setData[`data.${val}`] = options.type
 		});
-
 
 
 		// 返回要更新的月份

@@ -535,13 +535,14 @@ let todoEventsListApp = new Vue({
 		// 时间选择
 		// @type [start|end] 开始或结束时间
 		changeEventDate: function(type, evt) {
-
+			// 设置插件默认时间
 			eventChangeDateMod.defVal = this.events[this.currentEventIndex].etime;
-			// eventChangeDateMod.$el.style.display = 'block';
-
-			eventChangeDateMod.show = true;
 			// 获取点击的位置信息
 			eventChangeDateMod.rectInfo = evt.target.getBoundingClientRect();
+			// 输出点击时间的类型
+			eventChangeDateMod.saveTimeType = type;
+			// 显示时间插件
+			eventChangeDateMod.show = true;
 
 		}
 	}
@@ -561,7 +562,9 @@ let eventChangeDateMod = new Vue({
 			top: 0,
 			left: 0
 		},
-		show: false
+		show: false,
+		// 点击的时间
+		saveTimeType: ''
 	},
 	methods: {
 		// 点击非时间选择区关闭时间选择层
@@ -573,13 +576,27 @@ let eventChangeDateMod = new Vue({
 
 		// 得到用户选择的时间
 		getUserDatePicker: function(time) {
-			console.log(time)
+			console.log(time, this.saveTimeType)
 			// 点击关闭时
-			if (time.from === 'cancel') {
-				this.show = false;
-			} else {
-				
+			if (time.from === 'submit') {
+				let _i = todoEventsListApp.currentEventIndex;
+
+				// 修改时间
+				todoEventsListApp.events[_i][this.saveTimeType] = new Date(
+					time.year, 
+					time.month -1, 
+					time.date
+				).toGMTString();
+
+				// 保存时间
+				todoEventsListApp.saveInsertData();
+
+				this.show = false;			
 			}
+
+			if (time.from === 'cancel') this.show = false;
+
+			
 		}
 	}
 })
@@ -594,8 +611,8 @@ async function getEvents () {
 	// 获取当前选中类别
 	let getFindType = todolistType.typeList[todolistType.holdTypeIndex].id;
 	let calendarTime = eventsCalendarMod.pickTime;
-	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
-	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date  + 1}`;
+	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date  + 1}`;
+	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
 	let data = {
 		query: `{ 
 			todolistEvetns(

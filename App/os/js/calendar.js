@@ -2,7 +2,7 @@
 /*
 	简单的时间处理
 	--------------------------------
-	@version: 0.0.2
+	@version: 0.0.3
 	@author: ektx <github.com/ektx>
 */
 
@@ -165,6 +165,9 @@ const calendar = {
 	howMonths: function(startTime, endTime) {
 		let _sTime = new Date(startTime);
 		let _eTime = new Date(endTime);
+
+		_sTime = new Date(_sTime.getFullYear(), _sTime.getMonth(), _sTime.getDate())
+		_eTime = new Date(_eTime.getFullYear(), _eTime.getMonth(), _eTime.getDate())
 
 		// 处理大小,防止用户时间大小位置放错
 		if (_eTime < _sTime) {

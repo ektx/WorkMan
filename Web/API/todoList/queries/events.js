@@ -58,11 +58,11 @@ module.exports = {
 					account: params.account, 
 					eventTypeID: params.types,
 					stime: {
-						'$gte': new Date(params.stime)
+						'$lte': new Date(params.stime)
 					},
 					etime: {
 						// 查询开始时间
-						'$lte': new Date(params.etime),
+						'$gte': new Date(params.etime),
 					}
 				},
 				null,
