@@ -579,23 +579,30 @@ let eventChangeDateMod = new Vue({
 			console.log(time, this.saveTimeType)
 			// 点击关闭时
 			if (time.from === 'submit') {
+				//1. 取值
 				let _i = todoEventsListApp.currentEventIndex;
 				let thisEvent = todoEventsListApp.events[_i];
 				let newTime = new Date(time.year, time.month -1, time.date);
-				let newTimeGMT = newTime.toGMTString();
 				// 是否要移除
 				let needRemove = false;
+				// select time
+				let _ct = eventsCalendarMod.pickTime;
+				let selectTime = new Date(_ct.year, _ct.month-1, _ct.date)
 
+				//2. 处理逻辑
 				// 开始时间大于以前的结束时间
 				if (this.saveTimeType === 'stime') {
 					if (newTime > thisEvent.etime) {
 						// 之前的结束时间成了开始时间
 						thisEvent.stime = thisEvent.etime;
-						thisEvent.etime = newTimeGMT;
-
-						needRemove = true
+						thisEvent.etime = newTime;
 					} else {
-						thisEvent.stime = newTimeGMT
+						thisEvent.stime = newTime
+					}
+
+					// 现在结束时间是否大于当前选择的时间
+					if (thisEvent.stime > selectTime) {
+						needRemove = true
 					}
 				} 
 				else {
@@ -603,22 +610,28 @@ let eventChangeDateMod = new Vue({
 					if (newTime < thisEvent.stime) {
 						// 之前的开始时间成了现在的结束时间
 						thisEvent.etime = thisEvent.stime;
-						thisEvent.stime = newTimeGMT;
+						thisEvent.stime = newTime;
 
-						needRemove = true
 					} else {
-						thisEvent.etime = newTimeGMT
+						thisEvent.etime = newTime
+					}
+
+					// 现在结束时间是否小于当前选择的时间
+					if (thisEvent.etime < selectTime) {
+						needRemove = true
 					}
 				}
 
-
-				if (needRemove) {
-					todoEventsListApp.events.splice(_i, 1)
-				}
+				thisEvent.stimeF = calendar.format('YY年MM月DD日 hh:mm:ss', thisEvent.stime)
+				thisEvent.etimeF = calendar.format('YY年MM月DD日 hh:mm:ss', thisEvent.etime)
 
 				// 保存时间
 				todoEventsListApp.saveInsertData();
 
+				// 3. 处理dom显示
+				if (needRemove) {
+					todoEventsListApp.events.splice(_i, 1)
+				}
 				this.show = false;			
 			}
 
@@ -689,6 +702,9 @@ function formatEventData(obj) {
 		// 添加用户方便阅读的时间
 		inEventsData.stimeF = resetTime(val.stime);
 		inEventsData.etimeF = resetTime(val.etime);
+		// 将字符串变成时间
+		val.stime = new Date(val.stime);
+		val.etime = new Date(val.etime);
 
 		return arr[i];
 	})
