@@ -536,7 +536,7 @@ let todoEventsListApp = new Vue({
 		// @type [start|end] 开始或结束时间
 		changeEventDate: function(type, evt) {
 			// 设置插件默认时间
-			eventChangeDateMod.defVal = this.events[this.currentEventIndex].etime;
+			eventChangeDateMod.defVal = this.events[this.currentEventIndex][type];
 			// 获取点击的位置信息
 			eventChangeDateMod.rectInfo = evt.target.getBoundingClientRect();
 			// 输出点击时间的类型
