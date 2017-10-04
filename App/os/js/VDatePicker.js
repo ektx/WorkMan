@@ -30,11 +30,11 @@ let VDatePickerTem = `
 		<header class="vdate-picker-control">
 			<button 
 				@click="prevBtn"
-				class="tbtn"><</button>
+				class="tbtn prev-btn"></button>
 			<p>
-			<button
+			<!--button
 				class="tbtn back-btn"
-			></button>
+			></button-->
 				<span 
 					@click="chooseYear"
 					class="vadate-picker-topbar-time"
@@ -46,8 +46,8 @@ let VDatePickerTem = `
 			</p>
 			<button 
 				@click="nextBtn"
-				class="tbtn"
-			>></button>
+				class="tbtn next-btn"
+			></button>
 		</header>
 		<div class="vdate-picker-body">
 			<ul>

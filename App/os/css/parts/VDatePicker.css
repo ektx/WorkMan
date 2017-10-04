@@ -3,7 +3,7 @@
 /*  
 	VDatePicker Css                   
 	-----------------------------------
-	@version 0.0.1
+	@version 0.0.2
 	@author: ektx <530675800@qq.com>
 
 */
@@ -60,7 +60,29 @@
 }
 .vdate-picker-control,
 .vdate-picker-control .tbtn {
-	color: #333;
+	color: #333;	
+}
+.vdate-picker-control .tbtn {
+	position: relative;
+}
+.vdate-picker-control .tbtn:after {
+	display: block;
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -2px 0 0 -4px;
+	font-size: 12px;
+	width: .33em;
+	height: .33em;
+	border-top: .16em solid ;
+	border-right: .16em solid ;
+}
+.vdate-picker-control .tbtn.next-btn {
+	transform: rotateZ(45deg);
+}
+.vdate-picker-control .tbtn.prev-btn {
+	transform: rotateZ(-135deg);
 }
 .vdate-picker-control p {
 	flex: 1;
