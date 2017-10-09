@@ -6,20 +6,16 @@ const mongoose = require('mongoose')
 
 const tokenAuth = require('./bin/tokenAuth')
 
-// 测试服务器
+// 配置表
 const webSet = require('./config.json')
-const use_test_server = webSet.db.useDev;
-const MIserver_t = webSet.db.dev.user;
-const MWorkman_t = webSet.db.dev.work;
-// 线上服务器
-const MIserver = webSet.db.prod.user;
-const MWorkman = webSet.db.prod.work;
+// 环境情况
+const serverType = process.argv[2];
 
 // 1.连接数据库
 // 1.1 连接用户中心
-global.USERCENTER_SERVER = mongoose.createConnection(use_test_server ? MIserver_t : MIserver);
+global.USERCENTER_SERVER = mongoose.createConnection(webSet.db[serverType].user);
 // 1.2 连接 workman
-global.WORKMAN_SERVER = mongoose.createConnection(use_test_server ? MWorkman_t : MWorkman);
+global.WORKMAN_SERVER = mongoose.createConnection(webSet.db[serverType].work);
 
 mongoose.set('debug', true);
 

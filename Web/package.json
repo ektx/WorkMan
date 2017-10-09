@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "ektx",
   "license": "MIT",
+  "scripts": {
+    "dev": "node dev.js dev",
+    "start": "node index.js prod"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
