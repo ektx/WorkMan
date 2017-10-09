@@ -690,7 +690,7 @@ function formatEventData(obj) {
 		let _result = [];
 
 		if (str) {
-			_result = calendar.format('YY年MM月DD日 hh:mm:ss', str)
+			_result = calendar.format('YY年MM月DD日', str)
 		}
 
 		return _result;

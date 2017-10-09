@@ -5,7 +5,7 @@
   "author": "ektx",
   "license": "MIT",
   "scripts": {
-    "dev": "node dev.js dev",
+    "dev": "node index.js dev",
     "start": "node index.js prod"
   },
   "dependencies": {
