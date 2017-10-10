@@ -537,8 +537,17 @@ let todoEventsListApp = new Vue({
 		changeEventDate: function(type, evt) {
 			// 设置插件默认时间
 			eventChangeDateMod.defVal = this.events[this.currentEventIndex][type];
+			
 			// 获取点击的位置信息
-			eventChangeDateMod.rectInfo = evt.target.getBoundingClientRect();
+			let evtRect = evt.target.getBoundingClientRect();
+			let top = evtRect.top;
+
+			top = top + 250 > window.innerHeight ?
+				  window.innerHeight - 250 :
+				  top;
+
+			eventChangeDateMod.rectInfo.top = top
+
 			// 输出点击时间的类型
 			eventChangeDateMod.saveTimeType = type;
 			// 显示时间插件
@@ -576,7 +585,7 @@ let eventChangeDateMod = new Vue({
 
 		// 得到用户选择的时间
 		getUserDatePicker: function(time) {
-			console.log(time, this.saveTimeType)
+
 			// 点击关闭时
 			if (time.from === 'submit') {
 				//1. 取值
