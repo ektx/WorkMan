@@ -119,6 +119,8 @@
 							<textarea 
 								@keyup="insertData('inner', $event)" 
 								class="inner-box"
+								@focus="removeTextAreaAni"
+								@blur="resetTextAreaAni"
 							>{{event.inner}}</textarea>
 						</dd>
 					</dl>

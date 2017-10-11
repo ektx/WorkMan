@@ -277,7 +277,8 @@ let todoEventsListApp = new Vue({
 			let index = _.dataset.parentindex;
 			let parentEl = document.querySelector(`[data-id="${_.dataset.parentid}"]`);
 			let innerEl  = parentEl.querySelector('.inner')
-			let innerH = innerEl.scrollHeight;
+			let textareaEl = innerEl.querySelector('.inner-box')
+			let textareaH = textareaEl.scrollHeight;
 
 			if (this.events[index].showInfo) {
 				_.classList.remove('show');
@@ -286,6 +287,11 @@ let todoEventsListApp = new Vue({
 			}
 			else {
 				_.classList.add('show');
+
+				textareaEl.style.height = textareaH + 'px';
+
+				let innerH = innerEl.scrollHeight;
+
 				innerEl.style.height = innerH+'px';
 
 				this.events[index].showInfo = true
@@ -362,10 +368,29 @@ let todoEventsListApp = new Vue({
 			}
 		},
 
+		// 移除输入框高度动画
+		removeTextAreaAni: function(evt) {
+			evt.target.parentElement.parentElement.parentElement.style.transitionDuration = '0s'
+		},
+
+		// 恢复输入框高度动画
+		resetTextAreaAni: function(evt) {
+			evt.target.parentElement.parentElement.parentElement.style.transitionDuration = '0.3s'
+		},
+
 		// 添加插入数据更新
 		insertData: function(type, evt) {
 			let _ = evt.target;
+			let _innerBox = _.parentElement.parentElement.parentElement;
 			let val = evt.target.value;
+
+			if (type === 'inner') {
+				_innerBox.style.height = 0;
+				_.style.height = 0;
+
+				_.style.height = _.scrollHeight + 'px';
+				_innerBox.style.height = _innerBox.scrollHeight + 'px'
+			}
 
 			this.events[this.currentEventIndex][type] = val;
 
