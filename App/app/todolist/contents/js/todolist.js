@@ -261,6 +261,8 @@ let todoEventsListApp = new Vue({
 		headerTime: {},
 		// 当前事件
 		currentEventIndex: -1,
+		// 编辑文件索引 用于确认编辑是那条事件
+		editionEvtIndex: -1,
 
 		thisSetTimeoutFun: '',
 
@@ -379,7 +381,12 @@ let todoEventsListApp = new Vue({
 		},
 
 		// 添加插入数据更新
-		insertData: function(type, evt) {
+		/*
+			@type [string] 说明保存的内容
+			@index [number] 当前数据索引
+			@evt 事件
+		*/
+		insertData: function(type, index, evt) {
 			let _ = evt.target;
 			let _innerBox = _.parentElement.parentElement.parentElement;
 			let val = evt.target.value;
@@ -392,7 +399,9 @@ let todoEventsListApp = new Vue({
 				_innerBox.style.height = _innerBox.scrollHeight + 'px'
 			}
 
-			this.events[this.currentEventIndex][type] = val;
+			this.events[index][type] = val;
+
+			this.editionEvtIndex = index;
 
 			clearTimeout(this.thisSetTimeoutFun);
 
@@ -402,7 +411,7 @@ let todoEventsListApp = new Vue({
 		// 保存新加数据
 		saveInsertData: function(callback) {
 
-			let eventData = this.events[this.currentEventIndex];
+			let eventData = this.events[this.editionEvtIndex];
 
 			let setQueryData = (arr) => {
 
@@ -557,11 +566,17 @@ let todoEventsListApp = new Vue({
 		},
 
 
-		// 时间选择
-		// @type [start|end] 开始或结束时间
-		changeEventDate: function(type, evt) {
+		/*
+			时间选择
+			@type [start|end] 开始或结束时间
+			@index [number] 当前数据索引
+			@evt 事件
+		*/
+		changeEventDate: function(type, index, evt) {
 			// 设置插件默认时间
-			eventChangeDateMod.defVal = this.events[this.currentEventIndex][type];
+			eventChangeDateMod.defVal = this.events[index][type];
+
+			this.editionEvtIndex = index;
 			
 			// 获取点击的位置信息
 			let evtRect = evt.target.getBoundingClientRect();
@@ -656,8 +671,8 @@ let eventChangeDateMod = new Vue({
 					}
 				}
 
-				thisEvent.stimeF = calendar.format('YY年MM月DD日 hh:mm:ss', thisEvent.stime)
-				thisEvent.etimeF = calendar.format('YY年MM月DD日 hh:mm:ss', thisEvent.etime)
+				thisEvent.stimeF = calendar.format('YY年MM月DD日', thisEvent.stime)
+				thisEvent.etimeF = calendar.format('YY年MM月DD日', thisEvent.etime)
 
 				// 保存时间
 				todoEventsListApp.saveInsertData();

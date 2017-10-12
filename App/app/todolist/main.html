@@ -78,7 +78,7 @@
 						<input class="title" 
 							placeholder=" 输入你的事件吧 ;)" 
 							:value="event.title" 
-							@keyup="insertData('title', $event)"
+							@keyup="insertData('title', index, $event)"
 							@blur="blurTitle"
 						/>
 					</div>
@@ -95,7 +95,7 @@
 					<dl class="event-make-col">
 						<dt>开始:</dt>
 						<dd>
-							<p class="date-select-ui" @click="changeEventDate('stime', $event)">
+							<p class="date-select-ui" @click="changeEventDate('stime', index, $event)">
 								{{event.stimeF}}
 							</p>
 						</dd>
@@ -106,7 +106,7 @@
 						<dd>
 							<p 
 								class="date-select-ui"
-								@click="changeEventDate('etime', $event)"
+								@click="changeEventDate('etime', index, $event)"
 							>
 								{{event.etimeF}}
 							</p>
@@ -117,7 +117,7 @@
 						<dt>备注:</dt>
 						<dd>
 							<textarea 
-								@keyup="insertData('inner', $event)" 
+								@keyup="insertData('inner', index, $event)" 
 								class="inner-box"
 								@focus="removeTextAreaAni"
 								@blur="resetTextAreaAni"
