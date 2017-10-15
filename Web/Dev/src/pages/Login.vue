@@ -93,6 +93,10 @@ export default {
 	color: #333;
 	box-sizing: border-box;
 	-webkit-app-region: drag; /* 拖动元素时,窗口随之移动 */
+
+	figure {
+		background: red
+	}
 }
 
 .welcome-box figure {
