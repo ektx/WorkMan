@@ -6,6 +6,12 @@ const mongoose = require('mongoose')
 
 const tokenAuth = require('./bin/tokenAuth')
 
+const corsSet = function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header('Access-Control-Allow-Headers', 'Content-Type')
+	next()
+}
+
 // 配置表
 const webSet = require('./config.json')
 // 环境情况
@@ -40,6 +46,7 @@ const router = require('./bin/router')
 // 使用服务
 const app = express();
 
+app.use(corsSet)
 
 // 解析 application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -50,6 +57,7 @@ app.use(bodyParser.json())
 // 注意 router 要在 bodyParser 之后调用
 // 否则无法取到 req.body
 app.use(router)
+
 
 const schema = require('./API/')
 // 对外接口
