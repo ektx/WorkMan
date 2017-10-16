@@ -72,7 +72,7 @@
 				>
 				<div class="header">
 					<label>
-						<input class="is-done" type="checkbox" :checked="event.complete" @click="updateCheck">
+						<input class="is-done" type="checkbox" :checked="event.complete" @click="updateCheck(index, $event)">
 					</label>
 					<div class="title-box">
 						<input class="title" 

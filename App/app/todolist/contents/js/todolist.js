@@ -352,8 +352,10 @@ let todoEventsListApp = new Vue({
 		},
 
 		// 更新完成情况
-		updateCheck: function(evt) {
-			this.events[this.currentEventIndex].complete =evt.target.checked;
+		updateCheck: function(index, evt) {
+
+			this.editionEvtIndex = index;
+			this.events[index].complete = evt.target.checked;
 
 			this.saveInsertData()
 		},
