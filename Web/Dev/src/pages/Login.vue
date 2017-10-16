@@ -84,7 +84,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .welcome-box {
 	height: 100vh;
 	width: 100vw;
@@ -95,17 +95,14 @@ export default {
 	-webkit-app-region: drag; /* 拖动元素时,窗口随之移动 */
 
 	figure {
-		background: red
-	}
-}
+		width: 145px;
+		height: 145px;
+		margin: 10px auto 0;
 
-.welcome-box figure {
-	width: 145px;
-	height: 145px;
-	margin: 10px auto 0;
-}
-.welcome-box figure img {
-	width: 100%;
+		img {
+			width: 100%;
+		}
+	}
 }
 
 .logo-error {
@@ -128,9 +125,10 @@ export default {
 	background: transparent;
 	outline: none;
     -webkit-app-region: no-drag;
-}
-.logo-form input:focus {
-	border-bottom-color: #FF4545;
+
+    &:focus {
+		border-bottom-color: #FF4545;
+    }
 }
 
 .logo-form button {
@@ -145,13 +143,14 @@ export default {
 	cursor: pointer;
 	outline: none;
 	transition: background-color .3s ease;
-}
-.logo-form button:hover {
-	background-color: #ff6d6d;
-}
-.logo-form button[disabled] {
-	background-color: #b2b2b2;
-}
 
+	&:hover {
+		background-color: #ff6d6d;
+	}
+
+	&[disable] {
+		background-color: #b2b2b2;
+	}
+}
 
 </style>

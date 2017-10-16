@@ -35,7 +35,7 @@ module.exports = {
 		// 使用 config/dev.js 中定义的编译环境
 		env: require('./dev.env'),
 		// 开发版本中端口
-		port: 8080,
+		port: 9080,
 		autoOpenBrowser: false,
 		// 开发版本中静态文件地址
 		assetsSubDirectory: 'contents',
