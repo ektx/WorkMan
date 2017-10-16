@@ -31,8 +31,8 @@ export default {
 	name: 'login',
 	data () {
 		return {
-			user: 'ektx',
-			pawd: '1111',
+			user: '',
+			pawd: '',
 			errMsg: ''
 		}
 	},
@@ -68,7 +68,7 @@ export default {
 			.then( data => {
 
 				if (data.status) {
-					localStorage.token = data.token
+					localStorage.TOKEN = data.token
 
 					// 跳转主页
 					this.$router.push('/')
