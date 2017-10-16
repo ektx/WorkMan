@@ -29,7 +29,9 @@
 			</ul>
 
 			<div id="events-calendar-mod" class="fixed-calendar-mod">
-				
+				<v-date-picker 
+					format="YYYY-MM"
+				></v-date-picker>
 			</div>
 		</aside>
 
@@ -222,6 +224,7 @@
 	width: 260px;
 	height: 100%;
 	background: #f5f5f5;
+	position: relative;
 
 	h1 {
 		font-size: 16px;
@@ -239,8 +242,8 @@
 	}
 
 	li {
-		font-size: 1.05em;
-		line-height: 1.5rem;
+		font-size: 1.2em;
+		line-height: 1.8rem;
 		padding: 0 1rem;
 		box-sizing: border-box;
 
@@ -257,5 +260,13 @@
 			color: #fff;
 		}
 	}
+}
+
+.fixed-calendar-mod {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border-top: 1px solid #dedede;
 }
 </style>

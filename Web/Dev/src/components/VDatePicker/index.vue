@@ -64,7 +64,7 @@
 					v-for="(day, index) in days"
 					:class="{
 						today: day.isToday,
-						event: events[day.time], 
+						event: events ? events[day.time] : '', 
 						current: day.isHold,
 					}"
 					@click="selectDayEvt(index)"
@@ -106,7 +106,7 @@
 			// 更新日历
 			this.updateCalendarAndEvents();
 			// 发送时间
-			this.sendDateToParent('auto')
+			// this.sendDateToParent('auto')
 
 		},
 		watch: {
@@ -211,7 +211,6 @@
 
 			// 更新日历与事件
 			updateCalendarAndEvents: function () {
-
 				// 获取简单的日历
 				let calendarDays = calendar.str(this.year, this.month);
 				let maxDayInThisMonth = new Date(this.year, this.month, 0).getDate();
@@ -247,3 +246,7 @@
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+	@import './VDatePicker.css'
+</style>

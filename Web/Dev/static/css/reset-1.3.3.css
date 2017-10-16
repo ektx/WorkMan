@@ -48,7 +48,7 @@ img {
 
 body {
 
-	font: 12px "Microsoft Yahei","HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","Arial",sans-serif;
+	font: 12px "PingHei","PingFang SC", "Microsoft Yahei","HanHei SC", "STHeitiSC-Light","Helvetica Neue","Helvetica","Arial",sans-serif;
 	-ms-text-size-adjust: 100%; /* 2 */
 	-webkit-text-size-adjust: 100%; /* 2 */
 	-webkit-font-smoothing: antialiased;
