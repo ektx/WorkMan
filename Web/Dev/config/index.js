@@ -52,6 +52,10 @@ module.exports = {
 						// /api/demo/helloworld.json => /demo/helloworld.json
 						// '^/api': ''
 				}
+			},
+			'/login': {
+				target: 'http://localhost:4000',
+				changeOrigin: true
 			}
 		},
 		// CSS Sourcemaps off by default because relative paths are "buggy"

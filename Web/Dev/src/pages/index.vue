@@ -41,6 +41,7 @@
 		width: 100%;
 		padding: 0 1rem;
 		border-bottom: 1px solid #eee;
+		box-sizing: border-box;
 
 		& > img {
 			height: 100%;
