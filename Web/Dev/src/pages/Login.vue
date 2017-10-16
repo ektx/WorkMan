@@ -32,7 +32,7 @@ export default {
 	data () {
 		return {
 			user: 'ektx',
-			pawd: '1234',
+			pawd: '1111',
 			errMsg: ''
 		}
 	},
@@ -41,7 +41,8 @@ export default {
 	},
 	methods: {
 		loginEvt: function() {
-			console.log(this.user, this.pawd)
+
+			this.errMsg = '';
 
 			if (!this.user) {
 				document.querySelectorAll('input')[0].focus(); 
@@ -68,6 +69,9 @@ export default {
 
 				if (data.status) {
 					localStorage.token = data.token
+
+					// 跳转主页
+					this.$router.push('/')
 				} else {
 					this.errMsg = data.msg
 				}

@@ -5,12 +5,45 @@ import Login from '@/pages/Login'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Login',
-      component: Login
+      name: 'Hello',
+      component: Hello,
+      meta: {
+      	requiresAuth: true
+      }
+    },
+    {
+    	path: '/login',
+    	name: 'Login',
+    	component: Login,
+    	meta: {
+    		requiresAuth: false
+    	}
     }
   ]
 })
+
+
+
+router.beforeEach((to, from, next) => {
+	console.log(to, from)
+
+	if (to.meta.requiresAuth) {
+		if (localStorage.getItem('token')) {
+			next()
+		}
+		else {
+			console.log('nnn')
+			next({name: 'Login'})
+		}
+	} else {
+		next()
+	}
+
+})
+
+
+export default router
