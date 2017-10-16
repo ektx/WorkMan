@@ -17,7 +17,6 @@ module.exports = {
 		}
 	},
 	resolve(root, params, req) {
-		
 		// 如果有 token 的解码,证明来自客户端口,非测试
 		if (req.decoded) {
 			params.account = req.decoded.user
