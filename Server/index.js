@@ -1,17 +1,11 @@
 
 const express = require('express')
+const cors = require('cors')
 const graphqlHTTP = require('express-graphql')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 const tokenAuth = require('./bin/tokenAuth')
-
-const corsSet = function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*')
-	res.header("Access-Control-Allow-Headers", '*')
-	res.header('Access-Control-Allow-Methods', 'GET,PUT,DELETE,POST,HEAD')
-	next()
-}
 
 // 配置表
 const webSet = require('./config.json')
@@ -47,7 +41,7 @@ const router = require('./bin/router')
 // 使用服务
 const app = express();
 
-app.use(corsSet)
+app.use(cors())
 
 // 解析 application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
