@@ -38,6 +38,8 @@
 		<main class="todolist-events-mod">
 			
 		</main>
+		
+		<VContextmenus :data="contextmenus" ref="vcontextmenus01"></VContextmenus>
 	</section>
 </template>
 
@@ -45,11 +47,13 @@
 	
 	import APIFetch from '../../assets/js/AFetch'
 	import VDatePicker from '../../components/VDatePicker'
+	import VContextmenus from '../../components/VContextmenus'
 
 	export default {
 		name: 'todolist',
 		components: {
-			VDatePicker
+			VDatePicker,
+			VContextmenus
 		},
 		data () {
 			return {
@@ -59,6 +63,264 @@
 				holdTypeIndex: -1,
 				// 重命名状态
 				renameStatus: false,
+				// 右键菜单
+				contextmenus: {
+					state: false,
+					position: {
+						top: 100,
+						left: 200
+					},
+					inner: [
+						{
+							title: '重命名',
+							disabled: true,
+							evt: function() {
+								console.log('xxxx')
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							title: '共享',
+							disabled: false,
+							children: {
+								state: false,
+								position: {
+									top: 200,
+									left: 300
+								},
+								inner: [
+									{
+										title: '邮件',
+										disabled: true
+									},
+									{
+										title: 'AirDrop',
+										evt: function() {
+											console.log('Not !')
+										}
+									},
+									{
+										title: '其它',
+										evt: function() {
+
+										}
+									}
+								]
+							}
+						},
+						{
+							type: 'separator'
+						},
+						{
+							title: '删除',
+							evt: function() {
+								console.log('del')
+							}
+						}
+					]
+				}
 			}
 		},
 		beforeCreate: function() {
@@ -161,6 +423,17 @@
 
 				let index = Number(evt.target.dataset.index)
 
+				console.log(evt.clientX)
+
+				// this.contextmenus.position.top = evt.clientY
+				// this.contextmenus.position.left = evt.clientX
+				// this.contextmenus.state = true
+
+				this.$refs.vcontextmenus01.show({
+					left: evt.clientX,
+					top: evt.clientY
+				})
+
 				let menuArr = [
 					{
 						label: '重命名',
@@ -215,58 +488,5 @@
 </script>
 
 <style lang="scss" scoped>
-.todolist-app {
-	flex: 1;
-	background: #eee;
-}
-
-.todolist-type-mod {
-	width: 260px;
-	height: 100%;
-	background: #f5f5f5;
-	position: relative;
-
-	h1 {
-		font-size: 16px;
-		color: #666;
-		padding: 10px 1rem;
-
-		button {
-			float: right;
-			fill: #666;
-		}
-
-		p {
-			display: inline-block;
-		}
-	}
-
-	li {
-		font-size: 1.2em;
-		line-height: 1.8rem;
-		padding: 0 1rem;
-		box-sizing: border-box;
-
-		&.current {
-			color: #fff;
-			background: #f65f54;
-		}
-
-		& > input {
-			background: transparent;
-			width: 100%;
-			border: none;
-			outline: none;
-			color: #fff;
-		}
-	}
-}
-
-.fixed-calendar-mod {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	border-top: 1px solid #dedede;
-}
+	@import './layout.scss';
 </style>
