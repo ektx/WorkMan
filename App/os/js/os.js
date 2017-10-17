@@ -216,31 +216,48 @@ document.body.appendChild( jsDOMFragment )
 	@data 		发送数据
 */
 function APIFetch(data) {
+
 	return new Promise((resolve, reject) => {
 		fetch('http://localhost:4000/api', {
 			method: 'POST',
 			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'x-access-token': localStorage.TOKEN,
 				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'x-access-token': localStorage.TOKEN
 			},
 			body: JSON.stringify( data )
 		})
 		.then(res => res.json())
-		.then(data => resolve(data.data))
+		.then(data => {
+
+			if (data.code === 10000 && !data.status) {
+
+				localStorage.removeItem('TOKEN');
+
+				// 通知服务跳转
+				ipcRenderer.send('show-login-windows', {
+					// 登录成功状态
+					status: true
+				})
+				
+				window.close()
+			} else {
+				resolve(data.data)
+			}
+		})
 		.catch(err => reject(err))
 	})
 }
 
-(async function () {
-	data = {
-		query: `{ workTypes(account: "baobao") { name }}`
-	}
+// (async function () {
+// 	data = {
+// 		query: `{ workTypes(account: "baobao") { name }}`
+// 	}
 
-	const result = await APIFetch(data);
+// 	const result = await APIFetch(data);
 
-	console.log(result)
-})()
+// 	console.log(result)
+// })()
 
 // APIFetch({
 // 	query: `{ workTypes(account: "baobao") { name }}`

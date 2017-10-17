@@ -80,9 +80,8 @@ function createWindow(name, options) {
 	});
 }
 
-app.on('ready', ()=>{
-
-
+// 打开登录
+function OS_openLoginWin() {
 	// 创建一个窗口
 	createWindow('login', {
 		w: 355,
@@ -91,6 +90,11 @@ app.on('ready', ()=>{
 		titleBarStyle: 'dafault',
 		url: `file://${__dirname}/welcome.html`
 	})
+}
+
+app.on('ready', ()=>{
+
+	OS_openLoginWin()
 		
 });
 
@@ -154,6 +158,23 @@ ipcMain.on('show-main-windows', (event, arg) => {
 	mainWindow['login'] = null;
 
 })
+
+
+// 打开登录窗口
+ipcMain.on('show-login-windows', (event, arg) => {
+
+	OS_openLoginWin()
+
+	// 创建一个窗口
+	loginStatus = true;
+
+	SERVER_TOKEN = null;
+
+	// 
+	mainWindow['main'] = null;
+
+})
+
 
 // 发送 TOKEN
 ipcMain.on('GET_ISERVER_TOKEN', (event,arg) => {
