@@ -17,7 +17,14 @@ function APIFetch(data) {
 			body: JSON.stringify( data )
 		})
 		.then(res => res.json())
-		.then(data => resolve(data.data))
+		.then(data => {
+			if (data.code === 10000 && !data.status) {
+				localStorage.removeItem('TOKEN');
+				location.reload()
+			} else {
+				resolve(data.data)
+			}
+		})
 		.catch(err => reject(err))
 	})
 }
