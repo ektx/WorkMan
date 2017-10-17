@@ -17,6 +17,7 @@ function authToken(req, res, next) {
 			if (err) {
 				return res.send({
 					status: false,
+					code: 10000,
 					message: "token认证失败"
 				})
 			} else {

@@ -34,7 +34,7 @@ function login (req, res) {
 
 					// 添加一个 token
 					let token = jwt.sign(req.body, tokenKey, {
-						expiresIn: 7200 // 在 2 小时后过期
+						expiresIn: 7200 // 在 2 小时后过期 60 * 60 *2
 					})
 
 					res.send({
