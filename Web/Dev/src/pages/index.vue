@@ -9,12 +9,22 @@
 		</header>
 
 		<router-view></router-view>
+		
+		<!-- 右键菜单 -->
+		<VContextmenus></VContextmenus>
 	</section>
 </template>
 
 <script>
+	
+	// 右键菜单组件
+	import VContextmenus from '../components/VContextmenus'
+
 	export default {
 		name: 'index',
+		components: {
+			VContextmenus
+		},
 		data () {
 			return {
 				navs: [

@@ -39,21 +39,19 @@
 			
 		</main>
 		
-		<VContextmenus :data="contextmenus" ref="vcontextmenus01"></VContextmenus>
 	</section>
 </template>
 
 <script>
 	
+	import store from '../../assets/js/store'
 	import APIFetch from '../../assets/js/AFetch'
 	import VDatePicker from '../../components/VDatePicker'
-	import VContextmenus from '../../components/VContextmenus'
 
 	export default {
 		name: 'todolist',
 		components: {
-			VDatePicker,
-			VContextmenus
+			VDatePicker
 		},
 		data () {
 			return {
@@ -62,265 +60,8 @@
 				// 默认选择
 				holdTypeIndex: -1,
 				// 重命名状态
-				renameStatus: false,
-				// 右键菜单
-				contextmenus: {
-					state: false,
-					position: {
-						top: 100,
-						left: 200
-					},
-					inner: [
-						{
-							title: '重命名',
-							disabled: true,
-							evt: function() {
-								console.log('xxxx')
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							title: '共享',
-							disabled: false,
-							children: {
-								state: false,
-								position: {
-									top: 200,
-									left: 300
-								},
-								inner: [
-									{
-										title: '邮件',
-										disabled: true
-									},
-									{
-										title: 'AirDrop',
-										evt: function() {
-											console.log('Not !')
-										}
-									},
-									{
-										title: '其它',
-										evt: function() {
-
-										}
-									}
-								]
-							}
-						},
-						{
-							type: 'separator'
-						},
-						{
-							title: '删除',
-							evt: function() {
-								console.log('del')
-							}
-						}
-					]
-				}
+				renameStatus: false
+				
 			}
 		},
 		beforeCreate: function() {
@@ -422,64 +163,57 @@
 			rightClick: function(evt) {
 
 				let index = Number(evt.target.dataset.index)
+				let self = this;
 
 				console.log(evt.clientX)
 
-				// this.contextmenus.position.top = evt.clientY
-				// this.contextmenus.position.left = evt.clientX
-				// this.contextmenus.state = true
+				let rename = function() {
 
-				this.$refs.vcontextmenus01.show({
-					left: evt.clientX,
-					top: evt.clientY
+				}
+
+				let delTypeFun = function() {
+					APIFetch({
+						query: `mutation {
+							removeTodoListType(id: "${self.typeList[index].id}", account: "MY_ACCOUNT")
+						}`
+					}).then(data => {
+						// 如果有删除数据
+						if (JSON.parse(data.removeTodoListType).n) {
+							// 如果删除的是选中效果,移除
+							if (self.holdTypeIndex === index) {
+								self.holdTypeIndex = -1
+							}
+
+							// 删除数据
+							self.typeList.splice(index, 1)
+
+							store.commit('setContextmenu', { show: false })
+						}
+					}, err => {
+						console.error(err)
+					})					
+				}
+
+
+				store.commit('setContextmenu', {
+					show: true,
+					data: [
+						{
+							title: '重命名',
+							evt: function(data) {
+								console.log('重命名', index)
+							}
+						},
+						{
+							type: 'separator'
+						},
+						{
+							title: '删除',
+							evt: delTypeFun
+						}
+					],
+					evt
 				})
-
-				let menuArr = [
-					{
-						label: '重命名',
-						click(menuItem, browserWindow, e) {
-
-							Vue.set(todolistType.typeList[index], 'readonly', true);
-
-							// 设置为 重命名
-							todolistType.renameStatus = true;
-							todolistType.holdTypeIndex = index;
-
-							// // focus 输入框
-							Vue.nextTick(function() {
-								todolistType.$el.querySelector('input').focus()
-							})
-						}
-					},
-					{
-						type: 'separator'
-					},
-					{
-						// 删除类型
-						label: '删除',
-						click() {
-							
-							APIFetch({
-								query: `mutation {
-									removeTodoListType(id: "${todolistType.typeList[index].id}", account: "MY_ACCOUNT")
-								}`
-							}).then(data => {
-								// 如果有删除数据
-								if (JSON.parse(data.removeTodoListType).n) {
-									// 如果删除的是选中效果,移除
-									if (todolistType.holdTypeIndex === index) {
-										todolistType.holdTypeIndex = -1
-									}
-
-									// 删除数据
-									todolistType.typeList.splice(index, 1)
-								}
-							}, err => {
-								console.error(err)
-							})
-						}
-					}
-				];
 
 				console.warn('Your click Right!')
 			}
