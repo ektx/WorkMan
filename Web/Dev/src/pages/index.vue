@@ -18,7 +18,7 @@
 <script>
 	
 	// 右键菜单组件
-	import VContextmenus from '../components/VContextmenus'
+	import VContextmenus from 'v-contextmenus'
 
 	export default {
 		name: 'index',
