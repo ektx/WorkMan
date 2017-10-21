@@ -14,9 +14,8 @@
 				<li v-for="(val,index) in typeList"
 					:key="val.id" 
 					:class="val.hold"
-					:data-index="index" 
-					@click="findThisTypeIndex"
-					@contextmenu.prevent="rightClick"
+					@click="findThisTypeIndex(index)"
+					@contextmenu.prevent="rightClick(index, $event)"
 				>
 					<input type="text"
 						v-if="val.readonly" 
@@ -59,6 +58,8 @@
 				typeList: [],
 				// 默认选择
 				holdTypeIndex: -1,
+				// holdTypeIndex 相关事件是否要运行
+				needChangeHoldIndexEvt: true,
 				// 重命名状态
 				renameStatus: false
 				
@@ -83,21 +84,28 @@
 			})()
 		},
 		watch: {
-			holdTypeIndex: function(val, oldVal) {
-
+			holdTypeIndex: function(val, old) {
+				// 是否要运行以下事件
+				if (!this.needChangeHoldIndexEvt) {
+					// 恢复可以操作状态
+					this.needChangeHoldIndexEvt = true
+					return;
+				}
+				
 				let thisVal = this.typeList[val];
 
 				// 如果没有列表
 				if (!this.typeList.length) return;
 				// 移除之前的选中对象
-				if (oldVal >= 0)
-					this.$set(this.typeList[oldVal], 'hold', '');
+				if (old >= 0)
+					this.$set(this.typeList[old], 'hold', '');
 				// 为当前对象添加选中效果
-				if (val > -1)
+				if (val > -1) {
 					this.$set(thisVal, 'hold', 'current');
+				}
 
 				// 如果存在 readonly 则是在新建,新建则不要查询他的数据
-				if (!thisVal.readonly) {
+				if (thisVal && !thisVal.readonly) {
 					// 日历标识
 					// eventsCalendarMod.getCalendarEvent()
 
@@ -153,19 +161,15 @@
 			},
 
 			// 切换类型数据
-			findThisTypeIndex: function(evt) {
-				let index = Number(evt.target.dataset.index);
+			findThisTypeIndex: function(index) {
 				// 保存当前选中索引
 				this.holdTypeIndex = index;
 			},
 
 			// 右键效果
-			rightClick: function(evt) {
+			rightClick: function(index, evt) {
 
-				let index = Number(evt.target.dataset.index)
 				let self = this;
-
-				console.log(evt.clientX)
 
 				let rename = function() {
 
@@ -179,8 +183,15 @@
 					}).then(data => {
 						// 如果有删除数据
 						if (JSON.parse(data.removeTodoListType).n) {
-							// 如果删除的是选中效果,移除
-							if (self.holdTypeIndex === index) {
+							// 删除小于选中状态自己的
+							if (self.holdTypeIndex > index) {
+								// 更新选中状态
+								self.holdTypeIndex -= 1
+								// 但不去运行查询功能
+								self.needChangeHoldIndexEvt = false
+							}
+							// 删除自己时,则不显示选中状态了
+							else if (self.holdTypeIndex === index) {
 								self.holdTypeIndex = -1
 							}
 
