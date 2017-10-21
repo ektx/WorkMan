@@ -18,7 +18,6 @@ export default new Vuex.Store({
 
 		// 设置方法
 		setContextmenu (state, data) {
-			console.log(data)
 			if (Object.keys(data).length > 1) {
 				state.contextmenu = data
 			} else {

@@ -213,6 +213,17 @@
 							title: '重命名',
 							evt: function(data) {
 								console.log('重命名', index)
+
+								self.$set(self.typeList[index], 'readonly', true)
+								self.renameStatus = true
+								self.holdTypeIndex = index
+
+								self.$nextTick(function() {
+									self.$el.querySelector('input').focus()
+								})
+
+								store.commit('setContextmenu', { show: false })
+								
 							}
 						},
 						{
