@@ -106,7 +106,7 @@
 			// 更新日历
 			this.updateCalendarAndEvents();
 			// 发送时间
-			// this.sendDateToParent('auto')
+			this.sendDateToParent('auto')
 
 		},
 		watch: {
