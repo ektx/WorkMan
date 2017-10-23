@@ -526,13 +526,14 @@ export default {
 		},
 
 		// 右键功能
-		quickSetEvent: function() {
+		quickSetEvent (evt) {
 
-			let index = this.currentEventIndex;
-			let thisID = this.events[this.currentEventIndex].id;
+			let that = this
+			let index = that.currentEventIndex;
+			let thisID = that.events[that.currentEventIndex].id;
 
-			let moveSubMenu = todolistType.typeList.map((val, i) => {
-				let isSelf = i === todolistType.holdTypeIndex ? true : false;
+			let moveSubMenu = that.typeList.map((val, i) => {
+				let isSelf = i === that.holdTypeIndex ? true : false;
 				return {
 					label: val.name,
 					type: 'checkbox',
@@ -540,15 +541,15 @@ export default {
 					enabled: !isSelf,
 					click() {
 
-						let _index = todoEventsListApp.currentEventIndex;
-						let _event = todoEventsListApp.events[_index];
+						let _index = that.currentEventIndex;
+						let _event = that.events[_index];
 
 						_event.eventTypeID = val.id; 
 
-						todoEventsListApp.saveInsertData(function(data) {
+						that.saveInsertData(function(data) {
 							// 如果移动成功,更新
 							if (data.ok && data.n) {
-								todoEventsListApp.events.splice(_index, 1)
+								that.events.splice(_index, 1)
 							}
 						})
 						
@@ -556,44 +557,49 @@ export default {
 				}
 			})
 
-			let menuArr = [
-				{
-					label: '设置',
-					submenu: moveSubMenu
-				},
-				{
-					type: 'separator'
-				},
-				{
-					// 删除类型
-					label: '删除',
-					click() {
-						
-						APIFetch({
-							query: `mutation {
-								removeTodoListEvent(id: "${thisID}", account: "MY_ACCOUNT") {save, time {day, time}}
-							}`
-						}).then(data => {
-							data = data.removeTodoListEvent;
-							let saveInfo = JSON.parse(data.save)[0]
-
-							// 如果有删除数据
-							if (saveInfo.n && saveInfo.ok) {
-								// 删除数据
-								todoEventsListApp.events.splice(index, 1)
-
-								// 更新日历
-								eventsCalendarMod.updateCalendarEvent([],data.time[0].day.split(','))
-							} 
-						}, err => {
-							console.error(err)
-						})
-					}
-				}
-			];
-
 			// 生成菜单
-			createMouseRightClickMenu( menuArr );
+			store.commit('setContextmenu', {
+				data: [
+					{
+						title: '设置',
+						disabled: true,
+						submenu: moveSubMenu
+					},
+					{
+						type: 'separator'
+					},
+					{
+						title: '删除',
+						evt: function () {
+							APIFetch({
+								query: `mutation {
+									removeTodoListEvent(id: "${thisID}", account: "MY_ACCOUNT") {save, time {day, time}}
+								}`
+							}).then(data => {
+								data = data.removeTodoListEvent;
+								let saveInfo = JSON.parse(data.save)[0]
+
+								// 如果有删除数据
+								if (saveInfo.n && saveInfo.ok) {
+									// 删除数据
+									that.events.splice(index, 1)
+
+									// 更新日历
+									that.updateCalendarEvent([],data.time[0].day.split(','))
+								} 
+							}, err => {
+								console.error(err)
+							})
+
+							store.commit('setContextmenu', { show: false })
+
+						}
+					}
+				],
+				evt
+			})
+
+
 		},
 
 
