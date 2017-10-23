@@ -535,11 +535,10 @@ export default {
 			let moveSubMenu = that.typeList.map((val, i) => {
 				let isSelf = i === that.holdTypeIndex ? true : false;
 				return {
-					label: val.name,
-					type: 'checkbox',
+					title: val.name,
 					checked: isSelf,
-					enabled: !isSelf,
-					click() {
+					disabled: isSelf,
+					evt: () => {
 
 						let _index = that.currentEventIndex;
 						let _event = that.events[_index];
@@ -562,8 +561,7 @@ export default {
 				data: [
 					{
 						title: '设置',
-						disabled: true,
-						submenu: moveSubMenu
+						children: moveSubMenu
 					},
 					{
 						type: 'separator'
