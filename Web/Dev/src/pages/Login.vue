@@ -1,7 +1,13 @@
 <template>
 	<section class="welcome-box">
 		<figure>
-			<img src="contents/img/logo.png" alt="logo">
+			<!-- <img src="contents/img/logo.png" alt="logo"> -->
+
+			  
+			<svg viewBox="0 0 376 320" version="1.1">
+		        <polygon  fill="#E91E63" points="188 0 376 320 0 320"></polygon>
+			</svg>
+
 		</figure>
 
 		<form id="logo-form" class="logo-form" action="">
@@ -99,8 +105,8 @@ export default {
 	-webkit-app-region: drag; /* 拖动元素时,窗口随之移动 */
 
 	figure {
-		width: 145px;
-		height: 145px;
+		width: 80px;
+		height: 80px;
 		margin: 10px auto 0;
 
 		img {
@@ -128,11 +134,11 @@ export default {
 	border-bottom: 2px solid #B2B2B2;
 	background: transparent;
 	outline: none;
-    -webkit-app-region: no-drag;
+	-webkit-app-region: no-drag;
 
-    &:focus {
-		border-bottom-color: #FF4545;
-    }
+	&:focus {
+		border-bottom-color: #E91E63;
+	}
 }
 
 .logo-form button {
@@ -143,7 +149,7 @@ export default {
 	color: #fff;
 	border: none;
 	border-radius: 5px;
-	background-color: #FF4545;
+	background-color: #E91E63;
 	cursor: pointer;
 	outline: none;
 	transition: background-color .3s ease;
