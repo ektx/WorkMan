@@ -37,7 +37,19 @@ export default {
 			// 事件帮助显示层
 			eventsHelpBox: {
 				show: false
-			}
+			},
+
+			/* pickTime layer */
+			pickTimeEvents: [],
+			pickTimeDefVal: '',
+			pickTimeRectInfo: {
+				top: 0,
+				left: 0
+			},
+			// 展示状态
+			pickTimeShow: false,
+			// 点击的时间
+			pickTimeSaveTimeType: ''
 			
 		}
 	},
@@ -620,7 +632,7 @@ export default {
 		*/
 		changeEventDate: function(type, index, evt) {
 			// 设置插件默认时间
-			eventChangeDateMod.defVal = this.events[index][type];
+			this.pickTimeDefVal = this.events[index][type];
 
 			this.editionEvtIndex = index;
 			
@@ -632,13 +644,87 @@ export default {
 				  window.innerHeight - 250 :
 				  top;
 
-			eventChangeDateMod.rectInfo.top = top
+			this.pickTimeRectInfo.top = top
 
 			// 输出点击时间的类型
-			eventChangeDateMod.saveTimeType = type;
+			this.saveTimeType = type;
 			// 显示时间插件
-			eventChangeDateMod.show = true;
+			this.pickTimeShow = true;
 
+		},
+
+
+		// 点击非时间选择区关闭时间选择层
+		hideThisLayer (e) {
+			if (e.target.matches('#fixed-date-mod')) {
+				this.pickTimeShow = false
+			}
+		},
+
+		// 得到用户选择的时间
+		getUserDatePicker (time) {
+
+			// 点击关闭时
+			if (time.from === 'submit') {
+				//1. 取值
+				let _i = this.currentEventIndex;
+				let thisEvent = this.events[_i];
+				let newTime = new Date(time.year, time.month -1, time.date);
+				// 是否要移除
+				let needRemove = false;
+				// select time
+				let _ct = this.calendar_pickTime;
+				let selectTime = new Date(_ct.year, _ct.month-1, _ct.date)
+
+				//2. 处理逻辑
+				// 开始时间大于以前的结束时间
+				if (this.saveTimeType === 'stime') {
+					if (newTime > thisEvent.etime) {
+						// 之前的结束时间成了开始时间
+						thisEvent.stime = thisEvent.etime;
+						thisEvent.etime = newTime;
+					} else {
+						thisEvent.stime = newTime
+					}
+
+					// 现在结束时间是否大于当前选择的时间
+					if (thisEvent.stime > selectTime) {
+						needRemove = true
+					}
+				} 
+				else {
+					// 结束时间小于之前的开始时间
+					if (newTime < thisEvent.stime) {
+						// 之前的开始时间成了现在的结束时间
+						thisEvent.etime = thisEvent.stime;
+						thisEvent.stime = newTime;
+
+					} else {
+						thisEvent.etime = newTime
+					}
+
+					// 现在结束时间是否小于当前选择的时间
+					if (thisEvent.etime < selectTime) {
+						needRemove = true
+					}
+				}
+
+				thisEvent.stimeF = calendar.format('YY年MM月DD日', thisEvent.stime)
+				thisEvent.etimeF = calendar.format('YY年MM月DD日', thisEvent.etime)
+
+				// 保存时间
+				this.saveInsertData();
+
+				// 3. 处理dom显示
+				if (needRemove) {
+					this.events.splice(_i, 1)
+				}
+				this.pickTimeShow = false;			
+			}
+
+			if (time.from === 'cancel') this.pickTimeShow = false;
+
+			
 		}
 	
 	}
@@ -672,7 +758,6 @@ async function getEvents (that) {
 	result = await APIFetch(data);
 
 	if (!result.todolistEvetns.length) {
-		console.error('Error! 没有发现数据!!');
 		that.events = []
 		that.eventsHelpBox = {
 			show: true,
