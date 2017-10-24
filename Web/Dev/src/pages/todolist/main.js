@@ -109,6 +109,11 @@ export default {
 			if (val.from === 'next' || val.from === 'prev') {
 				this.getCalendarEvent()
 			}
+		},
+
+		/* 事件列表自动监听是否显示帮助小提示 */
+		events (val, old) {
+			this.$set(this.eventsHelpBox, 'show', !val.length)
 		}
 	},
 	methods: {
@@ -532,6 +537,8 @@ export default {
 			let index = that.currentEventIndex;
 			let thisID = that.events[that.currentEventIndex].id;
 
+			this.editionEvtIndex = index;
+
 			let moveSubMenu = that.typeList.map((val, i) => {
 				let isSelf = i === that.holdTypeIndex ? true : false;
 				return {
@@ -546,9 +553,13 @@ export default {
 						_event.eventTypeID = val.id; 
 
 						that.saveInsertData(function(data) {
+							data.save = JSON.parse(data.save)
 							// 如果移动成功,更新
-							if (data.ok && data.n) {
+							if (data.save.ok && data.save.n) {
 								that.events.splice(_index, 1)
+								
+								store.commit('setContextmenu', { show: false })
+
 							}
 						})
 						
