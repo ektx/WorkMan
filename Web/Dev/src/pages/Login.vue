@@ -1,13 +1,7 @@
 <template>
 	<section class="welcome-box">
 		<figure>
-			<!-- <img src="contents/img/logo.png" alt="logo"> -->
-
-			  
-			<svg viewBox="0 0 376 320" version="1.1">
-		        <polygon  fill="#E91E63" points="188 0 376 320 0 320"></polygon>
-			</svg>
-
+			<img src="contents/img/logo.png" alt="logo">
 		</figure>
 
 		<form id="logo-form" class="logo-form" action="">
