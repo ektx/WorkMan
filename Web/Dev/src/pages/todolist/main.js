@@ -72,8 +72,6 @@ export default {
 			let result = await APIFetch(data);
 			this.typeList = result.workTypes;
 
-			console.log(result)
-
 			// 选择第一条
 			this.holdTypeIndex = 0;
 
@@ -167,7 +165,6 @@ export default {
 			APIFetch({
 				query: this.renameStatus ? updateQuery : saveQuery
 			}).then(res => {
-				console.log(res)
 				
 				this.renameStatus ? this.renameStatus = false : '';
 
@@ -226,7 +223,6 @@ export default {
 					{
 						title: '重命名',
 						evt: function(data) {
-							console.log('重命名', index)
 
 							self.$set(self.typeList[index], 'readonly', true)
 							self.renameStatus = true
@@ -251,7 +247,6 @@ export default {
 				evt
 			})
 
-			console.warn('Your click Right!')
 		},
 
 
@@ -265,7 +260,7 @@ export default {
 
 		// 获取日历事件
 		getCalendarEvent () {
-			console.log('get calendar events')
+
 			let typeID = this.typeList[ this.holdTypeIndex ].id;
 			let _pickTime = this.calendar_pickTime
 			let _time = _pickTime.year + '-'+ _pickTime.month
@@ -274,7 +269,6 @@ export default {
 			APIFetch({
 				query: queryWay
 			}).then(data => {
-				console.warn(data)
 
 				if (data.calendarEvent.day !== '{}') {
 					let eventArr = JSON.parse( data.calendarEvent.day );
@@ -411,7 +405,6 @@ export default {
 		blurTitle: function(evt) {
 
 			if (!evt.target.value && this.createNewEvent) {
-			console.log(evt.target.value);
 				// 撤消新数据
 				this.events.pop();
 				// 恢复可新加
