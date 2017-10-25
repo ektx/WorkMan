@@ -50,8 +50,9 @@
 		height: 40px;
 		width: 100%;
 		padding: 0 1rem;
-		border-bottom: 1px solid #eee;
 		box-sizing: border-box;
+		background: rgba(255, 255, 255, .85);
+		backdrop-filter: blur(5px);
 
 		& > img {
 			height: 100%;
