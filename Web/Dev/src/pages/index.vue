@@ -55,6 +55,8 @@
 
 		& > img {
 			height: 100%;
+			max-height: 24px;
+			margin: 6px 0;
 		}
 	}
 }

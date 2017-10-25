@@ -131,7 +131,7 @@ export default {
 	-webkit-app-region: no-drag;
 
 	&:focus {
-		border-bottom-color: #E91E63;
+		border-bottom-color: #f65f54;
 	}
 }
 
@@ -143,7 +143,7 @@ export default {
 	color: #fff;
 	border: none;
 	border-radius: 5px;
-	background-color: #E91E63;
+	background-color: #f65f54;
 	cursor: pointer;
 	outline: none;
 	transition: background-color .3s ease;
