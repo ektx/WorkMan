@@ -56,8 +56,7 @@ export default {
 	directives: {
 		focus: {
 			inserted: function (el, binding) {
-				if (!binding.value)
-					el.focus()
+				if (!binding.value) el.focus()
 			}
 		}
 	},

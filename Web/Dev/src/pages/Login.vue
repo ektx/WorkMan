@@ -1,27 +1,33 @@
 <template>
 	<section class="welcome-box">
-		<figure>
-			<img src="contents/img/logo.png" alt="logo">
-		</figure>
 
-		<form id="logo-form" class="logo-form" action="">
+		<div class="login-box">
+			<figure>
+				<svg viewBox="0 0 376 320" version="1.1" >
+			        <polygon points="188 0 376 320 0 320"></polygon>
+				</svg>
+			</figure>
 
-			<p v-show="errMsg" class="logo-error">{{errMsg}}!</p>
+			<form id="logo-form" class="logo-form" action="">
 
-			<dl>
-				<dd>
-					<input type="text" placeholder="帐号" v-model.trim="user">
-				</dd>
-			</dl>
+				<p v-show="errMsg" class="logo-error">{{errMsg}}!</p>
 
-			<dl>
-				<dd>
-					<input type="password" placeholder="密码" v-model.trim="pawd">
-				</dd>
-			</dl>
+				<dl>
+					<dd>
+						<input type="text" placeholder="帐号" v-model.trim="user" v-focus>
+					</dd>
+				</dl>
 
-			<dl><button type="submit" @click="loginEvt">登录</button></dl>
-		</form>
+				<dl>
+					<dd>
+						<input type="password" placeholder="密码" v-model.trim="pawd" v-focus>
+					</dd>
+				</dl>
+
+				<dl><button type="submit" @click="loginEvt">登录</button></dl>
+			</form>
+		</div>
+
 	</section>
 </template>
 
@@ -36,8 +42,12 @@ export default {
 			errMsg: ''
 		}
 	},
-	created: function() {
-
+	directives: {
+		focus: {
+			inserted: function(el, binding) {
+				if (!el.value) el.focus()
+			}
+		}
 	},
 	methods: {
 		loginEvt: function() {
@@ -89,22 +99,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.welcome-box {
-	height: 100vh;
-	width: 100vw;
-	padding: 40px 0;
-	text-align: center;
-	color: #333;
-	box-sizing: border-box;
-	-webkit-app-region: drag; /* 拖动元素时,窗口随之移动 */
+
+.login-box {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	width: 500px;
+	height: 400px;
+	transform: translate(-50%, -50%);
+	z-index: 100;
 
 	figure {
 		width: 80px;
 		height: 80px;
 		margin: 10px auto 0;
 
-		img {
+		svg {
 			width: 100%;
+			fill: rgba(255, 255, 255, .5);
 		}
 	}
 }
@@ -120,22 +132,28 @@ export default {
 .logo-form input {
 	display: block;
 	width: 85%;
-	margin: 10px auto 0;
+	margin: 1.4em auto 0;
 	font-size: 16px;
-	line-height: 2em;
-	color: #333;
+	line-height: 2.4em;
+	color: #FFF;
+	text-align: center;
 	border: none;
-	border-bottom: 2px solid #B2B2B2;
-	background: transparent;
+	border-bottom: 2px solid rgba(255, 255, 255, .1);
+	background: rgba(255, 255, 255, .05);
 	outline: none;
-	-webkit-app-region: no-drag;
+	transition: color .3s ease, border .3s ease;
+
+	&::placeholder {
+		color: #fff;
+	}
 
 	&:focus {
-		border-bottom-color: #f65f54;
+		border-bottom-color: rgba(255, 255, 255, .5);
 	}
 }
 
 .logo-form button {
+	display: block;
 	width: 85%;
 	margin: 25px auto 0;
 	font-size: 18px;
@@ -143,17 +161,19 @@ export default {
 	color: #fff;
 	border: none;
 	border-radius: 5px;
-	background-color: #f65f54;
+	background-color: rgba(255, 255, 255, .1);
 	cursor: pointer;
 	outline: none;
 	transition: background-color .3s ease;
 
 	&:hover {
-		background-color: #ff6d6d;
+		background-color: rgba(255, 255, 255, .2);
 	}
 
-	&[disable] {
-		background-color: #b2b2b2;
+	&[disabled] {
+		background-color: rgba(255, 255, 255, .1);
+		color: rgba(255, 255, 255, .2);
+		pointer-events: none;
 	}
 }
 

@@ -1,8 +1,8 @@
 .todolist-app {
 	display: flex;
 	flex: 1;
-	background: #eee;
 	overflow: hidden;
+	background: rgba(255, 255, 255, .75);
 }
 
 .todolist-type-mod {
@@ -10,8 +10,9 @@
 	flex-direction: column;
 	width: 260px;
 	height: 100%;
-	background: #f5f5f5;
 	position: relative;
+	margin-right: 1px;
+	backdrop-filter: blur(5px);
 
 	h1 {
 		font-size: 16px;
@@ -63,7 +64,7 @@
 }
 
 .fixed-calendar-mod {
-	border-top: 1px solid #dedede;
+	border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
 .todolist-events-mod {
@@ -198,9 +199,10 @@
 .no-work-plane h3 {
 	font-size: 14px;
 	transform: translateY(-60px);
-}
-.no-work-plane .remid-msg {
-	transform: translateY(-50px);
+	
+	& .remid-msg {
+		transform: translateY(-50px);
+	}
 }
 
 .todo-list-box .inner {
@@ -241,22 +243,23 @@
 	border-radius: 100%;
 	position: relative;
 	outline: none;
-}
-.todo-list-box .is-done::after {
-	content: '';
-	display: block;
-	width: 10px;
-	height: 10px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate3d(-50%,-50%,0);
-	background-color: transparent;
-	border-radius: 100%;
-	transition: background-color .3s ease;
-}
-.todo-list-box .is-done:checked::after {
-	background-color: #f44336;
+	
+	&::after {
+		content: '';
+		display: block;
+		width: 10px;
+		height: 10px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate3d(-50%,-50%,0);
+		background-color: transparent;
+		border-radius: 100%;
+		transition: background-color .3s ease;
+	}
+	&:checked::after {
+		background-color: #f44336;
+	}
 }
 
 .todo-list-box li .title-box {
