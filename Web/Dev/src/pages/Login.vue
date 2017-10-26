@@ -14,13 +14,13 @@
 
 				<dl>
 					<dd>
-						<input type="text" placeholder="帐号" v-model.trim="user">
+						<input type="text" placeholder="帐号" v-model.trim="user" v-focus>
 					</dd>
 				</dl>
 
 				<dl>
 					<dd>
-						<input type="password" placeholder="密码" v-model.trim="pawd">
+						<input type="password" placeholder="密码" v-model.trim="pawd" v-focus>
 					</dd>
 				</dl>
 
@@ -42,8 +42,12 @@ export default {
 			errMsg: ''
 		}
 	},
-	created: function() {
-
+	directives: {
+		focus: {
+			inserted: function(el, binding) {
+				if (!el.value) el.focus()
+			}
+		}
 	},
 	methods: {
 		loginEvt: function() {
@@ -95,13 +99,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.welcome-box {
-	height: 100vh;
-	width: 100vw;
-	padding: 40px 0;
-	text-align: center;
-	color: #333;
-	box-sizing: border-box;
+
+.login-box {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	width: 500px;
+	height: 400px;
+	transform: translate(-50%, -50%);
+	z-index: 100;
 
 	figure {
 		width: 80px;
@@ -113,16 +119,6 @@ export default {
 			fill: rgba(255, 255, 255, .5);
 		}
 	}
-}
-
-.login-box {
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	width: 500px;
-	height: 400px;
-	transform: translate(-50%, -50%);
-	z-index: 100;
 }
 
 .logo-error {
@@ -147,7 +143,7 @@ export default {
 	outline: none;
 	transition: color .3s ease, border .3s ease;
 
-	&::-webkit-input-placeholder {
+	&::placeholder {
 		color: #fff;
 	}
 
@@ -157,6 +153,7 @@ export default {
 }
 
 .logo-form button {
+	display: block;
 	width: 85%;
 	margin: 25px auto 0;
 	font-size: 18px;

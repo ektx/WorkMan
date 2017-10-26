@@ -14,7 +14,6 @@
 		name: 'app',
 		computed: {
 			isBlur: function() {
-				console.log(this.$route.fullPath)
 				return /^\/login/i.test(this.$route.fullPath)
 			}
 		}
