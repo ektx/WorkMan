@@ -79,9 +79,6 @@ export default {
 
 				if (data.status) {
 					localStorage.TOKEN = data.token
-
-					// 跳转主页
-					this.$router.push('/')
 				} else {
 					this.errMsg = data.msg
 				}

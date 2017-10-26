@@ -4,10 +4,12 @@ import Hello from '@/components/Hello'
 import Login from '@/pages/Login'
 import Index from '@/pages'
 import TodoList from '@/pages/todolist'
+import AddressBook from '@/pages/addressBook'
 
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -18,15 +20,15 @@ const router = new Router({
       },
       children: [
         {
-          path: '',
+          path: '/todoList',
           component: TodoList,
           meta: {
             requiresAuth: true
           }
         },
         {
-          path: 'user',
-          component: Hello,
+          path: '/addressBook',
+          component: AddressBook,
           meta: {
             requiresAuth: true
           }

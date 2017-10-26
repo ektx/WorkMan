@@ -1,0 +1,55 @@
+@charset 'utf-8';
+
+.address-book-app {
+	flex: 1;
+	overflow: hidden;
+}
+
+.address-user-box {
+	height: 100%;
+	width: 260px;
+	backdrop-filter: blur(5px);
+	box-sizing: border-box;
+	background: rgba(255, 255, 255, .7);
+
+	header {
+		position: relative;
+		overflow: hidden;
+
+		input {
+			display: block;
+			width: 90%;
+			margin: .8em auto;
+			padding-bottom: .1em;
+			border: none;
+			font-size: 18px;
+			color: #333;
+			background: transparent;
+			outline: none;
+			border-bottom: 2px solid transparent;
+			transition: border .3s ease;
+
+			&::placeholder {
+				color: #333;
+			}
+
+			&:focus {
+				border-bottom-color: #f65f54
+			}
+		}
+
+		button {
+			position: absolute;
+			right: 15px;
+			top: 18px;
+
+			svg {
+				fill: #999;
+			}
+		}
+	}
+}
+
+.user-list-box {
+	font-size: 14px;
+}

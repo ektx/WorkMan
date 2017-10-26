@@ -1,10 +1,19 @@
 <template>
 	<section class="app-content">
 		<header>
-			<img src="/contents/img/logo.png" alt="workman">
+			<svg viewBox="0 0 376 320" version="1.1" title="WorkMan">
+		        <polygon points="188 0 376 320 0 320"></polygon>
+			</svg>
 
 			<nav class="app-nav-mod">
-				<router-link v-for="nav in navs" :to="nav.to" :key="nav.to">{{ nav.title }}</router-link>
+				<router-link 
+					v-for="(nav, key) in navs" 
+					:to="nav.to" 
+					:key="nav.to"
+					:class="{current: key === navIndex }"
+				>
+					{{ nav.title }}
+				</router-link>
 			</nav>
 		</header>
 
@@ -27,10 +36,15 @@
 		},
 		data () {
 			return {
+				navIndex: 0,
 				navs: [
 					{
 						title: '计划',
-						to: ''
+						to: '/todoList'
+					},
+					{
+						title: '通讯录',
+						to: '/addressBook'
 					}
 				]
 			}
@@ -54,25 +68,33 @@
 		background: rgba(255, 255, 255, .85);
 		backdrop-filter: blur(5px);
 
-		& > img {
-			height: 100%;
-			max-height: 24px;
-			margin: 6px 0;
+		& > svg {
+			width: 18px;
+			fill: #f44336;
 		}
 	}
 }
 
 .app-nav-mod {
 	flex: 1;
+	margin-left: 1em;
 	align-items: center;
 
 	a {
 		display: inline-block;
 		height: 100%;
-		padding: 0 15px;
+		padding: 0 .8em;
 		color: #333;
 		font-size: 14px;
 		line-height: 40px;
+
+		&:hover {
+			background: rgba(255, 255, 255, .5);
+		}
+
+		&.router-link-active {
+			color: #f44336
+		}
 	}
 }
 </style>
