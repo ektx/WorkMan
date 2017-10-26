@@ -8,7 +8,7 @@ const tokenKey = 'expressTokenTest'
 	登录功能
 	-------------------------------
 */
-function login (req, res) {
+function PostLogin (req, res) {
 	console.log(req.body)
 
 	let sendErr = ()=> {
@@ -59,4 +59,9 @@ function login (req, res) {
 	)
 }
 
-exports.login = login;
+exports.login = PostLogin;
+
+
+exports.GetLogin = (req, res) => {
+	res.redirect('/')
+}
