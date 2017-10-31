@@ -734,8 +734,12 @@ async function getEvents (that) {
 	// 获取当前选中类别
 	let getFindType = that.typeList[ that.holdTypeIndex ].id;
 	let calendarTime = that.calendar_pickTime;
-	let QStime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date  + 1}`;
-	let QEtime = `${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`;
+	let QStime = new Date(`${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`)
+	let QEtime = new Date(QStime.setDate(QStime.getDate()+1));
+
+	// 恢复开始时间
+	QStime.setDate(QStime.getDate()-1);
+
 	let data = {
 		query: `{ 
 			todolistEvetns(
