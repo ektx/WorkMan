@@ -14,14 +14,18 @@
 			
 			<div class="users-list-mod">
 				<ul class="user-list-box">
-					<li v-for="user in users">
+					<li v-for="(usr, key) in users" 
+						:class="[key === holdIndex ? 'current' : '']"
+						:data-id="usr.id"
+						@click="holdThisUsr(key)"
+					>
 						<figure class="user-icon">
-							<img v-if="user.icon.length" :src="user.icon" alt="">
-							<div v-else class="no-user-icon">{{ user.name.slice(0,1) }}</div>
+							<img v-if="usr.icon.length" :src="usr.icon" alt="">
+							<div v-else class="no-user-icon">{{ usr.name.slice(0,1) }}</div>
 						</figure>
 						<dd>
-							<dt>{{ user.name }}</dt>
-							<dl>{{ user.mood }}</dl>
+							<dt>{{ usr.name }}</dt>
+							<dl>{{ usr.mood }}</dl>
 						</dd>
 					</li>
 				</ul>
@@ -30,111 +34,21 @@
 		</aside>
 
 		<div class="user-info-mod">
-			
+			<figure>
+				<img v-if="user.icon && user.icon.length" :src="user.icon" :alt="[user.name + ' 头相']">
+				<div v-else-if="user.name && user.name.length" class="no-user-icon">{{ user.name.slice(0,1) }}</div>
+
+			</figure>
+			<h3>{{ user.name }}</h3>
+			<h5>{{ user.mood }}</h5>
 		</div>
 	</section>
 </template>
 
 <script>
-	export default {
-		name: 'AddressBook',
-		data () {
-			return {
-				users: [
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					},
-					{
-						name: "Books",
-						icon: "contents/img/logo.png",
-						mood: '不想工作!'
-					},
-					{
-						name: "Alis",
-						icon: "",
-						mood: '明天不上班!'
-					}
-				]
-			}
-		}
-	}
+	import main from './main'
+
+	export default main
 </script>
 
 <style lang="scss" scoped>
