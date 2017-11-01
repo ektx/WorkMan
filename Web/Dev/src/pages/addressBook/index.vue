@@ -41,6 +41,12 @@
 			</figure>
 			<h3>{{ user.name }}</h3>
 			<h5>{{ user.mood }}</h5>
+
+			<ul class="user-contact-list" v-for="val in user.contact">
+				<li>
+					{{val}}
+				</li>
+			</ul>
 		</div>
 	</section>
 </template>
