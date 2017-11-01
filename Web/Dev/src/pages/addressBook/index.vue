@@ -42,11 +42,12 @@
 			<h3>{{ user.name }}</h3>
 			<h5>{{ user.mood }}</h5>
 
-			<ul class="user-contact-list" v-for="val in user.contact">
-				<li>
-					{{val}}
-				</li>
-			</ul>
+			<div class="user-contact-list" v-for="val in user.contact">
+				<dl>
+					<dt>{{ val.name }}</dt>
+					<dd><input type="text" readonly="readonly" :value="val.data"></dd>
+				</dl>
+			</div>
 		</div>
 	</section>
 </template>

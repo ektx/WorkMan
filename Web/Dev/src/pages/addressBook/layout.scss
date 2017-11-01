@@ -167,3 +167,31 @@
 		color: #777;
 	}
 }
+
+.user-contact-list {
+	width: 80%;
+	margin: 0 auto;
+
+	dl {
+		margin: 0 0 .8rem;
+		border-bottom: 1px solid #ccc;
+
+		dt {
+			font-size: 14px;
+			color: #666;
+		}
+
+		dd {
+			font-size: 18px;
+			color: #333;
+			padding: 2px 0 5px;
+
+			input {
+				width: 100%;
+				background: transparent;
+				border: none;
+				outline: none;
+			}
+		}
+	}
+}
