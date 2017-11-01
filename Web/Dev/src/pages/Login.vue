@@ -8,7 +8,7 @@
 				</svg>
 			</figure>
 
-			<form id="logo-form" class="logo-form" action="">
+			<form v-on:submit.prevent="loginEvt" id="logo-form" class="logo-form">
 
 				<p v-show="errMsg" class="logo-error">{{errMsg}}!</p>
 
@@ -53,6 +53,7 @@ export default {
 		loginEvt: function() {
 
 			this.errMsg = '';
+			let that = this;
 
 			if (!this.user) {
 				document.querySelectorAll('input')[0].focus(); 
@@ -76,9 +77,11 @@ export default {
 			})
 			.then(res => res.json())
 			.then( data => {
-
 				if (data.status) {
 					localStorage.TOKEN = data.token
+					localStorage.USER = this.user
+
+					that.$router.push({path: '/'})
 				} else {
 					this.errMsg = data.msg
 				}
