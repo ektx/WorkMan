@@ -2,7 +2,10 @@
 
 ```shell
 # 运行
-node index.js
+yarn run start
+
+# 运行测试环境
+yarn run dev
 ```
 
 ## 添加自己的配置文件
