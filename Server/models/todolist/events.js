@@ -1,7 +1,5 @@
 
 const mongoose = require('mongoose')
-mongoose.Promise = Promise;
-
 const Schema = mongoose.Schema;
 
 /*
@@ -44,4 +42,4 @@ const _ = new Schema({
 
 }, {collection: 'todoList_events', versionKey: false});
 
-module.exports = WORKMAN_SERVER.model('todoList_events', _);
+module.exports = mongoose.model('todoList_events', _);

@@ -124,7 +124,8 @@ export default {
 .logo-error {
 	opacity: 1;
 	font-size: 12px;
-	color: red;
+	text-align: center;
+	color: white;
 	padding: 10px 10px 0;
 	transform: opacity .3s ease;
 }

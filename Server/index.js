@@ -1,39 +1,29 @@
 
 const express = require('express')
 const cors = require('cors')
+const chalk = require('chalk')
 const graphqlHTTP = require('express-graphql')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+mongoose.Promise = global.Promise
 
 const tokenAuth = require('./bin/tokenAuth')
 
-// 配置表
-const webSet = require('./config.json')
+
 // 环境情况
 const serverType = process.argv[2];
 
-// 1.连接数据库
-// 1.1 连接用户中心
-global.USERCENTER_SERVER = mongoose.createConnection(webSet.db[serverType].user);
-// 1.2 连接 workman
-global.WORKMAN_SERVER = mongoose.createConnection(webSet.db[serverType].work);
-
-mongoose.set('debug', true);
-
-// 输出状态方法
-function getDBStatus (dbs) {
-	for (let i = 0,l=dbs.length; i < l; i++) {
-
-		dbs[i].on('error', console.error.bind(console, `${dbs[i]}connection error:`));
-
-		dbs[i].once('open', ()=>{
-			console.log(`${dbs[i].name} Mongodb OK!`)
-		})
+// 连接数据库
+mongoose.connect('mongodb://localhost/workman', {
+	useMongoClient: true
+}).then(
+	() => {
+		console.log(chalk.green('数据库链接完成'))
+	},
+	err => {
+		console.log(chalk.red('数据库链接失败\n'), chalk.yellow(err))
 	}
-}
-
-// 调用
-getDBStatus([USERCENTER_SERVER, WORKMAN_SERVER]);
+)
 
 // 引用路由
 const router = require('./bin/router')
@@ -68,5 +58,5 @@ app.use('/apiTest', graphqlHTTP({
 }))
 
 app.listen(4000, ()=>{
-	console.log('Server listening on port 4000')
+	console.log(chalk.green('Server listening on port 4000'))
 })

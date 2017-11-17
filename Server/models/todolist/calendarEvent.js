@@ -1,8 +1,6 @@
 
 const mongoose = require('mongoose')
-mongoose.Promise = Promise;
-
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 /*
 	提醒日历
@@ -28,4 +26,4 @@ const _ = new Schema({
 	data	: Array
 }, {collection: 'todoList_calendarEvent', versionKey: false});
 
-module.exports = WORKMAN_SERVER.model('todoList_calendarEvent', _);
+module.exports = mongoose.model('todoList_calendarEvent', _);

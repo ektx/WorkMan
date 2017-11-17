@@ -1,7 +1,5 @@
 
 const mongoose = require('mongoose')
-mongoose.Promise = Promise;
-
 const Schema = mongoose.Schema;
 
 /*
@@ -23,4 +21,4 @@ const _workType = new Schema({
 	name   : String
 }, {collection: 'workType', versionKey: false});
 
-exports.workType_M = WORKMAN_SERVER.model('workType', _workType);
+exports.workType_M = mongoose.model('workType', _workType);

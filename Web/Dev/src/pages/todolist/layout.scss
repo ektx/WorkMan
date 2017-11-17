@@ -34,6 +34,7 @@
 		overflow: auto;
 	}
 
+	/* 侧边计划列表 */
 	li {
 		font-size: 1.2em;
 		line-height: 2.4rem;
@@ -41,7 +42,7 @@
 		box-sizing: border-box;
 
 		&:hover {
-			background: #eee;
+			background: rgba(238, 238, 238, .6);
 		}
 
 		&.current {

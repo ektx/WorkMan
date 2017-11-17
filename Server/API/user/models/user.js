@@ -1,7 +1,5 @@
 
 const mongoose = require('mongoose')
-mongoose.Promise = Promise;
-
 const Schema = mongoose.Schema;
 
 /*
@@ -31,4 +29,4 @@ const _usrs = new Schema({
 	reset  : String
 }, {collection: 'usrs', versionKey: false});
 
-exports.usrs_m = USERCENTER_SERVER.model('usrs', _usrs);
+exports.usrs_m = mongoose.model('usrs', _usrs);
