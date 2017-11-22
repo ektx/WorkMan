@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import Login from '@/pages/Login'
-import Index from '@/pages'
+import Index from '@/pages/main'
+import Login from '@/pages/login'
 import TodoList from '@/pages/todolist'
 import AddressBook from '@/pages/addressBook'
 
