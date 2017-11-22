@@ -12,9 +12,10 @@ const tokenAuth = require('./bin/tokenAuth')
 
 // 环境情况
 const serverType = process.argv[2];
+const dbURL = 'mongodb://localhost/'+ (serverType === 'dev' ? 'workman_t': 'workman')
 
 // 连接数据库
-mongoose.connect('mongodb://localhost/workman', {
+mongoose.connect(dbURL, {
 	useMongoClient: true
 }).then(
 	() => {

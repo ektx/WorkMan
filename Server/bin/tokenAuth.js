@@ -11,6 +11,11 @@ function authToken(req, res, next) {
 	
 	const token = req.body.token || req.query.token || req.headers['x-access-token'];
 
+	// 对于添加用户 不需要验证token
+	if (req.body.query.includes('userAdd')) {
+		return next();
+	}
+
 	if (token) {
 
 		jwt.verify(token, tokenKey, (err, decoded) => {
