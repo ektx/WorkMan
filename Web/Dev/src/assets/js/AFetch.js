@@ -7,7 +7,7 @@
 function APIFetch(data) {
 
 	return new Promise((resolve, reject) => {
-		fetch('http://localhost:4000/api', {
+		fetch('/api', {
 			method: 'POST',
 			headers: {
 				'Access-Control-Allow-Origin': '*',

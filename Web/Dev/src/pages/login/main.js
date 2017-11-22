@@ -55,7 +55,6 @@ export default {
 				if (this.apply) {
 					if ('errors' in data) {
 						this.errMsg = '此用户已经存在!'
-						console.log(data)
 					} else {
 						this.errMsg = '注册成功!'
 						this.apply = false
