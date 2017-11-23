@@ -36,16 +36,49 @@
 			</div>
 		</aside>
 
+		<div class="todolist-order-mod" >
+
+
+			<ul class="order-mod" v-show="!eventsHelpBox.show">
+				<li 
+					v-for="(evt, index) in events" 
+					@click="seeEvent(index)"
+					@contextmenu.prevent="quickSetEvent(index, $event)"
+					:class="{current: index === holdEventIndex}"
+				>
+					<div class="content">
+						<div class="label-box">
+							<label>
+								<input class="is-done" type="checkbox" :checked="evt.complete" @click="updateCheck(index, $event)">
+							</label>
+						</div>
+						<div class="inner">
+							<h4>{{ evt.title }}</h4>
+							<p>{{ evt.stimeF }} - {{ evt.etimeF }}</p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
 		<main class="todolist-events-mod">
 			<header class="todoEvents-day-header">
 				<div class="todoEvt-headerDay-inner">
-					<div class="title">{{ evt_HeaderTime.date }}</div>
-					<div class="inner">
+					<!-- <div class="title">{{ holdEvent.title }}</div> -->
+					<input 
+						id="event-title" 
+						type="text" 
+						class="title" 
+						:value="holdEvent.title"
+						@keyup="insertData('title', $event)"
+						@blur="blurTitle"
+					>
+					<!-- <div class="inner">
 						<p>{{ evt_HeaderTime.dayFormat }}</p>
 						<p>{{ evt_HeaderTime.year }} 年 {{ evt_HeaderTime.month }} 月</p>
-					</div>
+					</div> -->
 				</div>
-				<div class="hd-btns-box">
+				<div v-show="typeList.length" class="hd-btns-box">
 					<button class="tbtn add-todo-event" @click="addOneEvent"  :disabled="createNewEvent">
 						<svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 12 16" width="12">
 							<path d="M12 9H7v5H5V9H0V7h5V2h2v5h5z"></path>
@@ -54,62 +87,33 @@
 				</div>
 			</header>
 
+			<!-- 主题信息 -->
 			<section class="todo-list-box">
+				<!-- 帮助信息 -->
 				<div class="no-work-plane" v-show="eventsHelpBox.show">
 					<h3>没有工作安排!</h3>
 					<p class="remid-msg">{{ eventsHelpBox.mes }}</p>
 				</div>
 
-				<ul>
-					<li v-for="(event, index) in events"
-						class="event-rows"
-						:data-id="event.id" 
-						:data-index="index"
-						data-parent="${data.parent}" 
-						data-time="${data.startTime}"
-						@mouseenter="mouseOver"
-						@contextmenu.prevent="quickSetEvent"
-					>
-					<div class="header">
-						<label>
-							<input class="is-done" type="checkbox" :checked="event.complete" @click="updateCheck(index, $event)">
-						</label>
-						<div class="title-box">
-							<input class="title" 
-								placeholder=" 输入你的事件吧 ;)" 
-								:value="event.title" 
-								@keyup="insertData('title', index, $event)"
-								@blur="blurTitle"
-								v-focus="event.title"
-							/>
-						</div>
-						<span class="li-btns-box">
-							<button 
-								@click="showEventsInfo" 
-								class="tbtn arrow-ico down-arrow"
-								:data-parentIndex="index"
-								:data-parentId="event.id"
-							></button>
-						</span>
-					</div>
-					<ul class="inner">
-						<dl class="event-make-col">
+				<!-- 事件具体操作区 -->
+				<div class="todoEvent-setting-box" v-show="!eventsHelpBox.show">
+					<dl class="event-make-col">
 							<dt>开始:</dt>
 							<dd>
-								<p class="date-select-ui" @click="changeEventDate('stime', index, $event)">
-									{{event.stimeF}}
+								<p class="date-select-ui" @click="changeEventDate('stime', $event)">
+									{{holdEvent.stimeF}}
 								</p>
 							</dd>
 						</dl>
 						
-						<dl v-show="event.etimeF" class="event-make-col">
+						<dl v-show="holdEvent.etimeF" class="event-make-col">
 							<dt>结束:</dt>
 							<dd>
 								<p 
 									class="date-select-ui"
-									@click="changeEventDate('etime', index, $event)"
+									@click="changeEventDate('etime', $event)"
 								>
-									{{event.etimeF}}
+									{{holdEvent.etimeF}}
 								</p>
 							</dd>
 						</dl>
@@ -118,16 +122,17 @@
 							<dt>备注:</dt>
 							<dd>
 								<textarea 
-									@keyup="insertData('inner', index, $event)" 
+									@keyup="insertData('inner', $event)" 
 									class="inner-box"
 									@focus="removeTextAreaAni"
 									@blur="resetTextAreaAni"
-								>{{event.inner}}</textarea>
+									:value="holdEvent.inner"
+								></textarea>
 							</dd>
 						</dl>
-					</ul>
-					</li>
-				</ul>
+					</ul>	
+				</div>
+
 			</section>
 
 		</main>

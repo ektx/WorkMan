@@ -26,7 +26,11 @@ export default {
 			/* 事件功能 */
 			evt_HeaderTime: {},
 			events: [],
-			// 当前事件
+			// 选择事件内容
+			holdEvent: {},
+			// 选择对象
+			holdEventIndex: -1,
+			// 当前选择事件
 			currentEventIndex: -1,
 			// 编辑文件索引 用于确认编辑是那条事件
 			editionEvtIndex: -1,
@@ -40,7 +44,7 @@ export default {
 			},
 
 			/* pickTime layer */
-			pickTimeEvents: [],
+			// pickTimeEvents: [],
 			pickTimeDefVal: '',
 			pickTimeRectInfo: {
 				top: 0,
@@ -49,7 +53,7 @@ export default {
 			// 展示状态
 			pickTimeShow: false,
 			// 点击的时间
-			pickTimeSaveTimeType: ''
+			// pickTimeSaveTimeType: ''
 			
 		}
 	},
@@ -123,6 +127,11 @@ export default {
 		/* 事件列表自动监听是否显示帮助小提示 */
 		events (val, old) {
 			this.$set(this.eventsHelpBox, 'show', !val.length)
+		},
+
+		// 当前选择查看事件
+		holdEventIndex (val, old) {
+			this.$set(this, 'holdEvent', this.events[val])
 		}
 	},
 	methods: {
@@ -153,10 +162,17 @@ export default {
 
 		// 保存分类
 		saveTodoType: function(evt) {
+
 			let name = evt.target.value;
 			let saveData = this.typeList[this.holdTypeIndex];
 			let saveQuery = `mutation { addTodoListType(data: { id: "${saveData.id}", name: "${name}" })}`;
 			let updateQuery = `mutation { updateTodoListType(id: "${saveData.id}", name: "${name}")}`;
+
+			// 如果没有 名称 我们删除刚才添加的
+			if (!name) {
+				this.typeList.pop()
+				return
+			}
 
 			saveData.readonly = false;
 			saveData.name = name;
@@ -315,33 +331,33 @@ export default {
 
 		/* 事件功能区 */
 
-		showEventsInfo: function(evt) {
+		// showEventsInfo: function(evt) {
 			
-			let _ = evt.target;
-			let index = _.dataset.parentindex;
-			let parentEl = document.querySelector(`[data-id="${_.dataset.parentid}"]`);
-			let innerEl  = parentEl.querySelector('.inner')
-			let textareaEl = innerEl.querySelector('.inner-box')
-			let textareaH = textareaEl.scrollHeight;
+		// 	let _ = evt.target;
+		// 	let index = _.dataset.parentindex;
+		// 	let parentEl = document.querySelector(`[data-id="${_.dataset.parentid}"]`);
+		// 	let innerEl  = parentEl.querySelector('.inner')
+		// 	let textareaEl = innerEl.querySelector('.inner-box')
+		// 	let textareaH = textareaEl.scrollHeight;
 
-			if (this.events[index].showInfo) {
-				_.classList.remove('show');
-				innerEl.style.height = 0;
-				this.events[index].showInfo = false;
-			}
-			else {
-				_.classList.add('show');
+		// 	if (this.events[index].showInfo) {
+		// 		_.classList.remove('show');
+		// 		innerEl.style.height = 0;
+		// 		this.events[index].showInfo = false;
+		// 	}
+		// 	else {
+		// 		_.classList.add('show');
 
-				textareaEl.style.height = textareaH + 'px';
+		// 		textareaEl.style.height = textareaH + 'px';
 
-				let innerH = innerEl.scrollHeight;
+		// 		let innerH = innerEl.scrollHeight;
 
-				innerEl.style.height = innerH+'px';
+		// 		innerEl.style.height = innerH+'px';
 
-				this.events[index].showInfo = true
-			}
+		// 		this.events[index].showInfo = true
+		// 	}
 
-		},
+		// },
 
 		// 添加事件
 		addOneEvent: function() {
@@ -352,6 +368,11 @@ export default {
 			if (this.createNewEvent) {
 				return;
 			};
+
+			if (!this.typeList.length) {
+				alert('请先创建一个分类')
+				return
+			}
 
 			let nowTime = new Date()
 			let saveDefTime = new Date(
@@ -378,17 +399,17 @@ export default {
 			
 			// 绑定当前事件索引
 			this.currentEventIndex = this.events.length
+			// 选中当前
+			this.holdEventIndex = this.events.length
 
 			this.createNewEvent = true;
 
 			this.events.push( insertData )
 
-		},
+			this.$nextTick(function() {
+				this.$el.querySelector('#event-title').focus()
+			})
 
-
-		// 时时跟踪当前事件索引
-		mouseOver: function(evt) {
-			this.currentEventIndex = evt.target.dataset.index;
 		},
 
 		// 更新完成情况
@@ -421,16 +442,20 @@ export default {
 			evt.target.parentElement.parentElement.parentElement.style.transitionDuration = '0.3s'
 		},
 
-		// 添加插入数据更新
 		/*
+			添加插入数据更新
+			----------------------------------
 			@type [string] 说明保存的内容
-			@index [number] 当前数据索引
 			@evt 事件
 		*/
-		insertData: function(type, index, evt) {
+		insertData: function(type, evt) {
+
 			let _ = evt.target;
 			let _innerBox = _.parentElement.parentElement.parentElement;
 			let val = evt.target.value;
+
+			// 修改数据索引
+			this.editionEvtIndex = this.holdEventIndex
 
 			if (type === 'inner') {
 				_innerBox.style.height = 0;
@@ -438,12 +463,12 @@ export default {
 
 				_.style.height = _.scrollHeight + 'px';
 				_innerBox.style.height = _innerBox.scrollHeight + 'px'
+
 			}
 
-			this.events[index][type] = val;
+			this.events[this.holdEventIndex][type] = val
 
-			this.editionEvtIndex = index;
-
+			this.holdEvent = this.events[this.holdEventIndex]
 			clearTimeout(this.thisSetTimeoutFun);
 
 			this.thisSetTimeoutFun = setTimeout(this.saveInsertData, 1000)
@@ -451,9 +476,7 @@ export default {
 
 		// 保存新加数据
 		saveInsertData: function(callback) {
-
-			let eventData = this.events[this.editionEvtIndex];
-
+			let eventData = this.events[this.editionEvtIndex]
 			let setQueryData = (arr) => {
 
 				let queryData = [];
@@ -535,13 +558,10 @@ export default {
 		},
 
 		// 右键功能
-		quickSetEvent (evt) {
-
+		quickSetEvent (index, evt) {
 			let that = this
-			let index = that.currentEventIndex;
-			let thisID = that.events[that.currentEventIndex].id;
+			let thisID = that.events[index].id;
 
-			this.editionEvtIndex = index;
 
 			let moveSubMenu = that.typeList.map((val, i) => {
 				let isSelf = i === that.holdTypeIndex ? true : false;
@@ -551,8 +571,8 @@ export default {
 					disabled: isSelf,
 					evt: () => {
 
-						let _index = that.currentEventIndex;
-						let _event = that.events[_index];
+						that.editionEvtIndex = index;
+						let _event = that.events[index];
 
 						_event.eventTypeID = val.id; 
 
@@ -560,7 +580,7 @@ export default {
 							data.save = JSON.parse(data.save)
 							// 如果移动成功,更新
 							if (data.save.ok && data.save.n) {
-								that.events.splice(_index, 1)
+								that.events.splice(index, 1)
 								
 								store.commit('setContextmenu', { show: false })
 
@@ -619,14 +639,12 @@ export default {
 		/*
 			时间选择
 			@type [start|end] 开始或结束时间
-			@index [number] 当前数据索引
 			@evt 事件
 		*/
-		changeEventDate: function(type, index, evt) {
+		changeEventDate: function(type, evt) {
 			// 设置插件默认时间
-			this.pickTimeDefVal = this.events[index][type];
-
-			this.editionEvtIndex = index;
+			this.pickTimeDefVal = this.holdEvent[type]
+			this.editionEvtIndex = this.holdEventIndex
 			
 			// 获取点击的位置信息
 			let evtRect = evt.target.getBoundingClientRect();
@@ -717,6 +735,10 @@ export default {
 			if (time.from === 'cancel') this.pickTimeShow = false;
 
 			
+		},
+
+		seeEvent (index) {
+			this.holdEventIndex = index
 		}
 	
 	}
@@ -755,6 +777,11 @@ async function getEvents (that) {
 
 	if (!result.todolistEvetns.length) {
 		that.events = []
+		that.holdEvent = { 
+			title: '',
+			stimeF: '',
+			etimeF: ''
+		}
 		that.eventsHelpBox = {
 			show: true,
 			mes: '小技巧: 你可以点击右上角的加号,自行添加哟!'
@@ -764,7 +791,8 @@ async function getEvents (that) {
 
 	// 处理列表时间
 	that.events = formatEventData(result.todolistEvetns)
-
+	that.holdEventIndex = 0
+	that.holdEvent = that.events[0]
 }
 
 

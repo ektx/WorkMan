@@ -1,3 +1,5 @@
+
+
 .todolist-app {
 	display: flex;
 	flex: 1;
@@ -11,7 +13,6 @@
 	width: 260px;
 	height: 100%;
 	position: relative;
-	margin-right: 1px;
 	backdrop-filter: blur(5px);
 
 	h1 {
@@ -90,11 +91,12 @@
 	flex: 9;
 	
 	& .title {
+		width: 100%;
 		height: 100%;
 		padding: 0 5px 0 0;
-		font-size: 38px;
+		font-size: 2rem;
 		color: inherit;
-		line-height: 1.2em;
+		line-height: 3.5rem;
 		text-overflow: ellipsis;
 		overflow: hidden;
 		white-space: nowrap;
@@ -113,10 +115,10 @@
 		}
 	}
 
-	& .inner {
+	/*& .inner {
 		flex: 1;
 		margin-top: 5px;
-	}
+	}*/
 }
 .hd-btns-box {
 	display: flex;
@@ -146,7 +148,7 @@
 	overflow: auto;
 	position: relative;
 
-	& > ul {
+/*	& > ul {
 		height: 100%;
 
 		& > li {
@@ -159,9 +161,9 @@
 			
 		}
 		
-	}
+	}*/
 
-	& .header {
+/*	& .header {
 		display: flex;
 		color: #333;
 		position: sticky;
@@ -173,7 +175,7 @@
 	&.hold .header {
 		top: 61px;
 		left: 40px;
-	}
+	}*/
 }
 
 
@@ -206,18 +208,18 @@
 	}
 }
 
-.todo-list-box .inner {
+/*.todo-list-box .inner {
 	height: 0;
 	margin: 0 0 0 40px;
 	color: #999;
 	overflow: hidden;
 	box-sizing: border-box;
-	/*background-color: #f5f5f5;*/
+	background-color: #f5f5f5;
 	border-bottom: 1px solid #eee;
 	transition: height .3s ease, background-color .3s ease;
-}
+}*/
 
-.todo-list-box .inner-box {
+/*.todo-list-box .inner-box {
 	outline: none;
 	border: 0;
 	color: #333;
@@ -226,42 +228,7 @@
 	resize: none;
 	line-height: 22px;
 	background-color: transparent;
-}
-
-.todo-list-box li label {
-	display: flex;
-	width: 40px;
-	height: 42px;
-	text-align: center;
-	justify-content: center;
-	align-items: center;
-}
-.todo-list-box .is-done {
-	-webkit-appearance: none;
-	width: 14px;
-	height: 14px;
-	border: 1px solid #f44336;
-	border-radius: 100%;
-	position: relative;
-	outline: none;
-	
-	&::after {
-		content: '';
-		display: block;
-		width: 10px;
-		height: 10px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate3d(-50%,-50%,0);
-		background-color: transparent;
-		border-radius: 100%;
-		transition: background-color .3s ease;
-	}
-	&:checked::after {
-		background-color: #f44336;
-	}
-}
+}*/
 
 .todo-list-box li .title-box {
 	flex: 1;
@@ -305,18 +272,18 @@
 	width: 40px;
 	text-align: center;
 }
-.li-btns-box .tbtn {
+/*.li-btns-box .tbtn {
 	width: 1.8em;
 	height: 1.8em;
 	margin: 10px 0 0;
 	transition: transform .3s ease;
-}
+}*/
 .tbtn.arrow-ico:after {
 	color: #aaa;
 }
-.li-btns-box .tbtn.show {
+/*.li-btns-box .tbtn.show {
 	transform: rotateZ(135deg);
-}
+}*/
 
 .add-todo-event {
 	transition: transform .3s ease;
@@ -328,21 +295,6 @@
 	transform: rotateZ(45deg);
 }
 
-.event-make-col {
-	display: flex;
-}
-.event-make-col dt,
-.event-make-col dd {
-	display: inline-block;
-	line-height: 20px;
-}
-.event-make-col dt {
-	margin: 0 5px 0 0;
-}
-.event-make-col dd {
-	color: #333;
-	flex: 1;
-}
 
 /* 浮动时间组件 */
 .fixed-date-mod {
@@ -377,4 +329,150 @@
 		transform: translateY(0);
 		opacity: 1
 	}
+}
+
+.todolist-order-mod {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	max-width: 260px;
+	background: rgba(255, 255, 255, .6);
+	
+}
+
+.order-mod {
+	flex: 1;
+	overflow: auto;
+
+	li {
+		&.current {
+			background: #f65f54;
+		}
+
+		div.content {
+			margin: 0 0 0 .7rem;
+			border-bottom: 1px solid rgba(0,0,0,.05);
+		}
+
+		.inner {
+			padding: .8rem .8rem .8rem .4rem;
+			overflow: hidden;
+		
+			h4 {
+				font-size: 1.17rem;
+				color: #333;
+				font-weight: 400;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+			}
+		
+			p {
+				font-size: 1rem;
+				color: #666;
+			}
+
+		} 
+
+		& .label-box {
+			float: left;
+			padding: 1rem 0;
+			vertical-align: top;
+		}
+
+		& label {
+			display: flex;
+			width: 16px;
+			height: 16px;
+			text-align: center;
+			justify-content: center;
+			align-items: center;
+
+			& .is-done {
+				-webkit-appearance: none;
+				width: 14px;
+				height: 14px;
+				border: 1px solid #f44336;
+				border-radius: 100%;
+				position: relative;
+				outline: none;
+				
+				&::after {
+					content: '';
+					display: block;
+					width: 10px;
+					height: 10px;
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate3d(-50%,-50%,0);
+					background-color: transparent;
+					border-radius: 100%;
+					transition: background-color .3s ease;
+				}
+				&:checked::after {
+					background-color: #f44336;
+				}
+			}
+		}
+
+		&.current {
+
+			.inner {
+				h4 {
+					color: #fff;
+				}
+
+				p {
+					color: rgba(255, 255, 255, .8);
+				}
+			}
+
+			label {
+				& .is-done {
+					border-color: rgba(255, 255, 255, .8);
+
+					&:checked::after {
+						background-color: rgba(255, 255, 255, .8);
+					}
+				}
+			}
+		}
+	}
+}
+
+/* 事件具体操作区 */
+.todoEvent-setting-box {
+	padding: 1rem;
+		
+	& .inner-box {
+		outline: none;
+		border: 0;
+		color: #333;
+		font: inherit;
+		width: 100%;
+		resize: none;
+		line-height: 22px;
+		background-color: transparent;
+	}
+}
+
+/* 事件详情 */
+.event-make-col {
+	display: flex;
+
+	& dt,
+	& dd {
+		display: inline-block;
+		line-height: 20px;
+	}
+	/* 标题 */
+	& dt {
+		margin: 0 5px 0 0;
+	}
+	/* 内容 */
+	& dd {
+		color: #333;
+		flex: 1;
+	}	
 }

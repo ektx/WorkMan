@@ -21,8 +21,6 @@
 				<div @click="showHeaderNav" :class="['header-nav-box', {closeBox: showHeaderMenu}]">
 					<header>👤 {{ user }}</header>
 					<ul v-show="showHeaderMenu">
-						<li>👤 个人中心</li>
-						<li>我是😋哈哈哈哈哈我是😋哈哈哈哈哈</li>
 						<li @click="loginOut">❌ 退出</li>
 					</ul>
 				</div>
