@@ -305,7 +305,31 @@
 	bottom: 0;
 	z-index: 400;
 	overflow: hidden;
+	background-color: rgba(0,0,0,.2);
+
 }
+/*浮动时间选择组件动画*/
+.fade-fixed-date-enter-active,
+.fade-fixed-date-leave-active {
+	transition: opacity .3s ease;
+
+	.fixed-date-inner,
+	.fixed-date-inner {
+		transform-origin: top left;
+		transition: transform .3s ease, opacity .3s ease;
+	}
+
+}
+.fade-fixed-date-enter,
+.fade-fixed-date-leave-to {
+	opacity: 0;
+
+	.fixed-date-inner,
+	.fixed-date-inner {
+		transform: translateY(20px);
+	}
+}
+
 .fixed-date-inner {
 	position: absolute;
 	top: -300px;
@@ -313,23 +337,11 @@
 	width: 230px;
 	min-height: 200px;
 	border-radius: 2px;
-	border: 1px solid #ddd;
 	backdrop-filter: blur(10px);
 	background: rgba(255, 255, 255, .9);
-	box-shadow: 3px 4px 2px 0px rgba(0, 0, 0, 0.11);
-	animation: fixed-data-fade .4s ease;
+	box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
-@keyframes fixed-data-fade {
-	from {
-		transform: translateY(30px);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0);
-		opacity: 1
-	}
-}
 
 .todolist-order-mod {
 	display: flex;

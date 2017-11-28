@@ -56,12 +56,13 @@
 }
 .app-body-mod {
 	position: absolute;
-	top: 40px;
+	top: 0px;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 1;
 	display: flex;
+	padding: 40px 0 0;
 }
 
 /* 右侧用户信息 */

@@ -44,7 +44,8 @@ export default {
 			},
 
 			/* pickTime layer */
-			// pickTimeEvents: [],
+			pickTimeEvents: [],
+			// 默认时间，用于在对事件进行时间选择时使用
 			pickTimeDefVal: '',
 			pickTimeRectInfo: {
 				top: 0,
@@ -650,11 +651,14 @@ export default {
 			let evtRect = evt.target.getBoundingClientRect();
 			let top = evtRect.top;
 
-			top = top + 250 > window.innerHeight ?
-				  window.innerHeight - 250 :
-				  top;
+			// 250 浮动日历大小
+			// 20 时间显示高度
+			top = top + 250 + 20 > window.innerHeight ?
+				  window.innerHeight - 250 -20:
+				  top + 20;
 
 			this.pickTimeRectInfo.top = top
+			this.pickTimeRectInfo.left = evtRect.left
 
 			// 输出点击时间的类型
 			this.saveTimeType = type;
@@ -672,12 +676,12 @@ export default {
 		},
 
 		// 得到用户选择的时间
+		// @time [objetc] 时间组件返回的日历时间对象
 		getUserDatePicker (time) {
-
 			// 点击关闭时
 			if (time.from === 'submit') {
 				//1. 取值
-				let _i = this.currentEventIndex;
+				let _i = this.holdEventIndex;
 				let thisEvent = this.events[_i];
 				let newTime = new Date(time.year, time.month -1, time.date);
 				// 是否要移除
