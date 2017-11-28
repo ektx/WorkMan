@@ -10,16 +10,24 @@
 
 .vdate-picker-box {
 	font-size: 0;
-	padding: 3px;
 }
 .vdate-picker-box ul:first-child {
 	font-weight: bold;
+}
+
+.vdate-picker-body {
+	ul.title {
+		li {
+			color: #666;
+		}
+	}
 }
 
 .vdate-picker-body li {
 	display: inline-block;
 	width: 14.28%;
 	height: 24px;
+	line-height: 24px;
 	text-align: center;
 	font-size: 10px;
 	color: #333;
@@ -57,6 +65,7 @@
 	font-size: 14px;
 	display: flex;
 	margin: 5px 0;
+	padding: 0 6px;
 }
 .vdate-picker-control,
 .vdate-picker-control .tbtn {
@@ -64,19 +73,25 @@
 }
 .vdate-picker-control .tbtn {
 	position: relative;
-}
-.vdate-picker-control .tbtn:after {
-	display: block;
-	content: '';
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -2px 0 0 -4px;
-	font-size: 12px;
-	width: .33em;
-	height: .33em;
-	border-top: .16em solid ;
-	border-right: .16em solid ;
+
+	&:after {
+		display: block;
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -2px 0 0 -4px;
+		font-size: 12px;
+		color: #999;
+		width: .33em;
+		height: .33em;
+		border-top: .16em solid ;
+		border-right: .16em solid ;
+	}
+
+	&:hover::after {
+		color: #333;
+	}
 }
 .vdate-picker-control .tbtn.next-btn {
 	transform: rotateZ(45deg);
@@ -105,9 +120,10 @@
 	color: #f44336
 }
 .vdate-picker-btns {
-	padding: 3px 0 0;
+	/*padding: 3px 0 0;*/
 	font-size: 0;
-    border-top: 1px solid #ddd;
+    /*border-top: 1px solid #ddd;*/
+    background-color: rgba(0, 0, 0, .05);
 }
 .vdate-picker-btns button {
     display: inline-block;
