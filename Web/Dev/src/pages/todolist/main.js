@@ -329,37 +329,6 @@ export default {
 			})
 		},
 
-
-		/* 事件功能区 */
-
-		// showEventsInfo: function(evt) {
-			
-		// 	let _ = evt.target;
-		// 	let index = _.dataset.parentindex;
-		// 	let parentEl = document.querySelector(`[data-id="${_.dataset.parentid}"]`);
-		// 	let innerEl  = parentEl.querySelector('.inner')
-		// 	let textareaEl = innerEl.querySelector('.inner-box')
-		// 	let textareaH = textareaEl.scrollHeight;
-
-		// 	if (this.events[index].showInfo) {
-		// 		_.classList.remove('show');
-		// 		innerEl.style.height = 0;
-		// 		this.events[index].showInfo = false;
-		// 	}
-		// 	else {
-		// 		_.classList.add('show');
-
-		// 		textareaEl.style.height = textareaH + 'px';
-
-		// 		let innerH = innerEl.scrollHeight;
-
-		// 		innerEl.style.height = innerH+'px';
-
-		// 		this.events[index].showInfo = true
-		// 	}
-
-		// },
-
 		// 添加事件
 		addOneEvent: function() {
 
@@ -386,6 +355,7 @@ export default {
 				nowTime.getMilliseconds()
 			);
 			let insertData = formatEventData([{
+				// 新建标志
 				insert: true,
 				id: nowTime.getTime(),
 				title: '',
@@ -425,11 +395,25 @@ export default {
 		// 如果新建的标题没有内容,我们就撤消
 		blurTitle: function(evt) {
 
-			if (!evt.target.value && this.createNewEvent) {
-				// 撤消新数据
-				this.events.pop();
-				// 恢复可新加
-				this.createNewEvent = false;
+			// 如果没有写标题同时是在新建一条数据时
+			if (this.createNewEvent) {
+				if (!evt.target.value) {
+					// 撤消新数据
+					this.events.pop();
+					// 恢复可新加
+					this.createNewEvent = false;
+				}
+			} else {
+				// debugger
+				if (!evt.target.value) {
+					this.holdEvent.title = evt.target.defaultValue
+				}
+			}
+		},
+
+		focusEvt (evt) {
+			if (!this.createNewEvent) {
+				evt.target.defaultValue = this.holdEvent.title
 			}
 		},
 
@@ -451,6 +435,7 @@ export default {
 		*/
 		insertData: function(type, evt) {
 
+			let that = this;
 			let _ = evt.target;
 			let _innerBox = _.parentElement.parentElement.parentElement;
 			let val = evt.target.value;
@@ -465,18 +450,31 @@ export default {
 				_.style.height = _.scrollHeight + 'px';
 				_innerBox.style.height = _innerBox.scrollHeight + 'px'
 
-			}
+			} 
 
 			this.events[this.holdEventIndex][type] = val
 
 			this.holdEvent = this.events[this.holdEventIndex]
+			
 			clearTimeout(this.thisSetTimeoutFun);
 
-			this.thisSetTimeoutFun = setTimeout(this.saveInsertData, 1000)
+			// 如果没有标题存在，我们不保存数据
+			if (type === 'title') {
+				if (!val) return;
+			}
+
+			this.thisSetTimeoutFun = setTimeout(()=> {
+				that.saveInsertData()
+
+				// 保存完成就更改默认值
+				console.log('saved:',that.holdEvent.title)
+				_.defaultValue = that.holdEvent.title
+			}, 1000)
 		},
 
 		// 保存新加数据
 		saveInsertData: function(callback) {
+			console.log(1)
 			let eventData = this.events[this.editionEvtIndex]
 			let setQueryData = (arr) => {
 

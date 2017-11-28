@@ -48,7 +48,7 @@
 				>
 					<div class="content">
 						<div class="label-box">
-							<label>
+							<label v-show="!evt.insert">
 								<input class="is-done" type="checkbox" :checked="evt.complete" @click="updateCheck(index, $event)">
 							</label>
 						</div>
@@ -64,7 +64,6 @@
 		<main class="todolist-events-mod">
 			<header class="todoEvents-day-header">
 				<div class="todoEvt-headerDay-inner">
-					<!-- <div class="title">{{ holdEvent.title }}</div> -->
 					<input 
 						id="event-title" 
 						type="text" 
@@ -72,11 +71,8 @@
 						:value="holdEvent.title"
 						@keyup="insertData('title', $event)"
 						@blur="blurTitle"
+						@focus="focusEvt"
 					>
-					<!-- <div class="inner">
-						<p>{{ evt_HeaderTime.dayFormat }}</p>
-						<p>{{ evt_HeaderTime.year }} 年 {{ evt_HeaderTime.month }} 月</p>
-					</div> -->
 				</div>
 				<div v-show="typeList.length" class="hd-btns-box">
 					<button class="tbtn add-todo-event" @click="addOneEvent"  :disabled="createNewEvent">

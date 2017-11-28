@@ -114,11 +114,6 @@
 			width: 40px;
 		}
 	}
-
-	/*& .inner {
-		flex: 1;
-		margin-top: 5px;
-	}*/
 }
 .hd-btns-box {
 	display: flex;
@@ -147,35 +142,6 @@
 	flex: 1;
 	overflow: auto;
 	position: relative;
-
-/*	& > ul {
-		height: 100%;
-
-		& > li {
-			position: relative;
-
-			&.hold {
-				position: inherit;
-				
-			}
-			
-		}
-		
-	}*/
-
-/*	& .header {
-		display: flex;
-		color: #333;
-		position: sticky;
-		right: 0;
-		left: 0;
-		top: 0;
-		background: #fff;
-	}
-	&.hold .header {
-		top: 61px;
-		left: 40px;
-	}*/
 }
 
 
@@ -207,28 +173,6 @@
 		transform: translateY(-50px);
 	}
 }
-
-/*.todo-list-box .inner {
-	height: 0;
-	margin: 0 0 0 40px;
-	color: #999;
-	overflow: hidden;
-	box-sizing: border-box;
-	background-color: #f5f5f5;
-	border-bottom: 1px solid #eee;
-	transition: height .3s ease, background-color .3s ease;
-}*/
-
-/*.todo-list-box .inner-box {
-	outline: none;
-	border: 0;
-	color: #333;
-	font: inherit;
-	width: 100%;
-	resize: none;
-	line-height: 22px;
-	background-color: transparent;
-}*/
 
 .todo-list-box li .title-box {
 	flex: 1;
@@ -272,18 +216,10 @@
 	width: 40px;
 	text-align: center;
 }
-/*.li-btns-box .tbtn {
-	width: 1.8em;
-	height: 1.8em;
-	margin: 10px 0 0;
-	transition: transform .3s ease;
-}*/
+
 .tbtn.arrow-ico:after {
 	color: #aaa;
 }
-/*.li-btns-box .tbtn.show {
-	transform: rotateZ(135deg);
-}*/
 
 .add-todo-event {
 	transition: transform .3s ease;
@@ -371,6 +307,7 @@
 			overflow: hidden;
 		
 			h4 {
+				min-height: 20px;
 				font-size: 1.17rem;
 				color: #333;
 				font-weight: 400;
@@ -388,6 +325,7 @@
 
 		& .label-box {
 			float: left;
+			width: 16px;
 			padding: 1rem 0;
 			vertical-align: top;
 		}
