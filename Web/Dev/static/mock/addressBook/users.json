@@ -25,37 +25,36 @@
 	},
 	{
 		"id": "user1505001600002",
-		"name": "Books",
-		"icon": "contents/img/logo.png",
+		"name": "Books2",
 		"mood": "不想工作!"
 	},
 	{
 		"id": "user1505001600003",
-		"name": "Alis",
+		"name": "Alis2",
 		"icon": "",
 		"mood": "明天不上班!"
 	},
 	{
 		"id": "user1505001600004",
-		"name": "Books",
+		"name": "Books3",
 		"icon": "contents/img/logo.png",
 		"mood": "不想工作!"
 	},
 	{
 		"id": "user1505001600005",
-		"name": "Alis",
+		"name": "Alis3",
 		"icon": "",
 		"mood": "明天不上班!"
 	},
 	{
 		"id": "user1505001600006",
-		"name": "Books",
+		"name": "Books4",
 		"icon": "contents/img/logo.png",
 		"mood": "不想工作!"
 	},
 	{
 		"id": "user1505001600007",
-		"name": "Alis",
+		"name": "Alis4",
 		"icon": "",
 		"mood": "明天不上班!"
 	},

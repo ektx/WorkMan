@@ -14,7 +14,7 @@
 	width: 260px;
 	backdrop-filter: blur(5px);
 	box-sizing: border-box;
-	background: rgba(255, 255, 255, .7);
+	background: rgba(255, 255, 255, .8);
 	overflow: hidden;
 
 	header {
@@ -24,32 +24,46 @@
 		input {
 			display: block;
 			width: 90%;
-			margin: .8em auto;
-			padding-bottom: .1em;
-			border: none;
-			font-size: 18px;
+			margin: .6em auto;
+			padding: .3em .5em;
+			font-size: 14px;
 			color: #333;
-			background: transparent;
+			background: rgba(255, 255, 255, .3);
 			outline: none;
-			border-bottom: 2px solid transparent;
+			border: 1px solid rgba(0, 0, 0, .1);
+			border-radius: 20px;
 			transition: border .3s ease;
 
 			&::placeholder {
-				color: #333;
+				color: #666;
 			}
 
 			&:focus {
-				border-bottom-color: #f65f54
+				border-color: rgba(0, 0, 0, .3);
+				background-color: rgba(255, 255, 255, .5);
+			}
+
+			&:placeholder-shown + button svg {
+				transform: rotate(0deg);
 			}
 		}
 
-		button {
+		button.tbtn {
 			position: absolute;
-			right: 15px;
-			top: 18px;
+			right: 8px;
+			top: 50%;
+			display: flex;
+			width: 1em;
+			height: 1em;
+			font-size: 26px;
+			vertical-align: top;
+			justify-content: center;
+			transform: translate(0%, -52%);
 
 			svg {
 				fill: #999;
+				transform: rotate(135deg);
+				transition: transform .3s ease;
 			}
 		}
 	}
@@ -71,7 +85,7 @@
 
 	li {
 		display: flex;
-		padding: 5px;
+		padding: .5rem;
 		align-items: center;
 
 		&:hover {
@@ -123,8 +137,32 @@
 .user-info-mod {
 	font-size: 20px;
 	flex: 1;
-	background: rgba(255, 255, 255, .9);
+	background: rgba(255, 255, 255, .95);
 	backdrop-filter: blur(5px);
+
+	header {
+		height: 32px;
+
+		/* 编辑按钮 */
+		button.btn {
+			float: right;
+			padding: 0em 1em;
+			margin: .3em;
+			font-size: 16px;
+			color: #09f;
+			white-space: nowrap;
+			background-color: transparent;
+			border: none;
+			border-radius: 2px;
+			outline: none;
+			cursor: pointer;
+
+			&:hover {
+				background-color: rgba(0, 0, 0, .05);
+
+			}
+		}
+	}
 
 	figure {
 		display: block;
@@ -150,47 +188,147 @@
 			text-align: center;
 		}
 	}
-	
-	h3,
-	h5 {
-		font-weight: 400;
-		text-align: center;
-	} 
 
-	h3{
-		font-size: 2rem;
-		color: #333;
+	input,
+	button {
+		font-size: 14px;
+		line-height: 2.5em;
+		text-indent: 2px;
+		border: none;
+		outline: none;
 	}
 
-	h5 {
-		font-size: 1.2rem;
-		color: #777;
+	input {
+		width: 80%;
+		background-color: rgba(0, 0, 0, 0);
+	}
+
+	input:read-only {
+		background: transparent;
+	}
+	
+	h3 {
+		font-weight: 400;
+		text-align: center;
+		margin-bottom: 5px;
+
+		input {
+			text-align: center;
+			font-size: 2rem;
+			color: #333;
+		}
+	} 
+
+
+	footer {
+		width: 80%;
+		margin: 40px auto 0;
+
+		button {
+			width: 100%;
+			background: transparent;
+			text-align: left;
+			color: #666;
+			border-bottom: 1px solid #ccc;
+			border-radius: 0;
+			transition: color .3s ease, border .3s ease;
+			cursor: pointer;
+
+			&:hover {
+				color: #333;
+				border-color: #999;
+				/*background-color: rgba(255, 255, 255, .4);*/
+			}
+
+			&.err-style {
+				color: rgba(244, 67, 54, .7);
+				border-bottom-color: inherit;
+
+				&.err-style:hover {
+					color: rgba(244, 67, 54, 1);
+				}
+			}
+		}
+	}
+
+	.slide-enter-active,
+	.slide-leave-active {
+		transition: transform .4s ease, opacity .5s ease;
+	}
+	.slide-enter,
+	.slide-leave-to {
+		transform: translateY(20px);
+		opacity: 0;
 	}
 }
 
+
 .user-contact-list {
 	width: 80%;
-	margin: 0 auto;
+	margin: 5px auto 0;
 
 	dl {
-		margin: 0 0 .8rem;
+		display: flex;
+		align-items: center;
 		border-bottom: 1px solid #ccc;
+
+		input {
+			box-sizing: border-box;
+		}
 
 		dt {
 			font-size: 14px;
 			color: #666;
+
+			input {
+				width: 120px;
+				text-align: right;
+			}
+
+			&:after {
+				content: ':';
+				margin: 0 5px;
+			}
 		}
 
 		dd {
-			font-size: 18px;
+			position: relative;
+			z-index: 1;
+			flex: 1;
+			font-size: 16px;
 			color: #333;
-			padding: 2px 0 5px;
 
 			input {
 				width: 100%;
-				background: transparent;
-				border: none;
-				outline: none;
+			}
+
+			button.del-data {
+				position: absolute;
+				right: 5px;
+				top: 50%;
+				font-size: 20px;
+				width: 1em;
+				height: 1em;
+				margin: -.5em 0;
+				border-radius: 100%;
+				background-color: rgba(244, 67, 54, 1);
+				cursor: pointer;
+
+				&:after {
+					content: '';
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					width: 65%;
+					height: 2px;
+					transform: translate(-50%, -50%);
+					background-color: rgba(255, 255, 255, .8);
+				}
+
+				&:active {
+					transform: translateY(1px);
+					background-color: #cc3429;
+				}
 			}
 		}
 	}
