@@ -5,15 +5,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-	state: {
-		// 右键菜单
-		contextmenu: {
-			show: true,
-			data: {},
-			evt: null
-		}
-	},
-
+	state: {},
 	mutations: {
 
 		// 设置方法
