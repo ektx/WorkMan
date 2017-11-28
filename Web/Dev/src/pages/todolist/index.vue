@@ -138,25 +138,29 @@
 		</main>
 
 		<!-- 浮动时间组件 -->
-		<section 
-			v-if="pickTimeShow"
-			id="fixed-date-mod" 
-			class="fixed-date-mod" 
-			@click="hideThisLayer"
-		>
-			<transition name="fade-fixed-date">
+		<transition name="fade-fixed-date">
+			<section 
+				v-show="pickTimeShow"
+				id="fixed-date-mod" 
+				class="fixed-date-mod" 
+				@click="hideThisLayer"
+			>
 				<div class="fixed-date-inner" 
-					v-bind:style="{top: pickTimeRectInfo.top + 20+'px'}"
+					v-bind:style="{
+						top: pickTimeRectInfo.top + 'px', 
+						left: pickTimeRectInfo.left +'px'
+					}"
 				>
 					<v-date-picker 
+						:default-val="pickTimeDefVal"
 						format="YYYY-MM"
 						:events="pickTimeEvents"
 						has-footer="hasfooter"
 						v-on:send-date="getUserDatePicker"
 					></v-date-picker>
 				</div>
-			</transition>
-		</section> 
+			</section> 
+		</transition>
 		
 	</section>
 </template>
