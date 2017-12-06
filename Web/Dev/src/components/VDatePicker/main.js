@@ -32,7 +32,7 @@ export default {
 
 			if (thisDay.time) {
 
-				if (old > -1)
+				if (old > -1 && this.days.length > old)
 					this.days[old].isHold = false;
 				
 				thisDay.isHold = true;

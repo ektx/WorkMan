@@ -47,7 +47,14 @@
 				<dl v-for="(val, index) in user.contact">
 					<dt>
 						<span v-show="!isEdit">{{val.name}}</span>
-						<input v-show="isEdit" type="text" :value="val.name" :readonly="!isEdit"></dt>
+						<input v-show="isEdit" type="text" :value="val.name" :readonly="!isEdit">
+						<select>
+							<option>电话</option>
+							<option>邮箱</option>
+							<option>文本</option>
+							<option>文本域</option>
+						</select>
+					</dt>
 					<dd>
 						<input type="text" :value="val.data" :readonly="!isEdit">
 						<button class="del-data" v-show="isEdit"></button>

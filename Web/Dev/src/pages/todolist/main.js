@@ -467,14 +467,13 @@ export default {
 				that.saveInsertData()
 
 				// 保存完成就更改默认值
-				console.log('saved:',that.holdEvent.title)
 				_.defaultValue = that.holdEvent.title
 			}, 1000)
 		},
 
 		// 保存新加数据
 		saveInsertData: function(callback) {
-			console.log(1)
+
 			let eventData = this.events[this.editionEvtIndex]
 			let setQueryData = (arr) => {
 

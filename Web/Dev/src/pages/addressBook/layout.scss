@@ -156,10 +156,10 @@
 			border-radius: 2px;
 			outline: none;
 			cursor: pointer;
+			transition: color .3s ease, background-color .3s ease;
 
 			&:hover {
-				background-color: rgba(0, 0, 0, .05);
-
+				color: #35adfd;
 			}
 		}
 	}

@@ -14,7 +14,6 @@ export default {
 	},
 	watch: {
 		holdIndex (val, old) {
-console.log(this.user)
 			this.user = this.users[val]
 		},
 
@@ -74,6 +73,12 @@ console.log(this.users)
 
 		addOneData () {
 			console.log('new data!')
+
+			this.user.contact.push({
+				name: '',
+				type: 'text',
+				data: ''
+			})
 		}
 	}
 }
