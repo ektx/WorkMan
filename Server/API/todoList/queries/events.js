@@ -19,7 +19,7 @@ module.exports = {
 		types: {
 			name: 'types',
 			type: GraphQLString,
-			description: '查询的类别'
+			description: '查询的事件类别'
 		},
 		stime: {
 			name: 'stime',
@@ -52,21 +52,29 @@ module.exports = {
 		params.start = params.start || 0;
 		params.limit = params.limit || 100;
 
+		// 查看指定用户的指定列表事件
+		// 以修复时间为倒序返回
 		let dataPromise = new Promise((resolve, reject) => {
 			db.find(
 				{
 					account: params.account, 
 					eventTypeID: params.types,
-					stime: {
-						'$lte': new Date(params.etime)
-					},
-					etime: {
-						// 查询开始时间
-						'$gte': new Date(params.stime),
-					}
+					// stime: {
+					// 	'$lte': new Date(params.etime)
+					// },
+					// etime: {
+					// 	// 查询开始时间
+					// 	'$gte': new Date(params.stime),
+					// }
 				},
 				null,
-				{ skip: params.start, limit: params.limit},
+				{ 
+					skip: params.start, 
+					limit: params.limit,
+					sort: {
+						mtime: -1
+					}
+				},
 				(err, data) => {
 					err ? reject(err) : resolve(data)
 				}
