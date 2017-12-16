@@ -59,13 +59,13 @@ module.exports = {
 				{
 					account: params.account, 
 					eventTypeID: params.types,
-					// stime: {
-					// 	'$lte': new Date(params.etime)
-					// },
-					// etime: {
-					// 	// 查询开始时间
-					// 	'$gte': new Date(params.stime),
-					// }
+					stime: {
+						'$lte': new Date(params.etime)
+					},
+					etime: {
+						// 查询开始时间
+						'$gte': new Date(params.stime),
+					}
 				},
 				null,
 				{ 
