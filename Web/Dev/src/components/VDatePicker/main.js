@@ -145,7 +145,7 @@ export default {
 				let isTodayMes = false;
 
 				if (val === todayVal) {
-					this.currentIndex = i;
+					// this.currentIndex = i;
 					isTodayMes = true;
 				}
 				
@@ -154,7 +154,7 @@ export default {
 					// 是否是今天
 					isToday: isTodayMes,
 					// 是否选中
-					isHold: isTodayMes
+					isHold: false
 				}
 			});
 

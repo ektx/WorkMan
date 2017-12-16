@@ -118,7 +118,7 @@ export default {
 			// 更新 事件列表的日期
 			this.evt_HeaderTime = val;
 
-			if (val.from !== 'auto') getEvents(this);
+			if (val.from !== 'auto') getEvents(this, true);
 
 			if (val.from === 'next' || val.from === 'prev') {
 				this.getCalendarEvent()
@@ -750,18 +750,28 @@ export default {
 /*
 	读取具体类型的事件
 	----------------------------------
+	@that vue this obj
+	@time 是否指定查询的时间
 */
-async function getEvents (that) {
+async function getEvents (that, time) {
 
 	let result = [];
+	let calendarTime = '';
+	let QStime = '1989/12/6';
+	let QEtime = '';
+
 	// 获取当前选中类别
 	let getFindType = that.typeList[ that.holdTypeIndex ].id;
-	let calendarTime = that.calendar_pickTime;
-	let QStime = new Date(`${calendarTime.year} ${calendarTime.month} ${calendarTime.date}`)
-	let QEtime = new Date(QStime.setDate(QStime.getDate()+1));
 
-	// 恢复开始时间
-	QStime.setDate(QStime.getDate()-1);
+	if (time) {
+		calendarTime = that.calendar_pickTime
+		QStime = new Date(`${calendarTime.year}/${calendarTime.month}/${calendarTime.date}`)
+		QEtime = new Date(QStime.setDate(QStime.getDate()+1))
+		// 恢复开始时间
+		QStime.setDate(QStime.getDate()-1)
+	} else {
+		QEtime = new Date(new Date().setFullYear(new Date().getFullYear() + 100))
+	}
 
 	let data = {
 		query: `{ 

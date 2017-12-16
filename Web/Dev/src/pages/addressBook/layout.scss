@@ -189,8 +189,7 @@
 		}
 	}
 
-	input,
-	button {
+	input {
 		font-size: 14px;
 		line-height: 2.5em;
 		text-indent: 2px;
@@ -223,32 +222,6 @@
 	footer {
 		width: 80%;
 		margin: 40px auto 0;
-
-		button {
-			width: 100%;
-			background: transparent;
-			text-align: left;
-			color: #666;
-			border-bottom: 1px solid #ccc;
-			border-radius: 0;
-			transition: color .3s ease, border .3s ease;
-			cursor: pointer;
-
-			&:hover {
-				color: #333;
-				border-color: #999;
-				/*background-color: rgba(255, 255, 255, .4);*/
-			}
-
-			&.err-style {
-				color: rgba(244, 67, 54, .7);
-				border-bottom-color: inherit;
-
-				&.err-style:hover {
-					color: rgba(244, 67, 54, 1);
-				}
-			}
-		}
 	}
 
 	.slide-enter-active,
@@ -259,6 +232,48 @@
 	.slide-leave-to {
 		transform: translateY(20px);
 		opacity: 0;
+	}
+}
+
+.address-btn {
+	width: 100%;
+	background: transparent;
+	text-align: left;
+	font-size: 14px;
+	line-height: 2.5em;
+	color: #666;
+	border-radius: 0;
+	border: none;
+	border-bottom: 1px solid #ccc;
+	outline: none;
+	transition: color .3s ease, border .3s ease;
+	cursor: pointer;
+
+	&:hover {
+		color: #09f;
+		border-color: #09f;
+	}
+
+	&:active {
+		transition: color 0s ease, border 0s ease;
+		transform: translateY(1px);
+		color: #fff;
+		border-color: #09f;
+	}
+
+	&.err {
+		color: rgba(244, 67, 54, .8);
+
+		&.err {
+			&:hover {
+				color: rgba(244, 67, 54, 1);
+				border-bottom-color: rgba(244, 67, 54, 1);
+			}
+			&:active {
+				transition: color 0s ease, border 0s ease;
+				color: #fff;
+			}
+		}
 	}
 }
 

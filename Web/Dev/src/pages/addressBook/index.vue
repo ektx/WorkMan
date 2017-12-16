@@ -44,10 +44,10 @@
 			<h3><input type="text" v-model="user.name" :readonly="!isEdit" placeholder="姓名"></h3>
 
 			<div class="user-contact-list">
-				<dl v-for="(val, index) in user.contact">
+				<dl v-for="(val, index) in user.tel">
 					<dt>
-						<span v-show="!isEdit">{{val.name}}</span>
-						<input v-show="isEdit" type="text" :value="val.name" :readonly="!isEdit">
+						<span v-show="!isEdit">{{val.title}}</span>
+						<input v-show="isEdit" type="text" :value="val.title" :readonly="!isEdit">
 						<select>
 							<option>电话</option>
 							<option>邮箱</option>
@@ -56,10 +56,11 @@
 						</select>
 					</dt>
 					<dd>
-						<input type="text" :value="val.data" :readonly="!isEdit">
+						<input type="text" :value="val.value" :readonly="!isEdit">
 						<button class="del-data" v-show="isEdit"></button>
 					</dd>
 				</dl>
+				<button class="address-btn">添加电话</button>
 			</div>
 
 			<div class="user-contact-list" style="display: none">
@@ -73,8 +74,8 @@
 
 			<transition name="slide">
 				<footer v-show="isEdit">
-					<button @click="addOneData">添加一条数据</button>
-					<button class="err-style" @click="delUser(user)">删除</button>
+					<button class="address-btn" @click="addOneData">添加一条数据</button>
+					<button class="address-btn err" @click="delUser(user)">删除</button>
 				</footer>
 			</transition>
 		</div>
