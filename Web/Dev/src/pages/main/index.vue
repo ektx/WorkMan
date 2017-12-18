@@ -12,6 +12,7 @@
 					:to="nav.to" 
 					:key="nav.to"
 					:class="{current: key === navIndex }"
+					:target="nav.target ? '_blank' : null"
 				>
 					{{ nav.title }}
 				</router-link>
@@ -58,6 +59,11 @@
 					{
 						title: '通讯录',
 						to: '/addressBook'
+					},
+					{
+						title: 'API',
+						to: '/apiTest',
+						target: true
 					}
 				],
 				showHeaderMenu: false
