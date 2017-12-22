@@ -84,6 +84,7 @@ export default {
 	watch: {
 		/* 类别切换监听功能 */
 		holdTypeIndex (val, old) {
+			
 			// 是否要运行以下事件
 			if (!this.needChangeHoldIndexEvt) {
 				// 恢复可以操作状态
@@ -132,6 +133,7 @@ export default {
 
 		// 当前选择查看事件
 		holdEventIndex (val, old) {
+			//debugger
 			this.$set(this, 'holdEvent', this.events[val])
 		}
 	},
@@ -271,6 +273,7 @@ export default {
 		*/
 		// 从子组件获取内容
 		getVDatePicker (data) {
+			console.warn(data)
 			this.calendar_pickTime = data;
 		},
 
@@ -278,8 +281,17 @@ export default {
 		getCalendarEvent () {
 
 			let typeID = this.typeList[ this.holdTypeIndex ].id;
-			let _pickTime = this.calendar_pickTime
-			let _time = _pickTime.year + '-'+ _pickTime.month
+			let _pickTime = this.calendar_pickTime;
+			let _time = '';
+
+			// 日历没有选择时间时，我们使用现在的时间
+			if ('year' in _pickTime) {
+				_time = _pickTime.year + '-'+ _pickTime.month
+			} else {
+				let d = new Date()
+				_time = d.toJSON().split('-').slice(0,2).join('-')
+			}
+
 			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}"){day}}`
 
 			APIFetch({
@@ -333,6 +345,10 @@ export default {
 		addOneEvent: function() {
 
 			let _pickTime = this.calendar_pickTime
+			let	nowTime = new Date()
+			let	saveDefTime = nowTime
+
+			console.log(Object.keys(_pickTime), 11)
 
 			// 如果没有在创建就创建
 			if (this.createNewEvent) {
@@ -344,16 +360,18 @@ export default {
 				return
 			}
 
-			let nowTime = new Date()
-			let saveDefTime = new Date(
-				_pickTime.year,
-				_pickTime.month -1,
-				_pickTime.date,
-				nowTime.getHours(),
-				nowTime.getMinutes(),
-				nowTime.getSeconds(),
-				nowTime.getMilliseconds()
-			);
+			if (Object.keys(_pickTime).length > 0) {
+				saveDefTime = new Date(
+					_pickTime.year,
+					_pickTime.month -1,
+					_pickTime.date,
+					nowTime.getHours(),
+					nowTime.getMinutes(),
+					nowTime.getSeconds(),
+					nowTime.getMilliseconds()
+				)
+			}
+
 			let insertData = formatEventData([{
 				// 新建标志
 				insert: true,
@@ -369,15 +387,17 @@ export default {
 
 			
 			// 绑定当前事件索引
-			this.currentEventIndex = this.events.length
+			// this.currentEventIndex = this.events.length
 			// 选中当前
-			this.holdEventIndex = this.events.length
+			if (this.holdEventIndex === 0)
+				this.holdEventIndex = 1 // this.events.length
 
-			this.createNewEvent = true;
+			this.createNewEvent = true
 
-			this.events.push( insertData )
+			this.events.unshift( insertData )
 
 			this.$nextTick(function() {
+				this.holdEventIndex = 0
 				this.$el.querySelector('#event-title').focus()
 			})
 

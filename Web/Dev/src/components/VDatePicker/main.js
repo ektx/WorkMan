@@ -93,6 +93,9 @@ export default {
 
 		// 发送数据
 		sendDateToParent: function(from) {
+
+			if (this.currentIndex === -1) return
+
 			let index = this.currentIndex;
 			let date = this.days[index].time;
 			let d = new Date(this.year, this.month-1, date);
