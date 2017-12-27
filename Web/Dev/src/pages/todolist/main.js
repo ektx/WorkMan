@@ -133,7 +133,6 @@ export default {
 
 		// 当前选择查看事件
 		holdEventIndex (val, old) {
-			//debugger
 			this.$set(this, 'holdEvent', this.events[val])
 		}
 	},
@@ -348,8 +347,6 @@ export default {
 			let	nowTime = new Date()
 			let	saveDefTime = nowTime
 
-			console.log(Object.keys(_pickTime), 11)
-
 			// 如果没有在创建就创建
 			if (this.createNewEvent) {
 				return;
@@ -387,10 +384,10 @@ export default {
 
 			
 			// 绑定当前事件索引
-			// this.currentEventIndex = this.events.length
+			this.currentEventIndex = 0
 			// 选中当前
 			if (this.holdEventIndex === 0)
-				this.holdEventIndex = 1 // this.events.length
+				this.holdEventIndex = 1
 
 			this.createNewEvent = true
 
@@ -414,17 +411,19 @@ export default {
 
 		// 如果新建的标题没有内容,我们就撤消
 		blurTitle: function(evt) {
-
 			// 如果没有写标题同时是在新建一条数据时
 			if (this.createNewEvent) {
 				if (!evt.target.value) {
 					// 撤消新数据
-					this.events.pop();
+					this.events.shift()
 					// 恢复可新加
-					this.createNewEvent = false;
+					this.createNewEvent = false
+
+					// 更新显示内容
+					this.$set(this, 'holdEvent', this.events[0])
+
 				}
 			} else {
-				// debugger
 				if (!evt.target.value) {
 					this.holdEvent.title = evt.target.defaultValue
 				}
