@@ -393,18 +393,13 @@
 
 /* 事件具体操作区 */
 .todoEvent-setting-box {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
 	padding: 1rem;
-		
-	& .inner-box {
-		outline: none;
-		border: 0;
-		color: #333;
-		font: inherit;
-		width: 100%;
-		resize: none;
-		line-height: 22px;
-		background-color: transparent;
-	}
+	box-sizing: border-box;
+
+
 }
 
 /* 事件详情 */
@@ -424,5 +419,27 @@
 	& dd {
 		color: #333;
 		flex: 1;
+	}
+
+
+	&:last-child {
+		flex: 1;
+		flex-direction: column;
+
+		.inner-box {
+			flex: 1;
+
+			textarea {
+				outline: none;
+				border: 0;
+				color: #333;
+				font: inherit;
+				width: 100%;
+				height: 100%;
+				resize: none;
+				line-height: 22px;
+				background-color: transparent;
+			}
+		}
 	}	
 }

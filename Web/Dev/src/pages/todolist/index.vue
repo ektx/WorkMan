@@ -94,39 +94,37 @@
 				<!-- 事件具体操作区 -->
 				<div class="todoEvent-setting-box" v-show="!eventsHelpBox.show">
 					<dl class="event-make-col">
-							<dt>开始:</dt>
-							<dd>
-								<p class="date-select-ui" @click="changeEventDate('stime', $event)">
-									{{holdEvent.stimeF}}
-								</p>
-							</dd>
-						</dl>
+						<dt>开始:</dt>
+						<dd>
+							<p class="date-select-ui" @click="changeEventDate('stime', $event)">
+								{{holdEvent.stimeF}}
+							</p>
+						</dd>
+					</dl>
 						
-						<dl v-show="holdEvent.etimeF" class="event-make-col">
-							<dt>结束:</dt>
-							<dd>
-								<p 
-									class="date-select-ui"
-									@click="changeEventDate('etime', $event)"
-								>
-									{{holdEvent.etimeF}}
-								</p>
-							</dd>
-						</dl>
-						
-						<dl>
-							<dt>备注:</dt>
-							<dd>
-								<textarea 
-									@keyup="insertData('inner', $event)" 
-									class="inner-box"
-									@focus="removeTextAreaAni"
-									@blur="resetTextAreaAni"
-									:value="holdEvent.inner"
-								></textarea>
-							</dd>
-						</dl>
-					</ul>	
+					<dl v-show="holdEvent.etimeF" class="event-make-col">
+						<dt>结束:</dt>
+						<dd>
+							<p 
+								class="date-select-ui"
+								@click="changeEventDate('etime', $event)"
+							>
+								{{holdEvent.etimeF}}
+							</p>
+						</dd>
+					</dl>
+					
+					<dl class="event-make-col">
+						<dt>备注:</dt>
+						<dd class="inner-box">
+							<textarea 
+								@keyup="insertData('inner', $event)" 
+								@focus="removeTextAreaAni"
+								@blur="resetTextAreaAni"
+								:value="holdEvent.inner"
+							></textarea>
+						</dd>
+					</dl>
 				</div>
 
 			</section>
