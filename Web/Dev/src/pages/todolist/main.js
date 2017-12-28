@@ -462,15 +462,6 @@ export default {
 			// 修改数据索引
 			this.editionEvtIndex = this.holdEventIndex
 
-			if (type === 'inner') {
-				_innerBox.style.height = 0;
-				_.style.height = 0;
-
-				_.style.height = _.scrollHeight + 'px';
-				_innerBox.style.height = _innerBox.scrollHeight + 'px'
-
-			} 
-
 			this.events[this.holdEventIndex][type] = val
 
 			this.holdEvent = this.events[this.holdEventIndex]
