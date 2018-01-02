@@ -288,7 +288,7 @@ export default {
 				_time = _pickTime.year + '-'+ _pickTime.month
 			} else {
 				let d = new Date()
-				_time = d.toJSON().split('-').slice(0,2).join('-')
+				_time = `${d.getFullYear()}-${d.getMonth() + 1}`
 			}
 
 			let queryWay = `{ calendarEvent(account: "MY_ACCOUNT", typeID: "${typeID}", time: "${_time}"){day}}`
@@ -861,8 +861,15 @@ function formatEventData(obj) {
 	=> ['30']
 */
 function filterTimeArr (arr, pickTime) {
-	let result = [];
-	let calendarNowTime = `${pickTime.year}-${pickTime.month}`;
+	let result = []
+	let calendarNowTime = null
+	
+	if (pickTime.year) {
+		calendarNowTime = `${pickTime.year}-${pickTime.month}`;
+	} else {
+		let d = new Date()
+		calendarNowTime = `${d.getFullYear()}-${d.getMonth() +1}`
+	}
 
 	if (arr) {
 		result = arr.filter(val => {
