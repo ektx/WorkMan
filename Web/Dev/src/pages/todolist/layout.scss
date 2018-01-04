@@ -441,3 +441,20 @@
 		}
 	}	
 }
+
+/* 事件过滤区 */
+.event-filter-methods {
+	display: flex;
+	padding: 5px;
+	margin: 0 5px;
+	border-top: 1px solid #ccc;
+
+	& > label {
+		flex: 1;
+	}
+}
+
+.todolist-search-mod {
+	width: 95%;
+	margin: .6em auto;
+}

@@ -2,11 +2,15 @@
 import store from '../../assets/js/store'
 import APIFetch from '../../assets/js/AFetch'
 import VDatePicker from '../../components/VDatePicker'
+import { VRadio }from '@/components/VRadio'
+import VSearch from '@/components/VSearch'
 
 export default {
 	name: 'todolist',
 	components: {
-		VDatePicker
+		VDatePicker,
+		VRadio,
+		VSearch
 	},
 	data () {
 		return {
@@ -750,6 +754,10 @@ export default {
 
 		seeEvent (index) {
 			this.holdEventIndex = index
+		},
+
+		helloTest (data) {
+			console.warn(data)
 		}
 	
 	}

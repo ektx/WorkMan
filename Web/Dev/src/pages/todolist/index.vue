@@ -38,6 +38,7 @@
 
 		<div class="todolist-order-mod" >
 
+			<VSearch v-show="false" classes="todolist-search-mod"></VSearch>
 
 			<ul class="order-mod" v-show="!eventsHelpBox.show">
 				<li 
@@ -59,6 +60,13 @@
 					</div>
 				</li>
 			</ul>
+
+			<!-- 事件过滤区 -->
+			<div v-show="false" class="event-filter-methods">
+				<VRadio name="c" val="All" checked v-on:change="helloTest">全部</VRadio>
+				<VRadio name="c" val="done" v-on:change="helloTest">已完成</VRadio>
+				<VRadio name="c" val="will" v-on:change="helloTest">进行中</VRadio>
+			</div>
 		</div>
 
 		<main class="todolist-events-mod">
@@ -161,7 +169,6 @@
 
 <script>
 	import main from './main'
-
 	export default main
 </script>
 
