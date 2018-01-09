@@ -38,7 +38,11 @@
 
 		<div class="todolist-order-mod" >
 
-			<VSearch v-show="false" classes="todolist-search-mod"></VSearch>
+			<VSearch 
+				classes="todolist-search-mod"
+				v-on:input="helloTest"
+				v-on:reset="helloTest"
+			></VSearch>
 
 			<ul class="order-mod" v-show="!eventsHelpBox.show">
 				<li 
