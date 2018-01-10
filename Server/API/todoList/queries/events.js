@@ -72,7 +72,7 @@ module.exports = {
 					skip: params.start, 
 					limit: params.limit,
 					sort: {
-						mtime: -1
+						stime: 1
 					}
 				},
 				(err, data) => {
