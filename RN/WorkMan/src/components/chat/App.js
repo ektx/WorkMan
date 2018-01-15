@@ -129,42 +129,8 @@ export const MainScreen = TabNavigator({
 	}
 })
 
-// const RootNavigator = StackNavigator({
-// 	Home: {
-// 		screen: MainScreenNavigator,
-// 		navigationOptions: ({ navigation }) => {
-// 			console.log(navigation)
-
-// 			return {
-// 				headerTitle: 'Home'
-// 			}
-// 		}
-// 	},
-// 	Chat: {
-// 		screen: ChatScreen,
-// 		navigationOptions: ({ navigation }) => {
-// 			alert(JSON.stringify(navigation))
-// 			const { state, setParams } = navigation
-// 			const isInfo = state.params.mode === '信息'
-// 			const { user } = state.params
-
-// 			return {
-// 				headerTitle: isInfo ? `${user}信息` : user,
-// 				headerRight: (
-// 					<Button 
-// 						title={isInfo ? '完成' : `${user}信息`}
-// 						onPress={() => setParams({
-// 							mode: isInfo ? 'none' : '信息'
-// 						})}
-// 					/>
-// 				)
-// 			}
-// 		}
-// 	}
-// })
 
 const styles = StyleSheet.create({
 
 })
 
-// export default RootNavigator
