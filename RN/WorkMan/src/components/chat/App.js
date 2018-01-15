@@ -5,28 +5,84 @@
  * RN > 0.49.3
  */
 
-import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
-import { TabNavigator, StackNavigator } from 'react-navigation'
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, Button, AsyncStorage } from 'react-native'
+import { TabNavigator, StackNavigator, NavigationActions } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 
-const ChatScreen = ({navigation}) => (
+export const ChatScreen = ({navigation}) => (
 	<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 		<Text>你好!{navigation.state.params.user}!</Text>
 	</View>
 )
 
-const RecentChatsScreen = ({navigation}) => (
-	<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-		<Text>最近聊天</Text>
-		<Button
-			// 动态传值
-			onPress={() => navigation.navigate('Chat', { user: '宝宝' })}
-			title="和 宝宝 聊天"
-		/>
-	</View>
-)
+// 写法一
+// const RecentChatsScreen = ({navigation}) => (
+// 	<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+// 		<Text>最近聊天</Text>
+// 		<Button
+// 			// 动态传值
+// 			onPress={() => navigation.navigate('Chat', { user: '宝宝' })}
+// 			title="和 宝宝 聊天"
+// 		/>
+// 		<Text></Text>
+// 	</View>
+// )
+
+// 写法二
+class RecentChatsScreen extends Component {
+
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			abc: 1
+		}
+
+		AsyncStorage.getItem('USER_INFO')
+		.then(res => {
+			console.log(res )
+		})
+		.catch(err => {
+			console.error(err)
+		})
+
+	}
+
+
+	async loginOut (navigation) {
+		const resetAction = NavigationActions.reset({
+			index: 0,
+			actions: [
+				NavigationActions.navigate({ routeName: 'Login' })
+			],
+			key: this.state
+		})
+		const info = await AsyncStorage.removeItem('USER_INFO')
+		this.props.navigation.dispatch(resetAction)
+	}
+
+
+	render() {
+		return (
+			<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+				<Text>最近聊天</Text>
+				<Button
+					// 动态传值
+					onPress={() => this.props.navigation.navigate('Chat', { user: '宝宝' })}
+					title="和 宝宝 聊天"
+				/>
+				<Button
+					onPress={() => this.loginOut()}
+					title="退出"
+					/>
+				<Text></Text>
+			</View>		
+		)
+	}
+}
+
 
 const AllContactsScreen = ({navigation}) => (
 	<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -44,7 +100,7 @@ const AllContactsScreen = ({navigation}) => (
 	</View>
 )
 
-const MainScreenNavigator = TabNavigator({
+export const MainScreen = TabNavigator({
 	Recent: {
 		screen: RecentChatsScreen,
 		navigationOptions: {
@@ -73,38 +129,42 @@ const MainScreenNavigator = TabNavigator({
 	}
 })
 
-const RootNavigator = StackNavigator({
-	Home: {
-		screen: MainScreenNavigator,
-		navigationOptions: {
-			headerTitle: 'Home'
-		}
-	},
-	Chat: {
-		screen: ChatScreen,
-		navigationOptions: ({ navigation }) => {
-			alert(JSON.stringify(navigation))
-			const { state, setParams } = navigation
-			const isInfo = state.params.mode === '信息'
-			const { user } = state.params
+// const RootNavigator = StackNavigator({
+// 	Home: {
+// 		screen: MainScreenNavigator,
+// 		navigationOptions: ({ navigation }) => {
+// 			console.log(navigation)
 
-			return {
-				headerTitle: isInfo ? `${user}信息` : user,
-				headerRight: (
-					<Button 
-						title={isInfo ? '完成' : `${user}信息`}
-						onPress={() => setParams({
-							mode: isInfo ? 'none' : '信息'
-						})}
-					/>
-				)
-			}
-		}
-	}
-})
+// 			return {
+// 				headerTitle: 'Home'
+// 			}
+// 		}
+// 	},
+// 	Chat: {
+// 		screen: ChatScreen,
+// 		navigationOptions: ({ navigation }) => {
+// 			alert(JSON.stringify(navigation))
+// 			const { state, setParams } = navigation
+// 			const isInfo = state.params.mode === '信息'
+// 			const { user } = state.params
+
+// 			return {
+// 				headerTitle: isInfo ? `${user}信息` : user,
+// 				headerRight: (
+// 					<Button 
+// 						title={isInfo ? '完成' : `${user}信息`}
+// 						onPress={() => setParams({
+// 							mode: isInfo ? 'none' : '信息'
+// 						})}
+// 					/>
+// 				)
+// 			}
+// 		}
+// 	}
+// })
 
 const styles = StyleSheet.create({
 
 })
 
-export default RootNavigator
+// export default RootNavigator

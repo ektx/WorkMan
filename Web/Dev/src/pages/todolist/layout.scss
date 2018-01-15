@@ -446,8 +446,7 @@
 .event-filter-methods {
 	display: flex;
 	padding: 5px;
-	margin: 0 5px;
-	border-top: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
 	& > label {
 		flex: 1;
@@ -456,5 +455,5 @@
 
 .todolist-search-mod {
 	width: 95%;
-	margin: .6em auto;
+	margin: .6em auto 0;
 }

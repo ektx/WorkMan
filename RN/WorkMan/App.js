@@ -1,23 +1,33 @@
 
 import React, { Component } from 'react'
-import { TabNavigator, StackNavigator } from 'react-navigation'
+import { View, Text, AsyncStorage } from 'react-native'
+import { MainNavigator, LoginNavigator } from './src/routes/index.js'
 
-import LoginScreen from './src/screen/Login.js'
-import ChatScreen from './src/components/chat/App.js'
+export default class App extends Component {
 
-const MainNavigator = StackNavigator({
-	Login: {
-		screen: LoginScreen,
-		navigationOptions: {
-			header: null
-		}
-	},
-	Main: {
-		screen: ChatScreen,
-		navigationOptions: {
-			header: null
+	constructor () {
+		super()
+
+		this.state = {
+			userInfo: ''
 		}
 	}
-})
 
-export default MainNavigator
+	componentWillMount() {
+		this.getUserInfo()
+	}
+
+	async getUserInfo () {
+		let userInfo = JSON.parse(await AsyncStorage.getItem('USER_INFO'))
+		this.setState({userInfo})
+	}
+
+	render () {
+		return (
+			<View style={{flex: 1}}>
+				{ this.state.userInfo && this.state.userInfo.token ? <MainNavigator/> : <LoginNavigator/>}
+			</View>
+		)
+	}
+}
+

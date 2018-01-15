@@ -1,6 +1,12 @@
 
 import React, { Component } from 'react'
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, StatusBar } from 'react-native'
+import { 
+	StyleSheet, 
+	View, TextInput, 
+	TouchableOpacity, 
+	Text, StatusBar,
+	AsyncStorage 
+} from 'react-native'
 import { NavigationActions } from 'react-navigation'
 
 export default class LoginForm extends Component {
@@ -37,16 +43,20 @@ export default class LoginForm extends Component {
 			body: JSON.stringify(this.state)
 		})
 		.then(res => res.json())
-		.then(data => {
+		.then(async data => {
 
 			if (data.status) {
 				const resetAction = NavigationActions.reset({
 					index: 0,
 					actions: [
-						NavigationActions.navigate({ routeName: 'Main' })
+						NavigationActions.navigate({ routeName: 'Home' })
 					],
 					key: this.state
 				})
+
+				this.state.token = data.token
+				// 保存用户登录
+				await AsyncStorage.setItem('USER_INFO', JSON.stringify(this.state)) 
 
 				this.props.navigation.dispatch(resetAction)
 			} else {

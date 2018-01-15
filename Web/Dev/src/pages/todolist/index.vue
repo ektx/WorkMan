@@ -40,9 +40,17 @@
 
 			<VSearch 
 				classes="todolist-search-mod"
+				:resetBtn="false"
 				v-on:input="helloTest"
 				v-on:reset="helloTest"
 			></VSearch>
+
+			<!-- 事件过滤区 -->
+			<div class="event-filter-methods">
+				<VRadio name="c" val="All" checked v-on:change="helloTest">全部</VRadio>
+				<VRadio name="c" val="done" v-on:change="helloTest">已完成</VRadio>
+				<VRadio name="c" val="will" v-on:change="helloTest">进行中</VRadio>
+			</div>
 
 			<ul class="order-mod" v-show="!eventsHelpBox.show">
 				<li 
@@ -65,12 +73,6 @@
 				</li>
 			</ul>
 
-			<!-- 事件过滤区 -->
-			<div v-show="false" class="event-filter-methods">
-				<VRadio name="c" val="All" checked v-on:change="helloTest">全部</VRadio>
-				<VRadio name="c" val="done" v-on:change="helloTest">已完成</VRadio>
-				<VRadio name="c" val="will" v-on:change="helloTest">进行中</VRadio>
-			</div>
 		</div>
 
 		<main class="todolist-events-mod">
