@@ -98,6 +98,7 @@ export default class LoginForm extends Component {
 					style={styles.input}
 					ref={(input) => this.passwordInput = input}
 					onChangeText={(pwd) => this.setState({ pwd })}
+					onSubmitEditing={() => this.onSubmitEvt()}
 				/>
 
 				<TouchableOpacity 

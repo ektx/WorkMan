@@ -4,7 +4,8 @@ import { Button, AsyncStorage } from 'react-native'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 
 import LoginScreen from '../screen/Login.js'
-import { MainScreen, ChatScreen } from '../components/chat/App.js'
+import { MainScreen } from '../screen/main.js'
+import { ChatScreen } from '../components/chat/App.js'
 
 /*
 	默认从登录页面开始
@@ -40,10 +41,8 @@ export const MainNavigator = StackNavigator({
 	Home: {
 		screen: MainScreen,
 		navigationOptions: ({ navigation }) => {
-			console.log(navigation)
-
 			return {
-				headerTitle: 'Home'
+				headerTitle: '事件'
 			}
 		}
 	},
