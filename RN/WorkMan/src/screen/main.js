@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
-import { TabNavigator } from 'react-navigation'
+import { View, Text, Button, AsyncStorage } from 'react-native'
+import { TabNavigator, NavigationActions } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 class HomeScreen extends Component {
@@ -9,10 +9,26 @@ class HomeScreen extends Component {
 		super(props)
 	}
 
+	async loginout (navigation) {
+		const resetAction = NavigationActions.reset({
+			index: 0,
+			actions: [
+				NavigationActions.navigate({ routeName: 'Login' })
+			],
+			key: this.state
+		})
+		const info = await AsyncStorage.removeItem('USER_INFO')
+		this.props.navigation.dispatch(resetAction)
+	}
+
 	render () {
 		return (
 			<View>
 				<Text>Hello world</Text>
+				<Button
+					onPress={() => this.loginout()}
+					title="Exit"
+				/>
 			</View>
 		)
 	}
@@ -36,6 +52,7 @@ export const MainScreen = TabNavigator({
 	Home: {
 		screen: HomeScreen,
 		navigationOptions: {
+			title: '事件',
 			tabBarLabel: '事件',
 			tabBarIcon: ({tintColor, focused}) => (
 				<Ionicons
@@ -49,6 +66,7 @@ export const MainScreen = TabNavigator({
 	List: {
 		screen: EventListScreen,
 		navigationOptions: {
+			title: '我',
 			tabBarLabel: '我',
 			tabBarIcon: ({tintColor, focused}) => (
 				<Ionicons

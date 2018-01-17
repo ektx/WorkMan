@@ -20,7 +20,8 @@ export const LoginNavigator = StackNavigator({
 	Home: {
 		screen: MainScreen,
 		navigationOptions: {
-			header: null
+			headerTitle: '事件'
+			// header: null
 		}
 	}
 }, {
@@ -41,9 +42,10 @@ export const MainNavigator = StackNavigator({
 	Home: {
 		screen: MainScreen,
 		navigationOptions: ({ navigation }) => {
-			return {
-				headerTitle: '事件'
-			}
+			console.log(navigation.state.routes.routeName)
+			// return {
+			// 	headerTitle: navigation.state.routes.routeName
+			// }
 		}
 	},
 	Chat: {
@@ -68,7 +70,8 @@ export const MainNavigator = StackNavigator({
 		}
 	}
 }, {
-	initialRouteName: 'Home'
+	initialRouteName: 'Home',
+	headerMode: 'screen'
 })
 
 // const defaultGetStateForAction = MainNavigator.router.getStateForAction
