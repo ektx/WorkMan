@@ -1,0 +1,8 @@
+{
+	"success": true,
+	"status": 200,
+	"msg": "服务请求成功!",
+	"data": {
+		"name":  "Welcome Use Mock!"
+	}
+}

@@ -1,0 +1,103 @@
+@charset 'utf-8';
+
+.app-content {
+	height: 100%;
+	width: 100%;
+	display: grid;
+	grid-template-rows: 40px 1fr;
+	grid-template-columns: 1fr;
+
+	& > header {
+		display: flex;
+		height: 40px;
+		width: 100%;
+		padding: 0 1rem;
+		box-sizing: border-box;
+		background: rgba(255, 255, 255, .95);
+		z-index: 10000;
+	}
+}
+
+.app-nav-mod {
+	flex: 1;
+	align-items: center;
+}
+
+.app-body-mod {
+	display: flex;
+	position: relative;
+	z-index: 1;
+}
+
+/* 右侧用户信息 */
+.header-side-box {
+	float: right;
+	font-size: 1.2rem;
+	line-height: 40px;
+	color: #333;
+}
+.header-nav-box {
+	position: relative;
+
+	&.closeBox{
+
+		&:before {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: transparent;
+			z-index: 1;
+			content: '';
+			display: block;
+		}
+
+		header {
+			background: rgba(255, 255, 255, .5);
+		}
+	}
+
+	header {
+		position: relative;
+		z-index: 2;
+		padding: 0 .5rem;
+		user-select: none;
+		cursor: pointer;
+	}
+
+	ul {
+		position: absolute;
+		right: 0;
+		top: 100%;
+		z-index: 1000;
+		min-width: 70px;
+		padding: 2px 0;
+		background: rgba(255, 255, 255, .85);
+		white-space: nowrap;
+		border-radius: 0 0 3px 3px;
+		box-shadow: 1px 2px 4px rgba(0,0,0,.1);
+
+		li {
+			min-width: 100px;
+			max-width: 150px;
+			padding: 3px 5px;
+			line-height: 2rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			cursor: pointer;
+
+			&:hover {
+				background: #ddd;
+			}
+		}
+	}
+
+}
+
+@supports (-webkit-backdrop-filter: blur(5px)) {
+	.app-content header {
+		background: rgba(255, 255, 255, .85);
+		-webkit-backdrop-filter: blur(5px);
+	}	
+}

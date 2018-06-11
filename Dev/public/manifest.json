@@ -1,0 +1,14 @@
+{
+    "short_name": "WorkMan",
+    "name": "WorkMan",
+    "icons": [
+        {
+            "src": "img/wm@480x.png",
+            "type": "image/png",
+            "sizes": "480x480"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#FFFFFF"
+}

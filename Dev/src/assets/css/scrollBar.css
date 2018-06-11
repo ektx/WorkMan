@@ -1,0 +1,16 @@
+/*定义滚动条整体大小*/
+::-webkit-scrollbar {
+	width: 2px;
+}
+/*主样式*/
+::-webkit-scrollbar-track-piece {
+	background-color: transparent;
+}
+/*滑块*/
+::-webkit-scrollbar-thumb {
+	background-color: #aaa;
+}
+/* 窗口失去焦点时 */
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255, 255, 255, 0);
+}

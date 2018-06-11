@@ -1,0 +1,6 @@
+.c-day-content {
+	transition: backgroundColor .3s ease;
+	&:hover {
+		background-color: rgba(255, 255, 255, .3)
+	}
+}

@@ -1,0 +1,28 @@
+/* 自定义富文本样式 */
+.inner-box {
+	flex: 1;
+	overflow: hidden;
+
+	.quill-editor {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+
+		.ql-container {
+			border: none;
+
+			.ql-editor {
+				padding: 12px 0;
+			}
+		}
+
+		.ql-toolbar {
+			position: sticky;
+			z-index: 1;
+			padding: 8px 0;
+			border-top: none;
+			border-left: none;
+			border-right: none;
+		}
+	}
+}
