@@ -1,5 +1,7 @@
+// node_modules mod
 import Vue from 'vue'
 
+// localhost mod
 import App from './App'
 import router from './router'
 import store from './store'
@@ -7,6 +9,9 @@ import Axios from '@/assets/js/myAxios'
 import iziToast from '@/assets/js/myIziToast'
 import Quill from 'quill'
 import calendar from '../public/js/calendar'
+
+// node_modules css
+import 'iview/dist/styles/iview.css'
 
 window.Quill = Quill
 window.calendar = calendar

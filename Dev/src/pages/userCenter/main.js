@@ -1,7 +1,9 @@
 import { mapMutations } from 'vuex'
+import { Tabs, TabPane } from 'iview'
 
 export default {
     name: 'userCenter',
+    components: { Tabs, TabPane },
     data () {
         return {
 
