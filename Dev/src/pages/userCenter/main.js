@@ -1,12 +1,12 @@
 import { mapMutations } from 'vuex'
-import { Tabs, TabPane } from 'iview'
+import VMacInput from '../../components/VMacInput'
 
 export default {
     name: 'userCenter',
-    components: { Tabs, TabPane },
+    components: { VMacInput },
     data () {
         return {
-
+            name: "zwl"
         }
     },
     activated: function () {
@@ -21,6 +21,6 @@ export default {
         })
     },
     methods: {
-        ...mapMutations(['MutaionMacOSTopbar'])
+        ...mapMutations(['MutaionMacOSTopbar']),
     }
 }

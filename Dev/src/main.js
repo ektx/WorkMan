@@ -1,5 +1,6 @@
 // node_modules mod
 import Vue from 'vue'
+import iView from 'iview'
 
 // localhost mod
 import App from './App'
@@ -12,6 +13,8 @@ import calendar from '../public/js/calendar'
 
 // node_modules css
 import 'iview/dist/styles/iview.css'
+
+Vue.use(iView)
 
 window.Quill = Quill
 window.calendar = calendar
