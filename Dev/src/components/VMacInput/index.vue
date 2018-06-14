@@ -1,165 +1,34 @@
 <template>
-    <div :class="['v-mac-input', {'showErr': showErr}]">
-        <div :class="['main', {'focus': focus, 'hasVal': hasVal}]">
-            <span class="title">{{title}}</span>
-            <input 
-                :type="type"
-                @focus="VMacIntFocus($event)"
-                @blur="VMacIntBlur($event)"
-                @input="VMacIntInput($event)"
-                @keyup="VMacIntKeyUp($event)"
-                :value="defValue"
-            />
+    <div :class="['v-mac-input', vhelp.status]">
+        <div :class="['main', {'focus': focus, 'hasVal': defValue.length > 0}]">
+            <div class="input-area">
+                <span class="title">{{title}}</span>
+                <input 
+                    :type="iType"
+                    @focus="VMacIntFocus($event)"
+                    @blur="VMacIntBlur($event)"
+                    @input="VMacIntInput($event)"
+                    @keyup="VMacIntKeyUp($event)"
+                    :value="defValue"
+                />
+            </div>
+            <ul class="status-area">
+                <li v-show="type === 'password'" class="passwd">
+                    <svg v-show="!showPwd" @click="showPwd = !showPwd" class="show" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" ><path d="M511.36862 388.949476c-58.97109 0-104.06717 45.096081-104.06717 104.06717s45.096081 104.06717 104.06717 104.06717 104.06717-45.095058 104.06717-104.06717S570.33971 388.949476 511.36862 388.949476zM511.36862 666.461931c-97.129154 0-173.445284-76.31613-173.445284-173.445284 0-97.129154 76.31613-173.445284 173.445284-173.445284s173.445284 76.31613 173.445284 173.445284C684.813904 590.145801 608.497775 666.461931 511.36862 666.461931zM511.36862 232.848209c-173.445284 0-322.608535 107.536178-381.579625 260.168438 58.97109 152.632259 208.134341 260.168438 381.579625 260.168438s322.608535-107.536178 381.579625-260.168438C833.977155 340.384387 684.813904 232.848209 511.36862 232.848209z" ></path></svg>
+                    <svg v-show="showPwd" @click="showPwd = !showPwd" class="hide" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M505.046634 388.622018l107.71321 107.71321c0-3.474125 0-3.474125 0-6.949272 0-59.069327-45.169759-104.239086-104.239086-104.239086C508.521782 388.622018 508.521782 388.622018 505.046634 388.622018zM355.63779 416.419108l52.119031 52.120055c0 10.42442 0 17.373693 0 24.322965 0 59.068304 45.169759 104.238063 104.239086 104.238063 6.949272 0 13.898545 0 24.321942-3.475148l52.119031 52.120055c-24.321942 13.898545-48.644907 20.847817-76.441996 20.847817-97.289814 0-173.730787-76.441996-173.730787-173.730787C338.26512 465.064015 345.214393 440.742073 355.63779 416.419108zM164.534334 225.315652l79.916121 79.916121 13.898545 13.898545c-59.068304 45.169759-104.239086 104.238063-128.561028 173.730787 59.068304 152.882969 208.477148 260.59618 382.208958 260.59618 52.119031 0 104.239086-10.42442 152.882969-27.79709l13.898545 13.898545 100.763938 100.763938 45.169759-45.169759-615.008049-615.008049L164.534334 225.315652zM511.995907 319.130318c97.289814 0 173.730787 76.441996 173.730787 173.730787 0 20.847817-3.475148 45.169759-13.898545 62.543452l100.763938 100.763938c52.119031-45.170782 93.814666-100.763938 118.137631-163.30739-59.068304-152.883993-208.477148-260.597203-382.208958-260.597203-48.644907 0-93.814666 10.423397-138.985448 24.321942l76.441996 76.441996C466.826148 322.604442 491.14809 319.130318 511.995907 319.130318z" ></path></svg>
+                </li>
+                <li class="right">
+                    <svg t="1528946771998" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"  xmlns:xlink="http://www.w3.org/1999/xlink" ><path d="M994.305189 166.160367c-39.944757-40.916898-104.705714-40.916898-144.652518 0L391.586025 635.503848 174.610318 413.1916c-39.946804-40.935318-104.706737-40.935318-144.643308 0-39.956014 40.917922-39.956014 107.283422 0 148.214646l289.295825 296.41906c39.945781 40.936341 104.700597 40.936341 144.647401 0l530.394952-543.450293C1034.251993 273.447882 1034.251993 207.091592 994.305189 166.160367z" ></path></svg>
+                </li>
+                <li class="clear" v-show="clearbtn" @click="clearVal">
+                    <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M512 64C264.64 64 64 264.576 64 512c0 247.36 200.64 448 448 448 247.488 0 448-200.64 448-448C960 264.576 759.488 64 512 64zM698.24 640.128c16.64 16.64 17.152 43.2 1.024 59.264-16 16.128-42.496 15.552-59.136-1.088L512 570.176 383.872 698.24c-16.64 16.704-43.264 17.216-59.264 1.216-16-16.064-15.488-42.624 1.28-59.328l128-128L325.76 384C308.992 367.232 308.608 340.736 324.608 324.672 340.608 308.544 367.232 309.12 383.872 325.76l128.192 128.128 128.064-128.064c16.512-16.768 43.264-17.216 59.264-1.152 16 16 15.616 42.56-1.152 59.264L570.112 512 698.24 640.128z" ></path></svg>
+                </li>
+                
+            </ul>
         </div>
-        <p class="err">something was error!</p>
+        <p class="help">{{vhelp.mes}}</p>
     </div>
 </template>
 
-<script>
-export default {
-    name: 'VMacInput',
-    props: {
-        value: {
-            type: [String, Number],
-            default: ''
-        },
-        type: {
-            type: String,
-            default: 'text'
-        },
-        title: {
-            type: String,
-            default: ''
-        }
-    },
-    data () {
-        return {
-            focus: false,
-            hasVal: false,
-            defValue: '',
-            showErr: false
-        }
-    },
-    mounted: function () {
-        console.log(this.value)
-
-        if (this.value) {
-            this.hasVal = true
-            this.defValue = this.value
-        }
-    },
-    methods: {
-        VMacIntFocus (evt) {
-            this.focus = true
-            this.showErr = false
-        },
-
-        VMacIntBlur (evt) {
-            this.focus = false
-        },
-
-        VMacIntInput (evt) {
-            let value = evt.target.value
-
-            if (value.length > 0) {
-                this.hasVal = true
-                this.showErr = false
-            } else {
-                this.hasVal = false
-            }
-            this.defValue = value
-
-            this.$emit('input', value)
-        },
-
-        VMacIntKeyUp (evt) {
-            if (evt.which === 13 || evt.key === 'Enter') {
-                if (!this.hasVal) {
-                    this.showErr = true
-                }
-            }
-        }
-    }
-}
-</script>
-
-<style lang="less">
-
-.v-mac-input {
-    position: relative;
-    padding: 20px 0;
-    overflow: hidden;
-
-    p.err {
-        position: absolute;
-        visibility: hidden;
-        font-size: 12px;
-        color: #F44336;
-        opacity: 0;
-        transform: translate3d(0, -20px, 0);
-        transition: opacity 300ms, transform 300ms, visibility 300ms;
-    }
-
-    .main {
-        position: relative;
-        border-bottom: 1px solid #ddd;
-
-        .title {
-            position: absolute;
-            top: 0;
-            left: 0;
-            line-height: 30px;
-            font-size: 14px;
-            color: #333;
-            box-sizing: border-box;
-            transition: font-size 300ms, transform 300ms;
-            pointer-events: none;
-        }
-        input {
-            width: 100%;
-            border: none;
-            font-size: 14px;
-            line-height: 28px;
-            outline: none;
-            background: transparent;
-        }
-
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 0%;
-            height: 100%;
-            border-bottom: 2px solid #2196F3;
-            transition: width 300ms ease;
-        }
-        &.focus {
-            &:after {
-                width: 100%;
-            }
-        }
-        &.focus,
-        &.hasVal {
-            .title {
-                font-size: 12px;
-                color: #666;
-                transform: translate3d(0, -24px, 0);
-            }
-        }
-    }
-
-    &.showErr {
-        .main::after {
-            border-color: #F44336;
-        }
-
-        .err {
-            visibility: visible;
-            opacity: 1;
-            transform: translate3d(0, 0, 0);
-        }
-    }
-}
-</style>
+<script src="./main.js"></script>
+<style lang="less" scoped src="./layout.less"></style>
