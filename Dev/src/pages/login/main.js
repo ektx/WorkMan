@@ -9,13 +9,6 @@ export default {
 			errMsg: ''
 		}
 	},
-	directives: {
-		focus: {
-			inserted: function(el, binding) {
-				if (!el.value) el.focus()
-			}
-		}
-	},
 	// 当DOM结构挂载到指定元素之后调用
 	mounted: function() {
 		// 如果本地存储中有用户名称在
@@ -27,15 +20,16 @@ export default {
 	methods: {
 		loginEvt () {
 			this.errMsg = '';
+			let inputs = document.querySelectorAll('input')
 
 			if (!this.user) {
-				document.querySelectorAll('input')[0].focus()
+				inputs[0].focus()
 				return
 			}
 
 			if (!this.pawd) {
 				this.errMsg = '请输入密码'
-				document.querySelectorAll('input')[1].focus() 
+				inputs[1].focus() 
 				return
 			}
 			
