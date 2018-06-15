@@ -1,6 +1,6 @@
 @errorColor: #F44336;
 @warnColor: #FF9800;
-
+@fontColor: #333;
 
 .v-mac-input {
     position: relative;
@@ -11,7 +11,7 @@
         position: absolute;
         visibility: hidden;
         font-size: 12px;
-        color: #777;
+        color: @fontColor;
         opacity: 0;
         transform: translate3d(0, -20px, 0);
         transition: opacity 300ms, transform 300ms, visibility 300ms;
@@ -19,19 +19,21 @@
 
     .main {
         position: relative;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid rgba(0, 0, 0, .2);
         display: flex;
         align-items: center;
         
         .input-area {
             flex: 1;
+            color: @fontColor;
+
             .title {
                 position: absolute;
                 top: 0;
                 left: 0;
                 line-height: 30px;
                 font-size: 15px;
-                color: #333;
+                color: inherit;
                 box-sizing: border-box;
                 transition: font-size 300ms, transform 300ms;
                 pointer-events: none;
@@ -40,6 +42,7 @@
                 width: 100%;
                 border: none;
                 font-size: 15px;
+                color: inherit;
                 line-height: 28px;
                 outline: none;
                 background: transparent;
@@ -115,6 +118,28 @@
 
         .help {
            color: @errorColor;
+        }
+    }
+
+    // 暗色背景下效果
+    &.light {
+        p.help {
+            color: #ddd
+        }
+        .main {
+            border-bottom-color: rgba(255, 255, 255, .4);
+            .input-area {
+                color: #fff;
+            }
+            &.focus,
+            &.hasVal {
+                .title {
+                    color: rgba(255, 255, 255, .5);
+                }
+            }
+            &:after {
+                background: rgba(255, 255, 255, .8);
+            }
         }
     }
 }

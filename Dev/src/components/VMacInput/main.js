@@ -48,6 +48,11 @@ export default {
         }
     },
     watch: {
+        // 动态跟踪值的变化
+        value (val, old) {
+            this.defValue = val
+        },
+        // 输出值的内容
         defValue (val, old) {
             this.$emit('input', val)
         },
