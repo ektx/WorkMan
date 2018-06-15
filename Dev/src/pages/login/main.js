@@ -1,6 +1,7 @@
-
+import VMacInput from '../../components/VMacInput'
 export default {
 	name: 'login',
+	components: { VMacInput },
 	data () {
 		return {
 			user: '',

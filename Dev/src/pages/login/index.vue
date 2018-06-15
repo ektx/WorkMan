@@ -11,18 +11,9 @@
 
 				<p v-show="errMsg" class="logo-error">{{errMsg}}</p>
 
-				<dl>
-					<dd>
-						<input type="text" placeholder="帐号" v-model.trim="user" v-focus>
-					</dd>
-				</dl>
-
-				<dl>
-					<dd>
-						<input type="password" placeholder="密码" v-model.trim="pawd" v-focus>
-					</dd>
-				</dl>
-
+				<VMacInput class="light" title="帐号" v-model.trim="user" clearbtn/>
+				<VMacInput class="light" title="密码" type="password" v-model.trim="pawd"/>
+				
 				<dl><button type="submit">登录</button></dl>
 			</form>
 		</div>
