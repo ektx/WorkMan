@@ -6,6 +6,8 @@ import Vuex from 'vuex'
 import VContextmenu from '@ektx/v-contextmenu/store'
 // 导入菜单 mutaion
 import { MutaionMacOSTopbar } from '@ektx/v-macos'
+// 用户中心数据
+import userCenter from '../pages/userCenter/store'
 
 Vue.use(Vuex)
 
@@ -14,6 +16,7 @@ export default new Vuex.Store({
 	mutations: { },
 	modules: {
 		VContextmenu,
-		MutaionMacOSTopbar
+		MutaionMacOSTopbar,
+		userCenter
 	}
 })
