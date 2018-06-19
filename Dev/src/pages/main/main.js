@@ -1,5 +1,5 @@
 import { VMacOSDesktop } from '@ektx/v-macos'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
     name: 'index',
@@ -10,7 +10,7 @@ export default {
         return {
             userInfo: [
                 {
-                    title: localStorage.USER,
+                    title: '',
                     children: [
                         {
                             title: '用户中心',
@@ -24,6 +24,16 @@ export default {
                     ]
                 }
             ]
+        }
+    },
+    computed: {
+        userName () {
+            return this.$store.getters['userCenter/getInfo']('name')
+        }
+    },
+    watch: {
+        userName (val, old) {
+            this.userInfo[0].title = val
         }
     },
     mounted: function () {

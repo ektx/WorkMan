@@ -1,5 +1,5 @@
 <template>
-	<VMacOSDesktop hasRootNav/>
+	<VMacOSDesktop d="userInfos" hasRootNav/>
 </template>
 
 <script src="./main.js"></script>
