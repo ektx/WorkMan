@@ -1,6 +1,6 @@
 <template>
     <div :class="['v-mac-input', vhelp.status]">
-        <div :class="['main', {'focus': focus, 'hasVal': defValue}]">
+        <div :class="['main', {'focus': focus, 'hasVal': defValue,'readonly-type': readonly }]">
             <div class="input-area">
                 <span class="title">{{title}}</span>
                 <input 
