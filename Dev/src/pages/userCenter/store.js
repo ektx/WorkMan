@@ -1,3 +1,5 @@
+import Axios from '@/assets/js/myAxios'
+
 export default {
     namespaced: true,
     state: {
@@ -17,6 +19,16 @@ export default {
     mutations: {
         setUserInfo (state, data) {
             state.user = Object.assign({}, state.user, data)
+        }
+    },
+    actions: {
+        getUserInfo ({commit}, callback) {
+            Axios.post('/api', {
+                query: `{ findUser { success mes data{ account name email ico power reset} } } `
+            }).then(res => {
+                commit('setUserInfo', res.data.findUser.data )
+                if (callback) callback()
+            })
         }
     }
 }

@@ -1,5 +1,5 @@
 import { VMacOSDesktop } from '@ektx/v-macos'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
     name: 'index',
@@ -10,7 +10,7 @@ export default {
         return {
             userInfo: [
                 {
-                    title: '',
+                    title: this.$store.getters['userCenter/getInfo']('name'),
                     children: [
                         {
                             title: '用户中心',
@@ -28,7 +28,7 @@ export default {
     },
     computed: {
         userName () {
-            return this.$store.getters['userCenter/getInfo']('name')
+            return this.$store.getters['userCenter/getInfo']('name') 
         }
     },
     watch: {
@@ -37,13 +37,16 @@ export default {
         }
     },
     mounted: function () {
-        this.MutaionMacOSTopbar({
-            type: 'aside',
-            data: this.userInfo
+        this.$store.dispatch('userCenter/getUserInfo', () => {
+            this.MutaionMacOSTopbar({
+                type: 'aside',
+                data: this.userInfo
+            })
         })
     },
     methods: {
         ...mapMutations(['MutaionMacOSTopbar']),
+        ...mapActions(['userCenter/getUserInfo']),
         
         // 退出功能
         loginOut () {

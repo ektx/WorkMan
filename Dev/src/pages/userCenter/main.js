@@ -58,13 +58,13 @@ export default {
 
     },
     mounted: function () {
-        this.$axios.post('/api', {
-            query: `{ findUser { success mes data{ account name email ico power reset} } } `
-        }).then(res => {
-            console.log(res)
-            // this.userInfo = res.data.findUser
-            this['userCenter/setUserInfo']( res.data.findUser.data )
-        })
+        // this.$axios.post('/api', {
+        //     query: `{ findUser { success mes data{ account name email ico power reset} } } `
+        // }).then(res => {
+        //     console.log(res)
+        //     // this.userInfo = res.data.findUser
+        //     this['userCenter/setUserInfo']( res.data.findUser.data )
+        // })
     },
     methods: {
         ...mapMutations(['MutaionMacOSTopbar', 'userCenter/setUserInfo']),
