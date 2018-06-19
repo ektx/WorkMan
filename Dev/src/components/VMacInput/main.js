@@ -17,6 +17,10 @@ export default {
             type: Boolean,
             default: false
         },
+        readonly: {
+            type: Boolean,
+            default: false
+        },
         help: {
             type: Object,
             default: function () {
@@ -100,10 +104,12 @@ export default {
         },
 
         verification () {
-            if (this.required) {
-                this.vhelp = {
-                    status: 'error',
-                    mes: '此项不能为空'
+            if (!this.defValue) {
+                if (this.required) {
+                    this.vhelp = {
+                        status: 'error',
+                        mes: '此项不能为空'
+                    }
                 }
             }
         }
