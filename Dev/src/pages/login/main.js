@@ -1,4 +1,6 @@
 import VMacInput from '../../components/VMacInput'
+import { mapMutations } from 'vuex'
+
 export default {
 	name: 'login',
 	components: { VMacInput },
@@ -11,6 +13,8 @@ export default {
 	},
 	// 当DOM结构挂载到指定元素之后调用
 	mounted: function() {
+
+		console.log(this.$store.getters['userCenter/getInfo']('account'))
 		// 如果本地存储中有用户名称在
 		// 我们自动添加登录用户名
 		if (localStorage.USER) {
@@ -18,6 +22,8 @@ export default {
 		}
 	},
 	methods: {
+		...mapMutations(['userCenter/setUserInfo']),
+
 		loginEvt () {
 			this.errMsg = '';
 			let inputs = document.querySelectorAll('input')
@@ -37,9 +43,12 @@ export default {
 				user: this.user,
 				pwd: this.pawd
 			}).then(res => {
+				console.log(res)
 				if (res.status) {
 					localStorage.TOKEN = res.token
 					localStorage.USER = this.user
+
+					this['userCenter/setUserInfo'](res.data)
 
 					this.$router.push({path: '/'})
 				} else {
