@@ -3,7 +3,6 @@
         <Tabs>
             <TabPane label="基础信息">
                 <div class="my-info-form">
-                    <form action="ht"></form>
                     <form >
                         <VMacInput title="账号" :value="userInfo.account" :help="nameHelp" readonly/>
                         <VMacInput title="用户名" v-model="userInfo.name" :help="nameHelp"/>
