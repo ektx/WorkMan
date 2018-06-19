@@ -84,7 +84,7 @@ export default {
                     email: "${this.userInfo.email}"
                 }){success mes}}`
             }).then(res => {
-                console.log(res)
+                this['userCenter/setUserInfo']( this.userInfo )
             })
         }
     }
