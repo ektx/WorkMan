@@ -4,6 +4,7 @@
         <Tabs>
             <TabPane label="基础信息">
                 <div class="my-info-form">
+                    <VMacInput title="用户名" v-model="name" type="search" readonly/>
                     <VMacInput title="用户名" v-model="name" type="search"/>
                     <div class="row">
                         <span class="title">权限</span>
