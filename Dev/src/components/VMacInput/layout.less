@@ -46,6 +46,11 @@
                 line-height: 28px;
                 outline: none;
                 background: transparent;
+
+                &[readonly] {
+                    color: #777;
+                    cursor: default
+                }
             }
 
         }
@@ -74,12 +79,6 @@
             height: 0;
             background: #2196F3;
             transition: height 300ms ease;
-        }
-        &.readonly-type{
-            border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-            input{
-                color: #777;
-            }
         }
     }
 
