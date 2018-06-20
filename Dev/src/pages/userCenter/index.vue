@@ -34,6 +34,7 @@
                         <p>
                             <VMacInput title="确认密码" v-model="surepwd" type="password" @blur="verifyPwdSure" :help="surePwdHelp"/>
                         </p>
+                        <Button @click="updatePwd" long>保存</Button>
                     </form>
                 </div>
             </TabPane>

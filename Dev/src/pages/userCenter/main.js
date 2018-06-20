@@ -85,14 +85,9 @@ export default {
         verifyPwd () {
             console.log(this.pwd)
             let reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
-            if(this.pwd.length<6||this.pwd.length>16){
+            if(this.pwd===''){
                 this.pwdHelp = {
-                    mes: '密码长度为6-16个字符',
-                    status: 'error'
-                }
-            }else if(!reg.test(this.pwd)) {
-                this.pwdHelp = {
-                    mes: '密码应为数字和字母的组合',
+                    mes: '此项不能为空',
                     status: 'error'
                 }
             }else{
@@ -104,7 +99,12 @@ export default {
         },
         verifyPwdSure () {
             console.log(this.surepwd)
-            if(this.surepwd === this.pwd){
+            if(this.surepwd===''){
+                this.surePwdHelp = {
+                    mes: '此项不能为空',
+                    status: 'error'
+                }
+            }else if(this.surepwd === this.pwd){
                 this.surePwdHelp = {
                     mes: '',
                     status: 'success'
@@ -123,6 +123,18 @@ export default {
                 query: `mutation {UserUpdate(data:{
                     name: "${this.userInfo.name}",
                     email: "${this.userInfo.email}"
+                }){success mes}}`
+            }).then(res => {
+                console.log(res)
+            })
+        },
+
+
+        // 修改密码
+        updatePwd () {
+            this.$axios.post('/api', {
+                query: `mutation {UserUpdate(data:{
+                    pwd: "${this.pwd}"
                 }){success mes}}`
             }).then(res => {
                 console.log(res)
