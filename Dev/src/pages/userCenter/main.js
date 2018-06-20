@@ -3,12 +3,19 @@ import VMacInput from '../../components/VMacInput'
 
 export default {
     name: 'userCenter',
-    components: { VMacInput },
+    components: { 
+        VMacInput
+     },
     data () {
         return {
             nameHelp: {},
+            pwdHelp:{},
+            surePwdHelp:{},
             nameErr: "Something was error!",
-            pwd: '12345',
+            pwd: '',
+            pwdError: '',
+            surepwd: '',
+            surepwdError: '',
             pwdErr: ''
         }
     },
@@ -74,6 +81,40 @@ export default {
             console.log(this.pwd)
 
             this.pwd = evt.target.value
+        },
+        verifyPwd () {
+            console.log(this.pwd)
+            let reg = new RegExp(/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/);
+            if(this.pwd.length<6||this.pwd.length>16){
+                this.pwdHelp = {
+                    mes: '密码长度为6-16个字符',
+                    status: 'error'
+                }
+            }else if(!reg.test(this.pwd)) {
+                this.pwdHelp = {
+                    mes: '密码应为数字和字母的组合',
+                    status: 'error'
+                }
+            }else{
+                this.pwdHelp = {
+                    mes: '',
+                    status: 'success'
+                }
+            }
+        },
+        verifyPwdSure () {
+            console.log(this.surepwd)
+            if(this.surepwd === this.pwd){
+                this.surePwdHelp = {
+                    mes: '',
+                    status: 'success'
+                }
+            }else{
+                this.surePwdHelp = {
+                    mes: '密码不一致',
+                    status: 'error'
+                }
+            }
         },
 
         // 更新用户信息

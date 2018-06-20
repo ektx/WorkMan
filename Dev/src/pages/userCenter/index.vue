@@ -25,7 +25,18 @@
                 </form>
             </TabPane>
             
-            <TabPane label="密码管理">B</TabPane>
+            <TabPane label="密码管理">
+                <div class="my-info-pass">
+                    <form action="">
+                        <p>
+                            <VMacInput title="密码" v-model="pwd"  type="password" @blur="verifyPwd" :help="pwdHelp"/>
+                        </p>
+                        <p>
+                            <VMacInput title="确认密码" v-model="surepwd" type="password" @blur="verifyPwdSure" :help="surePwdHelp"/>
+                        </p>
+                    </form>
+                </div>
+            </TabPane>
         </Tabs>
     </div>
 </template>
