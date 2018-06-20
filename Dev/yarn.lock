@@ -661,16 +661,9 @@
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/@ektx/v-contextmenu/-/v-contextmenu-0.2.7.tgz#3b98135986b1bd60237696c32699e9ade2c4ba9b"
 
-"@ektx/v-macos@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@ektx/v-macos/-/v-macos-0.0.6.tgz#2a12a92302b3d99e8db9b07c526d53aee7306d03"
-  dependencies:
-    "@ektx/v-contextmenu" "^0.2.7"
-    "@ektx/v-menubar" "0.0.2"
-
-"@ektx/v-menubar@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@ektx/v-menubar/-/v-menubar-0.0.2.tgz#387f7ba55d4ee1f7ff94e84264ac4c884037e195"
+"@ektx/v-menubar@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@ektx/v-menubar/-/v-menubar-0.0.3.tgz#283bde34082f0738c0973de68e4dbe05be2b5a16"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

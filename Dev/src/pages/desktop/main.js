@@ -80,12 +80,12 @@ export default {
         }
     },
     activated: function () {
-        this.MutaionMacOSTopbar({
+        this['Main/setNav']({
             type: 'main',
             data: this.navs
         })
     },
     methods: {
-        ...mapMutations(['MutaionMacOSTopbar']),
+        ...mapMutations(['Main/setNav']),
     }
 }

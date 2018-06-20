@@ -113,30 +113,13 @@ export default {
         }).catch(err => {
             console.error(err)
         })
+
+        this['Main/setToAlive']('todolist')
+
+        this.setMainNav()
     },
     activated: function () {
-        this.MutaionMacOSTopbar({
-            type: 'main',
-            data: [
-                {
-                    title: '计划',
-                    to: '/todoList'
-                },
-                {
-                    title: '文件',
-                    children: [
-                        {
-                            title: '新建事件',
-                            fun: this.addOneEvent
-                        },
-                        {
-                            title: '新建类别',
-                            fun: this.addNewType
-                        }
-                    ]
-                }
-            ]
-        })
+        this.setMainNav()        
     },
     watch: {
         /* 类别切换监听功能 */
@@ -214,7 +197,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['MutaionMacOSTopbar']),
+        ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive']),
 
         // 添加一个新的分类
         addNewType: function () {
@@ -821,6 +804,44 @@ export default {
             this.holdEvent.etime = val.end
             this.saveInsertData()
         },
+
+        exit () {
+            this.$router.push({path: '/'})
+            this['Main/removeAlive']('todolist')
+        },
+
+        setMainNav () {
+            this['Main/setNav']({
+                type: 'main',
+                data: [
+                    {
+                        title: '计划',
+                        children: [
+                            {
+                                title: '退出',
+                                fun: this.exit
+                            }
+                        ]
+                    },
+                    {
+                        title: '文件',
+                        children: [
+                            {
+                                title: '新建事件',
+                                fun: this.addOneEvent
+                            },
+                            {
+                                title: '新建类别',
+                                fun: this.addNewType
+                            }
+                        ]
+                    }
+                ]
+            })
+        }
+    },
+    destroyed: function() {
+        console.log('sss')
     }
 }
 

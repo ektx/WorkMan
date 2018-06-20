@@ -1,10 +1,12 @@
-import { VMacOSDesktop } from '@ektx/v-macos'
 import { mapMutations, mapState, mapActions } from 'vuex'
+import VContextmenu from '@ektx/v-contextmenu'
+import VMenuBar from '@ektx/v-menubar'
 
 export default {
-    name: 'index',
+    name: 'Main',
     components: {
-        VMacOSDesktop
+        VContextmenu,
+        VMenuBar
     },
     data () {
         return {
@@ -29,7 +31,12 @@ export default {
     computed: {
         userName () {
             return this.$store.getters['userCenter/getInfo']('name') 
-        }
+        },
+        ...mapState('Main', {
+            mainNav: state => state.mainNav,
+            asideNav: state => state.asideNav,
+            keepAlive: state => state.alive
+        })
     },
     watch: {
         userName (val, old) {
@@ -38,14 +45,14 @@ export default {
     },
     mounted: function () {
         this.$store.dispatch('userCenter/getUserInfo', () => {
-            this.MutaionMacOSTopbar({
+            this['Main/setNav']({
                 type: 'aside',
                 data: this.userInfo
             })
         })
     },
     methods: {
-        ...mapMutations(['MutaionMacOSTopbar']),
+        ...mapMutations(['Main/setNav']),
         ...mapActions(['userCenter/getUserInfo']),
         
         // 退出功能

@@ -1,12 +1,11 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
 
 // 导入右键菜单功能
 import VContextmenu from '@ektx/v-contextmenu/store'
 // 导入菜单 mutaion
-import { MutaionMacOSTopbar } from '@ektx/v-macos'
+import Main from '../pages/main/store'
 // 用户中心数据
 import userCenter from '../pages/userCenter/store'
 
@@ -17,8 +16,7 @@ export default new Vuex.Store({
 	mutations: { },
 	modules: {
 		VContextmenu,
-		MutaionMacOSTopbar,
+		Main,
 		userCenter
-	},
-	plugins: [createPersistedState()]
+	}
 })
