@@ -86,6 +86,7 @@ export default {
 
         VMacIntBlur (evt) {
             this.focus = false
+            this.$emit('blur', evt)
             this.verification()
         },
 

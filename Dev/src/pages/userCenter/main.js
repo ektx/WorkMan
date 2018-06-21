@@ -3,12 +3,19 @@ import VMacInput from '../../components/VMacInput'
 
 export default {
     name: 'userCenter',
-    components: { VMacInput },
+    components: { 
+        VMacInput
+     },
     data () {
         return {
             nameHelp: {},
+            pwdHelp:{},
+            surePwdHelp:{},
             nameErr: "Something was error!",
-            pwd: '12345',
+            pwd: '',
+            pwdError: '',
+            surepwd: '',
+            surepwdError: '',
             pwdErr: ''
         }
     },
@@ -54,11 +61,43 @@ export default {
     methods: {
         ...mapMutations(['Main/setNav', 'userCenter/setUserInfo']),
 
+        /**
+         * 测试功能
+         * @param {object} evt 事件
+         */
         say (evt) {
             console.log(evt)
             console.log(this.pwd)
 
             this.pwd = evt.target.value
+        },
+        // 验证密码
+        verifyPwd () {
+            if (this.pwd === ''){
+                this.pwdHelp = {
+                    mes: '此项不能为空',
+                    status: 'error'
+                }
+            } else {
+                this.pwdHelp = {
+                    mes: '',
+                    status: 'success'
+                }
+            }
+        },
+        // 验证密码是否相同
+        verifyPwdSure () {
+            if(this.surepwd === this.pwd){
+                this.surePwdHelp = {
+                    mes: '',
+                    status: 'success'
+                }
+            }else{
+                this.surePwdHelp = {
+                    mes: '密码不一致',
+                    status: 'error'
+                }
+            }
         },
 
         // 更新用户信息
@@ -82,6 +121,19 @@ export default {
                         to: '/'
                     }
                 ]
+            })
+        },
+
+
+        // 修改密码
+        updatePwd () {
+            this.$axios.post('/api', {
+                query: `mutation {UserUpdate(data:{
+                    pwd: "${this.pwd}"
+                }){success mes}}`
+            }).then(res => {
+                if (res.data.UserUpdate.success)
+                    this.$Message.success('保存成功')
             })
         }
     }
