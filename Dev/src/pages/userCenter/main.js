@@ -46,28 +46,13 @@ export default {
         }
     },
     activated: function () {
-        this.MutaionMacOSTopbar({
-            type: 'main',
-            data: [
-                {
-                    title: '用户中心',
-                    to: '/'
-                }
-            ]
-        })
-
+        this.setMainNav()
     },
     mounted: function () {
-        // this.$axios.post('/api', {
-        //     query: `{ findUser { success mes data{ account name email ico power reset} } } `
-        // }).then(res => {
-        //     console.log(res)
-        //     // this.userInfo = res.data.findUser
-        //     this['userCenter/setUserInfo']( res.data.findUser.data )
-        // })
+        this.setMainNav()
     },
     methods: {
-        ...mapMutations(['MutaionMacOSTopbar', 'userCenter/setUserInfo']),
+        ...mapMutations(['Main/setNav', 'userCenter/setUserInfo']),
 
         say (evt) {
             console.log(evt)
@@ -85,6 +70,18 @@ export default {
                 }){success mes}}`
             }).then(res => {
                 this['userCenter/setUserInfo']( this.userInfo )
+            })
+        },
+        // 设置主菜单
+        setMainNav () {
+            this['Main/setNav']({
+                type: 'main',
+                data: [
+                    {
+                        title: '用户中心',
+                        to: '/'
+                    }
+                ]
             })
         }
     }

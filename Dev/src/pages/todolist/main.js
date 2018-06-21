@@ -5,7 +5,9 @@ import VSearch from '@/components/VSearch'
 import RVCalendar from '@/components/RVCalendar'
 import { mapMutations } from 'vuex'
 import TodoArticle from './parts/article'
+import SDK from '../main/SDK'
 
+console.log(SDK)
 export default {
     name: 'todolist',
     components: {
@@ -114,11 +116,13 @@ export default {
             console.error(err)
         })
 
+        // 设置缓存应用
         this['Main/setToAlive']('todolist')
-
+        // 设置主菜单
         this.setMainNav()
     },
     activated: function () {
+        // 设置主菜单
         this.setMainNav()        
     },
     watch: {
