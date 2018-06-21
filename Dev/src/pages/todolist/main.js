@@ -5,9 +5,7 @@ import VSearch from '@/components/VSearch'
 import RVCalendar from '@/components/RVCalendar'
 import { mapMutations } from 'vuex'
 import TodoArticle from './parts/article'
-import SDK from '../main/SDK'
 
-console.log(SDK)
 export default {
     name: 'todolist',
     components: {
@@ -104,6 +102,15 @@ export default {
         }
     },
     mounted: function() {
+        // [SYMBOL] 设置缓存应用
+        this['Main/setToAlive']({
+            title: '计划',
+            cache: 'todolist',
+            path: '/todolist'
+        })
+        // [SYMBOL] 设置主菜单
+        this.SET_MAIN_NAV()
+
         this.$axios.post('/api/', {
             query: `{ 
                 workTypes(account: "MY_ACCOUNT") { id,name }
@@ -116,14 +123,10 @@ export default {
             console.error(err)
         })
 
-        // 设置缓存应用
-        this['Main/setToAlive']('todolist')
-        // 设置主菜单
-        this.setMainNav()
     },
     activated: function () {
-        // 设置主菜单
-        this.setMainNav()        
+        // [SYMBOL] 设置主菜单
+        this.SET_MAIN_NAV()        
     },
     watch: {
         /* 类别切换监听功能 */
@@ -201,7 +204,45 @@ export default {
         }
     },
     methods: {
+        // [SYMBOL] 
         ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive']),
+
+        // [SYMBOL] exit app
+        EXIT_APP () {
+            this.$router.push({path: '/'})
+            this['Main/removeAlive']('todolist')
+        },
+
+        // [SYMBOL] set default nav
+        SET_MAIN_NAV () {
+            this['Main/setNav']({
+                type: 'main',
+                data: [
+                    {
+                        title: '计划',
+                        children: [
+                            {
+                                title: '退出',
+                                fun: this.EXIT_APP
+                            }
+                        ]
+                    },
+                    {
+                        title: '文件',
+                        children: [
+                            {
+                                title: '新建事件',
+                                fun: this.addOneEvent
+                            },
+                            {
+                                title: '新建类别',
+                                fun: this.addNewType
+                            }
+                        ]
+                    }
+                ]
+            })
+        },
 
         // 添加一个新的分类
         addNewType: function () {
@@ -809,40 +850,6 @@ export default {
             this.saveInsertData()
         },
 
-        exit () {
-            this.$router.push({path: '/'})
-            this['Main/removeAlive']('todolist')
-        },
-
-        setMainNav () {
-            this['Main/setNav']({
-                type: 'main',
-                data: [
-                    {
-                        title: '计划',
-                        children: [
-                            {
-                                title: '退出',
-                                fun: this.exit
-                            }
-                        ]
-                    },
-                    {
-                        title: '文件',
-                        children: [
-                            {
-                                title: '新建事件',
-                                fun: this.addOneEvent
-                            },
-                            {
-                                title: '新建类别',
-                                fun: this.addNewType
-                            }
-                        ]
-                    }
-                ]
-            })
-        }
     },
     destroyed: function() {
         console.log('sss')

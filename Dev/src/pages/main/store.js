@@ -49,17 +49,27 @@ export default {
             state[`${data.type}Nav`] = [...arr, ...data.data]
 
         },
-        setToAlive (state, key) {
-            state.aliveIndex.key = state.alive.length
-            state.alive.push(key)
+        /**
+         * 
+         * @param {object} state store state
+         * @param {string} title APP标题
+         * @param {string} path APP路由
+         * @param {string} cache 缓存路由
+         */
+        setToAlive (state, {title, path, cache}) {
+            // 添加索引
+            state.aliveIndex[cache] = state.alive.length
+            // 添加缓存
+            state.alive.push( cache )
+            // 追加到最近访问
             state._root[0].children[1].children.push({
-                title: key,
-                to: key
+                title,
+                to: path
             })
         },
         removeAlive (state, key) {
-            state.alive.splice(state.aliveIndex.key, 1)
-            delete state.aliveIndex.key
+            state.alive.splice(state.aliveIndex[key], 1)
+            delete state.aliveIndex[key]
         }
     }
 }

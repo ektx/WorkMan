@@ -53,13 +53,21 @@ export default {
         }
     },
     activated: function () {
-        this.setMainNav()
+        // [SYMBOL] 设置主菜单
+        this.SET_MAIN_NAV()
     },
     mounted: function () {
-        this.setMainNav()
+        // [SYMBOL] 设置主菜单
+        this.SET_MAIN_NAV()
+        // [SYMBOL] 设置缓存应用
+        this['Main/setToAlive']({
+            title: '用户中心', // app名称
+            cache: 'userCenter', // 缓存名
+            path: '/userCenter'  // 路由中访问路径
+        })
     },
     methods: {
-        ...mapMutations(['Main/setNav', 'userCenter/setUserInfo']),
+        ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive', 'userCenter/setUserInfo']),
 
         /**
          * 测试功能
@@ -111,14 +119,24 @@ export default {
                 this['userCenter/setUserInfo']( this.userInfo )
             })
         },
-        // 设置主菜单
-        setMainNav () {
+        // [SYMBOL] exit app
+        EXIT_APP () {
+            this.$router.push({path: '/'})
+            this['Main/removeAlive']('todolist')
+        },
+        // [SYMBOL] set default nav
+        SET_MAIN_NAV () {
             this['Main/setNav']({
                 type: 'main',
                 data: [
                     {
                         title: '用户中心',
-                        to: '/'
+                        children: [
+                            {
+                                title: '退出',
+                                fun: this.EXIT_APP
+                            }
+                        ]
                     }
                 ]
             })
