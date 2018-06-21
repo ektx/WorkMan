@@ -16,10 +16,10 @@ export default {
                         title: '最近访问',
                         children: [
                             {
-                                title: '主页',
+                                title: '桌面',
                                 to: '/'
                             }
-                        ]
+                        ],
                     }
                 ]
             }
@@ -52,6 +52,10 @@ export default {
         setToAlive (state, key) {
             state.aliveIndex.key = state.alive.length
             state.alive.push(key)
+            state._root[0].children[1].children.push({
+                title: key,
+                to: key
+            })
         },
         removeAlive (state, key) {
             state.alive.splice(state.aliveIndex.key, 1)
