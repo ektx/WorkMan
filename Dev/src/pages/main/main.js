@@ -12,7 +12,7 @@ export default {
         return {
             userInfo: [
                 {
-                    title: this.userName,
+                    title: this.userName || this.$store.getters['userCenter/getInfo']('name'),
                     children: [
                         {
                             title: '用户中心',
@@ -31,7 +31,6 @@ export default {
     computed: {
         userName () {
             return this.$store.getters['userCenter/getInfo']('name')
-            || localStorage.USER 
         },
         ...mapState('Main', {
             mainNav: state => state.mainNav,
