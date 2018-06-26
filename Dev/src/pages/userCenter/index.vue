@@ -1,18 +1,8 @@
 <template>
     <div class="upload-app">
         <Tabs>
-            <TabPane label="基础信息">
-                <div class="my-info-form">
-                    <form >
-                        <VMacInput title="账号" :value="userInfo.account" :help="nameHelp" readonly/>
-                        <VMacInput title="用户名" v-model="userInfo.name" :help="nameHelp"/>
-                        <VMacInput title="邮箱" v-model="userInfo.email"  @keyup="say($event)" required/>
-                        <VMacInput title="权限" v-model="userInfo.power"  @keyup="say($event)" readonly/>
-
-                        <Button @click="updateInfo" long>保存</Button>
-                    </form>
-                    
-                </div>
+            <TabPane label="个人信息">
+                <MyInfo @save="updateInfo"/>
             </TabPane>
 
             <TabPane label="头像管理">
@@ -34,9 +24,17 @@
                     </form>
                 </div>
             </TabPane>
+            
+            <TabPane label="用户管理">
+                <AddUser/>
+            </TabPane>
+            <TabPane label="角色管理">
+                <AddCharacter/>
+            </TabPane>
+           
         </Tabs>
     </div>
 </template>
 
-<style lang="less" scoped src="./layout.less"></style>
 <script src="./main.js"></script>
+<style lang="less" scoped src="./layout.less"></style>

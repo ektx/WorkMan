@@ -661,9 +661,9 @@
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/@ektx/v-contextmenu/-/v-contextmenu-0.2.7.tgz#3b98135986b1bd60237696c32699e9ade2c4ba9b"
 
-"@ektx/v-menubar@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@ektx/v-menubar/-/v-menubar-0.0.3.tgz#283bde34082f0738c0973de68e4dbe05be2b5a16"
+"@ektx/v-menubar@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@ektx/v-menubar/-/v-menubar-0.0.4.tgz#4af6128103d29893f511ce94bcbf0ffe826964ef"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -6713,10 +6713,6 @@ vue-loader@^15.2.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
-
-vue-material@^1.0.0-beta-10.2:
-  version "1.0.0-beta-10.2"
-  resolved "https://registry.yarnpkg.com/vue-material/-/vue-material-1.0.0-beta-10.2.tgz#c3effea97e0c5a0c696b0051d5ef9c6e6cf2a5ed"
 
 vue-quill-editor@^3.0.6:
   version "3.0.6"

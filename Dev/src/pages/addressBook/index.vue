@@ -105,12 +105,5 @@
 	</section>
 </template>
 
-<script>
-	import main from './main'	
-
-	export default main
-</script>
-
-<style lang="scss" scoped>
-	@import './layout.scss'
-</style>
+<script src="./main.js"></script>
+<style lang="scss" scoped src="./layout.scss"></style>

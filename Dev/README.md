@@ -15,3 +15,11 @@ npm run build
 # 重新编译
 npm run build --report
 ```
+
+## package 说明
+
+#### vue-quill-editor
+vue quill 富文本编辑器
+
+#### quill-image-resize-module
+quill 富文本编辑器的图片插件

@@ -1,17 +1,22 @@
 import { mapMutations, mapState } from 'vuex'
 import VMacInput from '../../components/VMacInput'
+import AddUser from './parts/addUser'
+import AddCharacter from './parts/addCharacter'
+import MyInfo from './parts/myInfo'
+import G2Q from '@/assets/js/parse2graphQl.js'
 
 export default {
     name: 'userCenter',
     components: { 
-        VMacInput
+        VMacInput,
+        AddUser,
+        AddCharacter,
+        MyInfo
      },
     data () {
         return {
-            nameHelp: {},
             pwdHelp:{},
             surePwdHelp:{},
-            nameErr: "Something was error!",
             pwd: '',
             pwdError: '',
             surepwd: '',
@@ -20,11 +25,7 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-            userInfo: state => {
-                return state.userCenter.user
-            }
-        })
+       
     },
     watch: {
         name (val, old) {
@@ -69,16 +70,7 @@ export default {
     methods: {
         ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive', 'userCenter/setUserInfo']),
 
-        /**
-         * 测试功能
-         * @param {object} evt 事件
-         */
-        say (evt) {
-            console.log(evt)
-            console.log(this.pwd)
-
-            this.pwd = evt.target.value
-        },
+        
         // 验证密码
         verifyPwd () {
             if (this.pwd === ''){
@@ -108,17 +100,7 @@ export default {
             }
         },
 
-        // 更新用户信息
-        updateInfo () {
-            this.$axios.post('/api', {
-                query: `mutation {UserUpdate(data:{
-                    name: "${this.userInfo.name}",
-                    email: "${this.userInfo.email}"
-                }){success mes}}`
-            }).then(res => {
-                this['userCenter/setUserInfo']( this.userInfo )
-            })
-        },
+        
         // [SYMBOL] exit app
         EXIT_APP () {
             this.$router.push({path: '/'})
@@ -153,6 +135,17 @@ export default {
                 if (res.data.UserUpdate.success)
                     this.$Message.success('保存成功')
             })
-        }
+        },
+
+        // 更新用户信息
+        updateInfo (data, callback) {
+            let send = G2Q(data)
+            this.$axios.post('/api', {
+                query: `mutation {UserUpdate(data:${send}){success mes}}`
+            }).then(res => {
+                debugger
+                this['userCenter/setUserInfo']( this.userInfo )
+            })
+        },
     }
 }
