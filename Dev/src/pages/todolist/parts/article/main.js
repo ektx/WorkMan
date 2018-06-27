@@ -45,6 +45,10 @@ export default {
                 }).then(result => {
                     this.content = result.data.findTodoEvent.inner
                 })
+            } 
+            // 没有 id 为新加事件，此时我们让内容为空
+            else {
+                this.content = ''
             }
         }
     },

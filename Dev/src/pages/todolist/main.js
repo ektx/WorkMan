@@ -5,6 +5,7 @@ import VSearch from '@/components/VSearch'
 import RVCalendar from '@/components/RVCalendar'
 import { mapMutations } from 'vuex'
 import TodoArticle from './parts/article'
+import P2Q from '@/assets/js/parse2graphQl'
 
 export default {
     name: 'todolist',
@@ -535,7 +536,7 @@ export default {
             let query = `mutation { 
                 todo_evt_add(
                     usr: "MY_ACCOUNT", 
-                    data: ${JSON2Str(updateQ)}
+                    data: ${P2Q(updateQ)}
                 ) { success mes data }
             }`
 
@@ -544,7 +545,7 @@ export default {
                     todo_evt_update(
                         usr: "MY_ACCOUNT",
                         id: "${eventData.id}"
-                        data: ${JSON2Str(updateQ)}
+                        data: ${P2Q(updateQ)}
                     ) { success mes }
                 }`
                 saveType = 'todo_evt_update'
@@ -890,19 +891,4 @@ function filterTimeArr (arr, pickTime) {
     }
 
     return result
-}
-
-// 将 json 转化成 graphql使用的格式
-// {a:"ok",b:false} => `{a:"ok",b:false}`
-function JSON2Str(obj) {
-    let result = ''
-    for (let key in obj) {
-        let val = obj[key]
-        if (typeof val === 'boolean') {
-            result += `${key}:${val} `
-        } else {
-            result += `${key}:"${val}" `
-        }
-    }
-    return `{${result}}`
 }
