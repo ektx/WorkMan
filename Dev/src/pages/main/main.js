@@ -12,7 +12,7 @@ export default {
         return {
             userInfo: [
                 {
-                    title: this.userName || this.$store.getters['userCenter/getInfo']('name'),
+                    title: this.userName || localStorage.USER,
                     children: [
                         {
                             title: '用户中心',
