@@ -8,10 +8,7 @@
 			</figure>
 
 			<form v-on:submit.prevent="loginEvt" id="logo-form" class="logo-form">
-
-				<p v-show="errMsg" class="logo-error">{{errMsg}}</p>
-
-				<VMacInput class="light" title="帐号" v-model.trim="user" clearbtn/>
+				<VMacInput class="light" title="账号" v-model.trim="user" clearbtn/>
 				<VMacInput class="light" title="密码" type="password" v-model.trim="pawd"/>
 				
 				<dl><button type="submit">登录</button></dl>
