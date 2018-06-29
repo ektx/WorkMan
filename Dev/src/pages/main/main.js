@@ -12,7 +12,7 @@ export default {
         return {
             userInfo: [
                 {
-                    title: this.userName || localStorage.USER,
+                    title: 'workMan',
                     children: [
                         {
                             title: '用户中心',
@@ -44,11 +44,11 @@ export default {
         }
     },
     mounted: function () {
-        this.$store.dispatch('userCenter/getUserInfo', () => {
-            this['Main/setNav']({
-                type: 'aside',
-                data: this.userInfo
-            })
+        this.userInfo[0].title = this.userName
+
+        this['Main/setNav']({
+            type: 'aside',
+            data: this.userInfo
         })
     },
     methods: {
