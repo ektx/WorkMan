@@ -7,21 +7,7 @@ export default {
         _root: [
             {
                 title: 'WM',
-                children: [
-                    {
-                        title: '桌面',
-                        to: '/'
-                    },
-                    {
-                        title: '最近访问',
-                        children: [
-                            {
-                                title: '桌面',
-                                to: '/'
-                            }
-                        ],
-                    }
-                ]
+                to: '/'
             }
         ],
         // 缓存内容
@@ -33,13 +19,9 @@ export default {
     mutations: {
         setNav (state, data) {
             let arr = []
-
             // 恢复选中效果
-            data.data.map(val => {
-                if (val.classes && val.classes.length) {
-                    val.classes = {}
-                }
-                return val
+            data.data = data.data.map(val => {
+                return {...val, classes: {}}
             })
             
             // 默认添加头部主菜单
@@ -61,11 +43,6 @@ export default {
             state.aliveIndex[cache] = state.alive.length
             // 添加缓存
             state.alive.push( cache )
-            // 追加到最近访问
-            state._root[0].children[1].children.push({
-                title,
-                to: path
-            })
         },
         removeAlive (state, key) {
             state.alive.splice(state.aliveIndex[key], 1)
