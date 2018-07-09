@@ -47,7 +47,7 @@ export default {
             // 显示密码，默认 false 不显示
             showPwd: false,
             // 默认的文本类型 text
-            iType: 'text',
+            iType: this.type,
             vhelp: {}
         }
     },
@@ -69,6 +69,9 @@ export default {
         },
         help (val, old) {
             this.vhelp = val
+        },
+        type (val, old) {
+            this.iType = val
         }
     },
     mounted: function () {
@@ -76,7 +79,6 @@ export default {
             this.defValue = this.value
         }
 
-        this.iType = this.type
         this.vhelp = this.help
     },
     methods: {
@@ -91,7 +93,11 @@ export default {
         },
 
         VMacIntInput (evt) {
-            this.defValue = evt.target.value
+            let val = evt.target.value
+
+            
+            this.defValue = val
+            this.verification()
         },
 
         VMacIntKeyUp (evt) {
@@ -105,14 +111,41 @@ export default {
         },
 
         verification () {
-            if (!this.defValue) {
-                if (this.required) {
-                    this.vhelp = {
+            // 清除现有状态提醒
+            if (this.vhelp.status) {
+                this.vhelp.status = ''
+            }
+
+            // 必填验证
+            if (this.required) {
+                if (!this.defValue) {
+                    return this.vhelp = {
                         status: 'error',
                         mes: '此项不能为空'
                     }
                 }
             }
+
+            // 格式验证 - 数字
+            if (this.iType === 'number' && isNaN(parseFloat(this.defValue))) {
+                return this.vhelp = {
+                    status: 'error',
+                    mes: '您需要输入数字'
+                }
+            }
+
+            // 格式难 - 邮箱
+            if (
+                this.iType === 'email' && 
+                !/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/.test(this.defValue)
+            ) {
+                return this.vhelp = {
+                    mes: '邮箱格式不对,格式为: example@abc.com',
+                    status: 'error'
+                }
+            }
+
+
         }
     }
 }

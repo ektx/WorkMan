@@ -1,8 +1,8 @@
 <template>
-    <div :class="['v-mac-input', vhelp.status]">
+    <div :class="['v-mac-input', vhelp.status]">{{vhelp}}
         <div :class="['main', {'focus': focus, 'hasVal': defValue }]">
             <div class="input-area">
-                <span class="title">{{title}}</span>
+                <span :class="['title', {'required': required}]">{{title}}</span>
                 <input 
                     :type="iType"
                     @focus="VMacIntFocus($event)"
@@ -11,6 +11,7 @@
                     @keyup="VMacIntKeyUp($event)"
                     :value="defValue"
                     :readonly="readonly"
+                    :required="required"
                 />
             </div>
             <ul class="status-area">
