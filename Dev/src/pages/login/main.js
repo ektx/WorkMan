@@ -45,10 +45,9 @@ export default {
 					localStorage.USER = this.user
 
 					this['userCenter/setUserInfo'](res.data)
-
 					this.$router.push({path: '/'})
 				} else {
-					this.errMsg = res.mes
+					this.$Message.error(res.mes)
 				}
 			}).catch(err => {
 				this.$Message.error(err)
