@@ -1,8 +1,20 @@
 <template>
     <div class="userCenter-setUsers-mod">
-        <h1>用户管理</h1>
+        <header>
+            <h1>用户管理</h1>
+            <Button type="primary" @click="findAllUser">添加</Button>
+        </header>
         
         <Table :columns="columns" :data="data"></Table>
+        <Page 
+            v-show="total" 
+            :current="currentPage" 
+            :total="total" 
+            :page-size="pageSize"
+            @on-change="pageFindAllUser" 
+            simple
+        />
+
         <div class="form-mod">
             <form action="">
                 <VMacInput title="用户名" v-model="name"/>
@@ -25,10 +37,19 @@
     width: 100%;
     padding: 1em 2em;
 
-    h1 {
-        font-size: 18px;
-        color: #333;
+    header {
+        display: flex;
+        margin: 10px 0;
+        align-items: center;
+
+        h1 {
+            flex: 1;
+            font-size: 18px;
+            color: #333;
+        }
+
     }
+
 }
 .ivu-select {
     margin-bottom: 1.5em;
