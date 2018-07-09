@@ -1,6 +1,7 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 // 导入右键菜单功能
 import VContextmenu from '@ektx/v-contextmenu/store'
@@ -18,5 +19,6 @@ export default new Vuex.Store({
 		VContextmenu,
 		Main,
 		userCenter
-	}
+	},
+	plugins: [createPersistedState()]
 })

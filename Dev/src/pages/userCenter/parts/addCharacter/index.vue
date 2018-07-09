@@ -1,10 +1,12 @@
 <template>
     <div class="my-info-pass">
         <form action="">
-            <VMacInput title="名称" v-model="name"/>
-            <VMacInput title="字段" v-model="key"/>
-            
-            <Button @click="save" long>保存</Button>
+            <VMacInput title="角色名称" v-model="name"/>
+            <Input v-model="description" type="textarea" placeholder="角色简介" />
+
+            <div class="btn-box">
+                <Button @click="save" long>保存</Button>
+            </div>
         </form>
     </div>
 </template>
@@ -18,14 +20,18 @@ export default {
     data () {
         return {
             name: '',
-            key: ''
+            description: ''
         }
     },
     methods: {
         save () {
-            console.log(this.name, this.key)
+            console.log(this.name, this.description)
         }
     }
 }
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.btn-box {
+    margin-top: 5em;
+}
+</style>

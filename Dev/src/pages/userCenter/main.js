@@ -1,31 +1,16 @@
 import { mapMutations, mapState } from 'vuex'
-import VMacInput from '../../components/VMacInput'
-import AddUser from './parts/addUser'
-import AddCharacter from './parts/addCharacter'
-import MyInfo from './parts/myInfo'
 import G2Q from '@/assets/js/parse2graphQl.js'
 
 export default {
     name: 'userCenter',
-    components: { 
-        VMacInput,
-        AddUser,
-        AddCharacter,
-        MyInfo
-     },
     data () {
         return {
-            pwdHelp:{},
-            surePwdHelp:{},
-            pwd: '',
-            pwdError: '',
-            surepwd: '',
-            surepwdError: '',
-            pwdErr: ''
         }
     },
     computed: {
-       
+        userInfo () {
+            return this.$store.state.userCenter.user
+        }
     },
     watch: {
         name (val, old) {
@@ -70,37 +55,6 @@ export default {
     methods: {
         ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive', 'userCenter/setUserInfo']),
 
-        
-        // 验证密码
-        verifyPwd () {
-            if (this.pwd === ''){
-                this.pwdHelp = {
-                    mes: '此项不能为空',
-                    status: 'error'
-                }
-            } else {
-                this.pwdHelp = {
-                    mes: '',
-                    status: 'success'
-                }
-            }
-        },
-        // 验证密码是否相同
-        verifyPwdSure () {
-            if(this.surepwd === this.pwd){
-                this.surePwdHelp = {
-                    mes: '',
-                    status: 'success'
-                }
-            }else{
-                this.surePwdHelp = {
-                    mes: '密码不一致',
-                    status: 'error'
-                }
-            }
-        },
-
-        
         // [SYMBOL] exit app
         EXIT_APP () {
             this.$router.push({path: '/'})
@@ -108,43 +62,36 @@ export default {
         },
         // [SYMBOL] set default nav
         SET_MAIN_NAV () {
+            console.log(this.userInfo)
+            let nav = [
+                {
+                    title: '用户中心',
+                    children: [
+                        {
+                            title: '退出',
+                            fun: this.EXIT_APP
+                        }
+                    ]
+                },
+                {
+                    title: ' 基础信息',
+                    to: 'base-info'
+                }
+            ]
+
+            if (this.userInfo.power === 'admin') {
+                nav.push({
+                    title: '用户管理',
+                    to: 'set-user'
+                }, {
+                    title: '角色管理',
+                    to: 'character'
+                })
+            }
+
             this['Main/setNav']({
                 type: 'main',
-                data: [
-                    {
-                        title: '用户中心',
-                        children: [
-                            {
-                                title: '退出',
-                                fun: this.EXIT_APP
-                            }
-                        ]
-                    }
-                ]
-            })
-        },
-
-
-        // 修改密码
-        updatePwd () {
-            this.$axios.post('/api', {
-                query: `mutation {UserUpdate(data:{
-                    pwd: "${this.pwd}"
-                }){success mes}}`
-            }).then(res => {
-                if (res.data.UserUpdate.success)
-                    this.$Message.success('保存成功')
-            })
-        },
-
-        // 更新用户信息
-        updateInfo (data, callback) {
-            let send = G2Q(data)
-            this.$axios.post('/api', {
-                query: `mutation {UserUpdate(data:${send}){success mes}}`
-            }).then(res => {
-                debugger
-                this['userCenter/setUserInfo']( this.userInfo )
+                data: nav
             })
         },
     }

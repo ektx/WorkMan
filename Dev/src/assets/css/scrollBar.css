@@ -1,6 +1,7 @@
 /*定义滚动条整体大小*/
 ::-webkit-scrollbar {
 	width: 2px;
+	height: 2px;
 }
 /*主样式*/
 ::-webkit-scrollbar-track-piece {

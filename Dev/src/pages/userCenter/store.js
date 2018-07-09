@@ -18,7 +18,6 @@ export default {
     },
     mutations: {
         setUserInfo (state, data) {
-            console.log('US')
             state.user = Object.assign({}, state.user, data)
         }
     },

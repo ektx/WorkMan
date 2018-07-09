@@ -22,7 +22,7 @@ export default new Router({
             // 添加各应用功能路径
             children: [
                 {
-                    path: '/todoList',
+                    path: '/todo',
                     component: loadView('todolist')
                 },
                 {
@@ -34,8 +34,22 @@ export default new Router({
                     component: loadView('mock')
                 },
                 {
-                    path: '/userCenter',
-                    component: loadView('userCenter')
+                    path: '/user',
+                    component: loadView('userCenter'),
+                    children: [
+                        {
+                            path: 'set-user',
+                            component: loadView('userCenter/parts/addUser')
+                        },
+                        {
+                            path: 'character',
+                            component: loadView('userCenter/parts/addCharacter')
+                        },
+                        {
+                            path: '*',
+                            component: loadView('userCenter/parts/baseInfo')
+                        }
+                    ]
                 },
                 // 默认桌面功能，类似404
                 {

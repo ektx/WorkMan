@@ -7,7 +7,7 @@ export default {
             navs: [
                 {
                     title: '计划',
-                    to: '/todoList'
+                    to: '/todo'
                 },
                 {
                     title: 'Mock',

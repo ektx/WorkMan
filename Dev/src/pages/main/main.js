@@ -16,7 +16,7 @@ export default {
                     children: [
                         {
                             title: '用户中心',
-                            to: '/userCenter'
+                            to: '/user/base-info'
                         },
                         {
                             ico: '👤',
