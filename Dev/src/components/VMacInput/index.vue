@@ -1,5 +1,5 @@
 <template>
-    <div :class="['v-mac-input', vhelp.status]">{{vhelp}}
+    <div :class="['v-mac-input', vhelp.status]">
         <div :class="['main', {'focus': focus, 'hasVal': defValue }]">
             <div class="input-area">
                 <span :class="['title', {'required': required}]">{{title}}</span>
