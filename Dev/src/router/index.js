@@ -17,6 +17,10 @@ export default new Router({
             component: Login
         },
         {
+            path: '/admin',
+            component: loadView('admin')
+        },
+        {
             path: '/',
             component: Index,
             // 添加各应用功能路径
