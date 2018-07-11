@@ -38,12 +38,16 @@ export default new Router({
                     component: loadView('userCenter'),
                     children: [
                         {
-                            path: 'set-user',
-                            component: loadView('userCenter/parts/addUser')
+                            path: 'user-management',
+                            component: loadView('userCenter/parts/userManagement')
                         },
                         {
                             path: 'character',
                             component: loadView('userCenter/parts/addCharacter')
+                        },
+                        {
+                            path: 'send-mail',
+                            component: loadView('userCenter/parts/sendMail')
                         },
                         {
                             path: '*',

@@ -82,10 +82,13 @@ export default {
             if (this.userInfo.power === 'admin') {
                 nav.push({
                     title: '用户管理',
-                    to: 'set-user'
+                    to: '/user/user-management'
                 }, {
                     title: '角色管理',
-                    to: 'character'
+                    to: '/user/character'
+                }, {
+                    title: '服务器邮件设置',
+                    to: '/user/send-mail'
                 })
             }
 
