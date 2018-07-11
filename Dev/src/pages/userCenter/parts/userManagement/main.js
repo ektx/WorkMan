@@ -88,7 +88,7 @@ export default {
                 url: '/api',
                 method: 'post',
                 data: {
-                    query:`query findAllUser($pages: Int, $size: Int){findAllUsers (pages: $pages, size: $size) {success mes list{account name pwd power character} total}}`,
+                    query: `query findAllUser($pages: Int, $size: Int){findAllUsers (pages: $pages, size: $size) {success mes list{account name pwd power character} total}}`,
                     variables: {
                         pages: this.currentPage -1,
                         size: this.pageSize

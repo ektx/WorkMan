@@ -46,6 +46,10 @@ export default new Router({
                             component: loadView('userCenter/parts/addCharacter')
                         },
                         {
+                            path: 'send-mail',
+                            component: loadView('userCenter/parts/sendMail')
+                        },
+                        {
                             path: '*',
                             component: loadView('userCenter/parts/baseInfo')
                         }
