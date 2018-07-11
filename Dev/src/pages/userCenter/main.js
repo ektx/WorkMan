@@ -82,7 +82,7 @@ export default {
             if (this.userInfo.power === 'admin') {
                 nav.push({
                     title: '用户管理',
-                    to: 'set-user'
+                    to: 'user-management'
                 }, {
                     title: '角色管理',
                     to: 'character'

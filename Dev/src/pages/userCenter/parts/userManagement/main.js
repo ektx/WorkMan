@@ -5,10 +5,12 @@ export default {
     components: { VMacInput },
     data () {
         return {
-            name: '',
-            email: '',
-            powerVal: '',
-            character: '',
+            addUserInfo: {
+                name: '',
+                email: '',
+                powerVal: '',
+                character: '',
+            },
             power: [
                 {
                     label: '管理员',
@@ -62,13 +64,19 @@ export default {
                 }
             ],
             data: [],
+
+            // #### 分页 ####
             total: 0,
             currentPage: 1,
-            pageSize: 10
+            pageSize: 10,
+
+            // #### 添加用户弹层 ####
+            showAddUserModal: false
         }
     },
     mounted: function () {
-        
+        console.log('user management pages')
+        this.findAllUser()
     },
     methods: {
         save () {
@@ -98,10 +106,15 @@ export default {
             })
         },
 
+        // 分页查询用户
         pageFindAllUser (page) {
             this.currentPage = page
-
             this.findAllUser()
+        },
+
+        // 保存新用户
+        saveNewUser () {
+            console.log(this.addUserInfo)
         }
     }
 }
