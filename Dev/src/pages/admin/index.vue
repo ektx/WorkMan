@@ -53,9 +53,13 @@ export default {
 
 <style lang="scss" scoped>
 .admin-page {
+    display: flex;
     width: 100vw;
     height: 100vh;
-    padding: 2em;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
     background: rgba(255, 255, 255, .95);
 
     h1 {
@@ -65,7 +69,7 @@ export default {
 
     .form-mod {
         margin: 2em 0;
-        max-width: 400px;
+        min-width: 340px;
     }
 }
 
