@@ -5,7 +5,10 @@
         </header>
         <ul>
             <li v-for="(item, index) in navs" :key="index">
-                <router-link :to="item.to">{{item.title}}</router-link>
+                <template v-if="item.to">
+                    <router-link :to="item.to">{{item.title}}</router-link>
+                </template>
+                <a v-else-if="item.href" :href="item.href" :target="item.target">{{item.title}}</a>
             </li>
         </ul>
     </div>
