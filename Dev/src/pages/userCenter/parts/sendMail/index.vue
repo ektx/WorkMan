@@ -2,7 +2,7 @@
     <div class="userCenter-setUsers-mod">
         <header>
             <h1>服务器邮件设置</h1>
-            <Button type="primary" @click="showAddUserModal = !showAddUserModal">添加</Button>
+            <Button type="primary" @click="showModal()">添加</Button>
         </header>
 
         <Table :columns="columns" :data="data"></Table>
@@ -20,7 +20,7 @@
         
         <Modal
             v-model="showAddUserModal"
-            title="添加"
+            :title="modalStatus"
             @on-ok="saveData"
             ok-text="保存"
             :loading="loading"
@@ -36,7 +36,7 @@
                     <Input v-model="formValidate.host" placeholder="输入主机"/>
                 </FormItem>
                 <FormItem label="端口" prop="port">
-                    <Input v-model="formValidate.port" placeholder="输入端口" />
+                    <Input v-model="formValidate.port" placeholder="输入端口" number/>
                 </FormItem>
             </Form>
         </Modal>

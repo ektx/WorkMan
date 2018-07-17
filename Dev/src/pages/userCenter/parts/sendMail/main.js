@@ -5,12 +5,7 @@ export default {
     components: { VMacInput },
     data () {
         return {
-            addUserInfo: {
-                name: '',
-                email: '',
-                powerVal: '',
-                character: '',
-            },
+            modalStatus: '添加',
             power: [
                 {
                     label: '管理员',
@@ -53,8 +48,29 @@ export default {
                                 props: {
                                     type: 'primary',
                                     size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.formValidate = {...params.row}
+                                        this.modalStatus = '编辑'
+                                        this.showAddUserModal = true
+                                    }
                                 }
-                            }, '编辑')
+                            }, '编辑'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.remove(params)
+                                    }
+                                }
+                            }, '删除')
                         ])
                     }
                 }
@@ -88,10 +104,7 @@ export default {
                     { required: true, message: '不能为空', trigger: 'blur'},
                 ],
                 port: [
-                    { required: true, message: '不能为空', trigger: 'blur'},
-                    { type: 'number', message: '请输入数字格式', trigger: 'blur', transform(value) {
-                        return Number(value)
-                    }}
+                    { validator: this.validatePort, required: true, trigger: 'blur'}
                 ]
             }
         }
@@ -100,8 +113,26 @@ export default {
         this.findAllUser()
     },
     methods: {
+        validatePort (rule, value, cb) {
+            if (!value) {
+                return cb(new Error('端口不能为空或0'))
+            }
+
+            if (!Number.isInteger(value)) {
+                return cb(new Error('请输入数字'))
+            } else {
+                cb()
+            }
+        },
+
         save () {
             this.$Message.error('res.mes')
+        },
+
+        showModal () {
+            this.showAddUserModal = true
+            this.modalStatus = '添加'
+            this.formValidate = {}
         },
 
         findAllUser () {
@@ -130,40 +161,11 @@ export default {
 
         // 保存
         saveData () {
-            console.log(this.formValidate)
-
             this.$refs.form.validate(valid => {
                 if (valid) {
-                    this.$axios({
-                        url: '/api',
-                        method: 'post',
-                        data: {
-                            query: `mutation saveSendMail(
-                                $host: String!, 
-                                $port: Int!, 
-                                $user: String!, 
-                                $pass: String!
-                            ) {
-                                saveSendMail(
-                                    user: $user,
-                                    pass: $pass,
-                                    host: $host,
-                                    port: $port
-                                ){ success mes }
-                            }`,
-                            variables: this.formValidate
-                        }
-                    }).then(res => {
-                        if (res.success) {
-                            this.$Message.success(res.mes)
-                        } else {
-                            this.$Message.error(res.errors[0].message)
-                            this.loading = false
-                            this.$nextTick(() => {
-                                this.loading = true
-                            })
-                        }
-                    })
+                    if (this.modalStatus === '添加')
+                        this.save()
+                    else this.update()
                 } else {
                     this.$Message.error('表单有错误！')
 
@@ -172,6 +174,103 @@ export default {
                         this.loading = true
                     })
                 }
+            })
+        },
+
+        save () {
+            this.$axios({
+                url: '/api',
+                method: 'post',
+                data: {
+                    query: `mutation saveSendMail(
+                        $host: String!, 
+                        $port: Int!, 
+                        $user: String!, 
+                        $pass: String!
+                    ) {
+                        saveSendMail(
+                            user: $user,
+                            pass: $pass,
+                            host: $host,
+                            port: $port
+                        ){ success mes }
+                    }`,
+                    variables: this.formValidate
+                }
+            }).then(res => {
+                if ('errors' in res) {
+                    holdModalAndShowErr(res.error)
+                } else {
+                    this.closeModalAndRefresh(res.data.saveSendMail.mes)
+                }
+            })
+        },
+
+        update () {
+            this.$axios({
+                url: '/api',
+                method: 'post',
+                data: {
+                    query: `mutation updateSendMail(
+                        $user: String!, 
+                        $host: String, 
+                        $port: Int, 
+                        $pass: String
+                    ) {
+                        updateSendMail(
+                            pass: $pass,
+                            host: $host,
+                            user: $user,
+                            port: $port 
+                        )
+                    }`,
+                    variables: this.formValidate
+                }
+            }).then(res => {
+                if ('errors' in res) {
+                    holdModalAndShowErr(res.error)
+                } else {
+                    this.closeModalAndRefresh(res.data.updateSendMail)
+                }
+            })
+        },
+
+        remove (data) {
+            this.$axios({
+                url: '/api',
+                method: 'post',
+                data: {
+                    query: `mutation removeSendMail(
+                        $user: String!
+                    ) {
+                        removeSendMail(user: $user){success mes}
+                    }`,
+                    variables: {
+                        user: data.row.user
+                    }
+                }
+            }).then(res => {
+                if ('errors' in res) {
+                    this.$Message.error(res.error)
+                } else {
+                    this.$Message.success(res.data.removeSendMail.mes)
+                    this.data.splice(data.index, 1)
+                }
+            })
+        },
+
+        closeModalAndRefresh (mes) {
+            this.showAddUserModal = false
+            this.$Message.success(mes)
+
+            this.findAllUser()
+        },
+
+        holdModalAndShowErr (err) {
+            this.$Message.error(err)
+            this.loading = false
+            this.$nextTick(() => {
+                this.loading = true
             })
         }
     }
