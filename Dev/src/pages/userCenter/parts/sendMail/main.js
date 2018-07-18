@@ -147,9 +147,14 @@ export default {
                     }
                 }
             }).then(res => {
-                res = res.data.findAllSendEmailUsers
-                this.data = res.list
-                this.total = res.total
+                if ('errors' in res) {
+                    console.log(res.errors)
+                    this.$Message.error(JSON.stringify(res.errors))
+                } else {
+                    res = res.data.findAllSendEmailUsers
+                    this.data = res.list
+                    this.total = res.total
+                }
             })
         },
 
@@ -199,7 +204,7 @@ export default {
                 }
             }).then(res => {
                 if ('errors' in res) {
-                    holdModalAndShowErr(res.error)
+                    this.holdModalAndShowErr(res.errors)
                 } else {
                     this.closeModalAndRefresh(res.data.saveSendMail.mes)
                 }
@@ -228,7 +233,7 @@ export default {
                 }
             }).then(res => {
                 if ('errors' in res) {
-                    holdModalAndShowErr(res.error)
+                    this.holdModalAndShowErr(res.errors)
                 } else {
                     this.closeModalAndRefresh(res.data.updateSendMail)
                 }

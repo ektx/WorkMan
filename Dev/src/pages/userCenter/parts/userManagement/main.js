@@ -5,10 +5,10 @@ export default {
     components: { VMacInput },
     data () {
         return {
-            addUserInfo: {
-                name: '',
+            user: {
+                account: '',
                 email: '',
-                powerVal: '',
+                power: '',
                 character: '',
             },
             power: [
@@ -64,6 +64,7 @@ export default {
                 }
             ],
             data: [],
+            rule: {},
 
             // #### 分页 ####
             total: 0,
@@ -114,7 +115,32 @@ export default {
 
         // 保存新用户
         saveNewUser () {
-            console.log(this.addUserInfo)
+            console.log(this.user)
+            this.$axios({
+                url: '/api',
+                method: 'post',
+                data: {
+                    query: `mutation addUser(
+                        $account: String!,
+                        $email: String,
+                        $power: String!,
+                        $character: String!
+                    ){addUser(
+                        account: $account,
+                        email: $email,
+                        power: $power,
+                        character: $character
+                    )}`,
+                    variables: this.user
+                }
+            }).then(res => {
+                console.log(res)
+                if ('errors' in res) {
+                    this.$Message.error(JSON.stringify(res.errors))
+                } else {
+                    this.$Message.success(res.data.addUser)
+                }
+            })
         }
     }
 }

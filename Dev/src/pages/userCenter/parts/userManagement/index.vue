@@ -25,18 +25,24 @@
             ok-text="保存"
             :loading="true"
         >
-            <div class="form-mod">
-                <form action="">
-                    <VMacInput title="用户名" v-model="addUserInfo.name" required/>
-                    <VMacInput title="邮箱" v-model="addUserInfo.email" type="email" required/>
-                    <Select v-model="addUserInfo.powerVal" placeholder="请选择权限">
+            <Form class="form-mod" ref="form" :model="user" :rules="rule" :label-width="60">
+                <FormItem label="用户" prop="name">
+                    <Input v-model="user.account" placeholder="用户名"/>
+                </FormItem>        
+                <FormItem label="邮箱" prop="name">
+                    <Input v-model="user.email" placeholder="请输入邮箱"/>
+                </FormItem>        
+                <FormItem label="权限" prop="name">
+                    <Select v-model="user.power" placeholder="请选择权限">
                         <Option v-for="item in power" :value="item.value" :key="item.value">{{ item.label }}</Option>
                     </Select>
-                    <Select v-model="addUserInfo.character" placeholder="请选择角色">
+                </FormItem>
+                <FormItem label="角色" prop="name">
+                    <Select v-model="user.character" placeholder="请选择角色">
                         <Option v-for="item in characterList" :value="item" :key="item">{{ item }}</Option>
                     </Select>
-                </form>
-            </div>
+                </FormItem>
+            </Form>
         </Modal>
     </div>
 </template>
@@ -64,8 +70,5 @@
         margin: 1em 0 0;
     }
 
-}
-.ivu-select {
-    margin-bottom: 1.5em;
 }
 </style>
