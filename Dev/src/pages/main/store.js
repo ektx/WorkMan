@@ -39,10 +39,12 @@ export default {
          * @param {string} cache 缓存路由
          */
         setToAlive (state, {title, path, cache}) {
-            // 添加索引
-            state.aliveIndex[cache] = state.alive.length
-            // 添加缓存
-            state.alive.push( cache )
+            if (!state.aliveIndex.hasOwnProperty(cache)) {
+                // 添加索引
+                state.aliveIndex[cache] = state.alive.length
+                // 添加缓存
+                state.alive.push( cache )
+            }
         },
         removeAlive (state, key) {
             state.alive.splice(state.aliveIndex[key], 1)
