@@ -272,6 +272,8 @@ export default {
         },
 
         holdModalAndShowErr (err) {
+            err = typeof err === 'object' ? JSON.stringify(err) : err
+            
             this.$Message.error(err)
             this.loading = false
             this.$nextTick(() => {

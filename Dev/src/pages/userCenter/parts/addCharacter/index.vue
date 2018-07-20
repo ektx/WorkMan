@@ -1,16 +1,27 @@
 <template>
     <div class="userCenter-addCharacter-mod">
         <header>
-            <h1>服务器邮件设置</h1>
+            <h1>角色管理</h1>
             <Button type="primary" @click="showModalEvt(true)">添加</Button>
         </header>
 
         <Table :columns="columns" :data="data"></Table>
+        
+        <div class="pages-mod">
+            <Page 
+                v-show="page.total" 
+                :current="page.pages" 
+                :total="page.total" 
+                :page-size="page.size"
+                @on-change="pageChange" 
+                simple
+            />
+        </div>
 
         <Modal
             v-model="showModal"
             :title="modalStatus ? '添加': '编辑'"
-            @on-ok="save"
+            @on-ok="saveEvt"
             ok-text="保存"
             :loading="loading"
         >
