@@ -21,12 +21,9 @@ export default {
                     value: 'user'
                 }
             ],
-            characterList: [
-                '设计师',
-                '前端开发',
-                '后端开发',
-                '产品'
-            ],
+            /* --- 角色远程查询 --- */
+            selectLoading: false,
+            characterList: [],
             columns: [
                 {
                     title: '账号',
@@ -64,7 +61,20 @@ export default {
                 }
             ],
             data: [],
-            rule: {},
+            rule: {
+                account: [
+                    {required: true, message: '用户名不能为空', trigger: 'blur'}
+                ],
+                email: [
+                    {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+                ],
+                power: [
+                    {required: true, message: '权限不能为空', trigger: 'blur'}
+                ],
+                character: [
+                    {required: true, message: '角色不能为空', trigger: 'blur'}
+                ]
+            },
 
             // #### 分页 ####
             total: 0,
@@ -72,7 +82,7 @@ export default {
             pageSize: 10,
 
             // #### 添加用户弹层 ####
-            showAddUserModal: false
+            showAddUserModal: true
         }
     },
     mounted: function () {
@@ -105,6 +115,12 @@ export default {
                     this.$Message.error(res.mes)
                 }
             })
+        },
+
+        // 添加新用户
+        addNewUser () {
+            this.showAddUserModal = true
+            this.user = {}
         },
 
         // 分页查询用户
@@ -141,6 +157,35 @@ export default {
                     this.$Message.success(res.data.addUser)
                 }
             })
+        },
+
+        searchCharacter (key) {
+            if (key !== '') {
+                this.selectLoading = true
+
+                this.$axios({
+                    url: '/api',
+                    method: 'post',
+                    data: {
+                        query: `query findkeyCharacter($label: String, $size: Int) {
+                            findkeyCharacter(label: $label, size: $size) {list {label description}}
+                        }`,
+                        variables: {
+                            label: key,
+                            size: 5
+                        }
+                    }
+                }).then(res => {
+                    this.selectLoading = false
+                    if ('errors' in res) {
+                        this.characterList = []
+                    } else {
+                        this.characterList = res.data.findkeyCharacter.list
+                    }
+                })
+            } else {
+                this.characterList = []
+            }
         }
     }
 }
