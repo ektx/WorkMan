@@ -20,5 +20,5 @@ export default new Vuex.Store({
 		Main,
 		userCenter
 	},
-	plugins: [createPersistedState()]
+	plugins: [createPersistedState({ storage: window.sessionStorage })]
 })

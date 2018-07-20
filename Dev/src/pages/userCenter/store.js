@@ -18,7 +18,13 @@ export default {
     },
     mutations: {
         setUserInfo (state, data) {
-            state.user = Object.assign({}, state.user, data)
+            state.user = Object.assign({}, {
+                account: '',
+                name: '',
+                email: '',
+                ico: '',
+                power: ''
+            }, data)
         }
     },
     actions: {
