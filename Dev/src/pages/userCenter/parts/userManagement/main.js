@@ -66,6 +66,7 @@ export default {
                     {required: true, message: '用户名不能为空', trigger: 'blur'}
                 ],
                 email: [
+                    {required: true, message: '邮箱不能为空', trigger: 'blur'},
                     {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
                 ],
                 power: [
@@ -82,7 +83,8 @@ export default {
             pageSize: 10,
 
             // #### 添加用户弹层 ####
-            showAddUserModal: true
+            showAddUserModal: false,
+            modalLoading: true
         }
     },
     mounted: function () {
@@ -132,30 +134,59 @@ export default {
         // 保存新用户
         saveNewUser () {
             console.log(this.user)
-            this.$axios({
-                url: '/api',
-                method: 'post',
-                data: {
-                    query: `mutation addUser(
-                        $account: String!,
-                        $email: String,
-                        $power: String!,
-                        $character: String!
-                    ){addUser(
-                        account: $account,
-                        email: $email,
-                        power: $power,
-                        character: $character
-                    )}`,
-                    variables: this.user
-                }
-            }).then(res => {
-                console.log(res)
-                if ('errors' in res) {
-                    this.$Message.error(JSON.stringify(res.errors))
+            this.$refs.form.validate(valid => {
+                if (valid) {
+                    this.$axios({
+                        url: '/api',
+                        method: 'post',
+                        data: {
+                            query: `mutation addUser(
+                                $account: String!,
+                                $email: String,
+                                $power: String!,
+                                $character: String!
+                            ){addUser(
+                                account: $account,
+                                email: $email,
+                                power: $power,
+                                character: $character
+                            )}`,
+                            variables: this.user
+                        }
+                    }).then(res => {
+                        if ('errors' in res) {
+                            this.holdModalAndShowErr(res.errors)
+                        } else {
+                            this.closeModalAndRefresh(res.data.addUser)
+                            this.findAllUser()
+                        }
+                    })
                 } else {
-                    this.$Message.success(res.data.addUser)
+                    this.holdModalAndShowErr('请确认表单内容')
                 }
+            })
+        },
+
+        /**
+         * 关闭弹层并刷新
+         * @param {string} mes 提示信息
+         */
+        closeModalAndRefresh (mes) {
+            this.showAddUserModal = false
+            this.$Message.success(mes)
+        },
+
+        /**
+         * 保持弹层并提示错误
+         * @param {object|string} err 错误信息
+         */
+        holdModalAndShowErr (err) {
+            err = typeof err === 'object' ? JSON.stringify(err) : err
+            
+            this.$Message.error(err)
+            this.modalLoading = false
+            this.$nextTick(() => {
+                this.modalLoading = true
             })
         },
 

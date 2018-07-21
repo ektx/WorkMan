@@ -1,31 +1,16 @@
 <template>
     <div class="userCenter-addCharacter-mod">
-        <header>
-            <h1>角色管理</h1>
-            <Button type="primary" @click="showModalEvt(true)">添加</Button>
-        </header>
-
-        <Table :columns="columns" :data="data"></Table>
-        
-        <div class="pages-mod">
-            <Page 
-                v-show="page.total" 
-                :current="page.pages" 
-                :total="page.total" 
-                :page-size="page.size"
-                @on-change="pageChange" 
-                simple
-            />
-        </div>
-
-        <Modal
-            v-model="showModal"
-            :title="modalStatus ? '添加': '编辑'"
-            @on-ok="saveEvt"
-            ok-text="保存"
-            :loading="loading"
+        <userTable 
+            ref="table"
+            title="角色管理"
+            :columns="columns"
+            :pageSize="pageSize"
+            :ajax="ajax"
+            :ajaxData="character" 
+            @add="showModalEvt"
+            @edit="edit"
         >
-            <Form ref="form" :model="character" :rules="rule" :label-width="60">
+            <Form slot="modal" ref="form" :model="character" :rules="rule" :label-width="60">
                 <FormItem label="名称" prop="label">
                     <Input autofocus v-model="character.label" placeholder="输入名称"/>
                 </FormItem>
@@ -33,7 +18,7 @@
                     <Input type="textarea" v-model="character.description" placeholder="输入描述"/>
                 </FormItem>
             </Form>
-        </Modal>
+        </userTable>
     </div>
 </template>
 
@@ -42,22 +27,5 @@
 .userCenter-addCharacter-mod {
     width: 100%;
     padding: 1em 2em;
-
-    header {
-        display: flex;
-        margin: 10px 0;
-        align-items: center;
-
-        h1 {
-            flex: 1;
-            font-size: 18px;
-            color: #333;
-        }
-
-    }
-
-    .pages-mod {
-        margin: 1em 0 0;
-    }
 }
 </style>

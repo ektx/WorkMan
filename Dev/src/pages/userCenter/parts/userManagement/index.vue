@@ -23,7 +23,7 @@
             title="添加"
             @on-ok="saveNewUser"
             ok-text="保存"
-            :loading="true"
+            :loading="modalLoading"
         >
             <Form class="form-mod" ref="form" :model="user" :rules="rule" :label-width="60">
                 <FormItem label="用户" prop="account">
