@@ -7,10 +7,9 @@
             :pageSize="pageSize"
             :ajax="ajax"
             :ajaxData="character" 
-            @add="showModalEvt"
-            @edit="edit"
+            @event="event"
         >
-            <Form slot="modal" ref="form" :model="character" :rules="rule" :label-width="60">
+            <Form slot="add" ref="form" :model="character" :rules="rule" :label-width="60">
                 <FormItem label="名称" prop="label">
                     <Input autofocus v-model="character.label" placeholder="输入名称"/>
                 </FormItem>

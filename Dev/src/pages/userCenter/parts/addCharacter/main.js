@@ -16,7 +16,6 @@ export default {
                     key: 'description'
                 }
             ],
-            // data: [],
             // --- 弹层 ---
             character: {
                 label: '',
@@ -87,13 +86,18 @@ export default {
         }
     },
     methods: {
-
-        showModalEvt () {
-            this.character = {}
-        },
-
-        edit (data) {
-            this.character = data.row
-        },
+        event (data) {
+            switch (data.type) {
+                case 'init': 
+                    data.cb({pages: 0, size: 10})
+                    break;
+                case 'add':
+                    this.character = {}
+                    break;
+                case 'edit':
+                    this.character = data.data.row
+                    break;
+            }
+        }
     }
 }

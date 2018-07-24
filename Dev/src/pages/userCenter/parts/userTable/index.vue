@@ -25,7 +25,7 @@
             ok-text="保存"
             :loading="loading"
         >
-            <slot name="modal"></slot>
+            <slot name="add"></slot>
         </Modal>
 
         <Modal
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-    name: 'userCenterTableTem',
+    name: 'UserCenterTableTem',
     props: {
         title: {
             type: String,
@@ -55,8 +55,6 @@ export default {
                 return []
             }
         },
-        // 表格内容
-        // data: Array,
         ajax: Object,
         ajaxData: [Object],
         // 分页
@@ -76,10 +74,6 @@ export default {
 
             variables: this.ajaxData
         }
-    },
-    mounted: function () {
-        this.evtType = 'init'
-        this.ajaxEvt()
     },
     watch: {
         columns: {
@@ -123,23 +117,42 @@ export default {
             },
             immediate: true
         },
-        ajaxData (val) {
-            this.variables = val
+        ajaxData: {
+            handler (val) {
+                this.variables = val
+            },
+            immediate: true
         }
+    },
+    mounted: function () {
+        this.evtType = 'init'
+
+        this.$emit('event', {
+            type: 'init',
+            cb: data => {
+                this.variables = data
+                this.ajaxEvt()
+            }
+        })
     },
     methods: {
         add () {
             this.evtType = '添加'
             this.showModal = true
-            // this.variables = {}
-            this.$emit('add')
+
+            this.$emit('event', {
+                type: 'add'
+            })
         },
 
         edit (data) {
             this.evtType = '编辑'
             this.showModal = true
 
-            this.$emit('edit', data)
+            this.$emit('event', {
+                type: 'edit', 
+                data
+            })
         },
 
         pageChange (pages) {
@@ -150,7 +163,7 @@ export default {
         },
 
         modalOk () {
-            this.$slots.modal[0].componentInstance.validate(valid => {
+            this.$slots.add[0].componentInstance.validate(valid => {
                 if (valid) {
                     this.ajaxEvt()
                 } else {
@@ -190,9 +203,13 @@ export default {
                         this.pagesTotal = data.total
                     } else {
                         this.closeModal(data)
+
                         // 更新表格
                         this.evtType = 'init'
-                        this.variables = {pages: 0, size: this.pageSize}
+                        this.variables = {
+                            pages: this.currentPage -1, 
+                            size: this.pageSize
+                        }
                         this.ajaxEvt()
     
                         // 运行回调
@@ -211,7 +228,8 @@ export default {
          */
         closeModal (mes) {
             this.showModal = false
-            this.$Message.success(mes)
+
+            if (mes) this.$Message.success(mes)
         },
 
         /**

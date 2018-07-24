@@ -1,31 +1,14 @@
 <template>
     <div class="userCenter-setUsers-mod">
-        <header>
-            <h1>服务器邮件设置</h1>
-            <Button type="primary" @click="showModal()">添加</Button>
-        </header>
-
-        <Table :columns="columns" :data="data"></Table>
-
-        <div class="pages-mod">
-            <Page 
-                v-show="total" 
-                :current="currentPage" 
-                :total="total" 
-                :page-size="pageSize"
-                @on-change="pageFindAllUser" 
-                simple
-            />
-        </div>
-        
-        <Modal
-            v-model="showAddUserModal"
-            :title="modalStatus"
-            @on-ok="saveData"
-            ok-text="保存"
-            :loading="loading"
+        <userTable 
+            title="服务器邮件设置"
+            :columns="columns"
+            :pageSize="pageSize"
+            :ajaxData="formValidate" 
+            :ajax="ajax"
+            @event="event"
         >
-            <Form ref="form" :model="formValidate" :rules="ruleValid" :label-width="60">
+            <Form slot="add" ref="form" :model="formValidate" :rules="ruleValid" :label-width="60">
                 <FormItem label="邮箱" prop="user">
                     <Input autofocus v-model="formValidate.user" placeholder="输入邮箱"/>
                 </FormItem>
@@ -39,7 +22,7 @@
                     <Input v-model="formValidate.port" placeholder="输入端口" number/>
                 </FormItem>
             </Form>
-        </Modal>
+        </userTable>
     </div>
 </template>
 
