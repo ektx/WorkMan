@@ -91,6 +91,25 @@ export default {
                         )}`
                     }
                 },
+                update: {
+                    url: '/api',
+                    data: {
+                        operationName: 'updateUserInfo',
+                        query: `mutation updateUserInfo(
+                            $account: String!,
+                            $email: String,
+                            $power: String,
+                            $character: String
+                        ){updateUserInfo(
+                            account: $account,
+                            data: {
+                                email: $email,
+                                power: $power,
+                                character: $character
+                            }
+                        )}`
+                    }
+                },
                 init: {
                     url: '/api',
                     data: {
