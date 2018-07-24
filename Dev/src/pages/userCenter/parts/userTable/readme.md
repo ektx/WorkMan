@@ -72,6 +72,32 @@ add update delete init 内部参数如下：
 | data   | Object                    | 请求的数据<br/>因使用的是GraphQL这里需要添加内容 | -      |
 | cb     | function                  | 回调方法，用于在请求完成后调用                   | -      |
 
+**data 属性设置**
+
+针对 GraphQL 的设置方法：
+
+| 属性          | 类型   | 说明                                     |
+| ------------- | ------ | ---------------------------------------- |
+| operationName | String | 请求的接口名称                           |
+| query         | String | 请求的方法                               |
+| variables     | Object | 请求的数据内容(可以使用ajaxData动态设置) |
+|               |        |                                          |
+
+```js
+data: {
+    operationName: 'addCharacter',
+    query: `mutation addCharacter(
+        $label: String!,
+        $description: String
+    ){addCharacter(
+        label: $label,
+        description: $description
+    )}`
+},
+```
+
+
+
 #### slot
 
 | 属性 | 说明             |

@@ -62,7 +62,6 @@ export default {
         },
         // [SYMBOL] set default nav
         SET_MAIN_NAV () {
-            console.log(this.userInfo)
             let nav = [
                 {
                     title: '用户中心',

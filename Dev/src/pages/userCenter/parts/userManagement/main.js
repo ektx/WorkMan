@@ -1,8 +1,9 @@
 import VMacInput from '@/components/VMacInput'
+import userTable from '../userTable'
 
 export default {
     name: 'userCenter-addUser',
-    components: { VMacInput },
+    components: { VMacInput, userTable },
     data () {
         return {
             user: {
@@ -30,6 +31,10 @@ export default {
                     key: 'account'
                 },
                 {
+                    title: '邮箱',
+                    key: 'email'
+                },
+                {
                     title: '呢称',
                     key: 'name'
                 },
@@ -44,23 +49,8 @@ export default {
                 {
                     title: '角色',
                     key: 'character'
-                },
-                {
-                    title: '设置',
-                    key: 'set',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small'
-                                }
-                            }, '编辑')
-                        ])
-                    }
                 }
             ],
-            data: [],
             rule: {
                 account: [
                     {required: true, message: '用户名不能为空', trigger: 'blur'}
@@ -77,119 +67,41 @@ export default {
                 ]
             },
 
-            // #### 分页 ####
-            total: 0,
-            currentPage: 1,
             pageSize: 10,
 
             // #### 添加用户弹层 ####
             showAddUserModal: false,
-            modalLoading: true
-        }
-    },
-    mounted: function () {
-        console.log('user management pages')
-        this.findAllUser()
-    },
-    methods: {
-        save () {
-            this.$Message.error('res.mes')
-        },
+            modalLoading: true,
 
-        findAllUser () {
-            this.$axios({
-                url: '/api',
-                method: 'post',
-                data: {
-                    query: `query findAllUser($pages: Int, $size: Int){findAllUsers (pages: $pages, size: $size) {success mes list{account name pwd power character} total}}`,
-                    variables: {
-                        pages: this.currentPage -1,
-                        size: this.pageSize
+            ajax: {
+                add: {
+                    url: '/api',
+                    data: {
+                        operationName: 'addUser',
+                        query: `mutation addUser(
+                            $account: String!,
+                            $email: String,
+                            $power: String!,
+                            $character: String!
+                        ){addUser(
+                            account: $account,
+                            email: $email,
+                            power: $power,
+                            character: $character
+                        )}`
+                    }
+                },
+                init: {
+                    url: '/api',
+                    data: {
+                        operationName: 'findAllUsers',
+                        query: `query findAllUsers($pages: Int, $size: Int){findAllUsers (pages: $pages, size: $size) {success mes list{account name email pwd power character} total}}`,
                     }
                 }
-            }).then(res => {
-                console.log(res)
-                res = res.data.findAllUsers
-                if (res.success) {
-                    this.data = res.list
-                    this.total = res.total
-                } else {
-                    this.$Message.error(res.mes)
-                }
-            })
-        },
-
-        // 添加新用户
-        addNewUser () {
-            this.showAddUserModal = true
-            this.user = {}
-        },
-
-        // 分页查询用户
-        pageFindAllUser (page) {
-            this.currentPage = page
-            this.findAllUser()
-        },
-
-        // 保存新用户
-        saveNewUser () {
-            console.log(this.user)
-            this.$refs.form.validate(valid => {
-                if (valid) {
-                    this.$axios({
-                        url: '/api',
-                        method: 'post',
-                        data: {
-                            query: `mutation addUser(
-                                $account: String!,
-                                $email: String,
-                                $power: String!,
-                                $character: String!
-                            ){addUser(
-                                account: $account,
-                                email: $email,
-                                power: $power,
-                                character: $character
-                            )}`,
-                            variables: this.user
-                        }
-                    }).then(res => {
-                        if ('errors' in res) {
-                            this.holdModalAndShowErr(res.errors)
-                        } else {
-                            this.closeModalAndRefresh(res.data.addUser)
-                            this.findAllUser()
-                        }
-                    })
-                } else {
-                    this.holdModalAndShowErr('请确认表单内容')
-                }
-            })
-        },
-
-        /**
-         * 关闭弹层并刷新
-         * @param {string} mes 提示信息
-         */
-        closeModalAndRefresh (mes) {
-            this.showAddUserModal = false
-            this.$Message.success(mes)
-        },
-
-        /**
-         * 保持弹层并提示错误
-         * @param {object|string} err 错误信息
-         */
-        holdModalAndShowErr (err) {
-            err = typeof err === 'object' ? JSON.stringify(err) : err
-            
-            this.$Message.error(err)
-            this.modalLoading = false
-            this.$nextTick(() => {
-                this.modalLoading = true
-            })
-        },
-
+            }
+        }
+    },
+    methods: {
         searchCharacter (key) {
             if (key !== '') {
                 this.selectLoading = true
@@ -216,6 +128,20 @@ export default {
                 })
             } else {
                 this.characterList = []
+            }
+        },
+
+        event (data) {
+            switch (data.type) {
+                case 'init': 
+                    data.cb({pages: 0, size: this.pageSize})
+                    break;
+                case 'add':
+                    this.user = {}
+                    break;
+                case 'edit':
+                    this.user = data.data.row
+                    break;
             }
         }
     }

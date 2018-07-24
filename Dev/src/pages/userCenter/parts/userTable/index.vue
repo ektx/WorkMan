@@ -198,6 +198,14 @@ export default {
                 } else {
                     let data = res.data[option.data.operationName]
                     
+                    if (!data) {
+                        return this.$Message.warning({
+                            content: '没有发现数据: '+option.data.operationName,
+                            duration: 10,
+                            closable: true
+                        })
+                    }
+
                     if (type === 'init') {
                         this.tableData = data.list
                         this.pagesTotal = data.total

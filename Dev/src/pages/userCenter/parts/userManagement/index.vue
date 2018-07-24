@@ -1,31 +1,14 @@
 <template>
     <div class="userCenter-setUsers-mod">
-        <header>
-            <h1>用户管理</h1>
-            <Button type="primary" @click="addNewUser">添加</Button>
-        </header>
-        
-        <Table :columns="columns" :data="data"></Table>
-
-        <div class="pages-mod">
-            <Page 
-                v-show="total" 
-                :current="currentPage" 
-                :total="total" 
-                :page-size="pageSize"
-                @on-change="pageFindAllUser" 
-                simple
-            />
-        </div>
-        
-        <Modal
-            v-model="showAddUserModal"
-            title="添加"
-            @on-ok="saveNewUser"
-            ok-text="保存"
-            :loading="modalLoading"
+        <userTable 
+            title="用户管理"
+            :columns="columns"
+            :pageSize="pageSize"
+            :ajaxData="user" 
+            :ajax="ajax"
+            @event="event"
         >
-            <Form class="form-mod" ref="form" :model="user" :rules="rule" :label-width="60">
+            <Form slot="add" class="form-mod" ref="form" :model="user" :rules="rule" :label-width="60">
                 <FormItem label="用户" prop="account">
                     <Input v-model="user.account" placeholder="用户名"/>
                 </FormItem>        
@@ -53,7 +36,7 @@
                     </Select>
                 </FormItem>
             </Form>
-        </Modal>
+        </userTable>
     </div>
 </template>
 
