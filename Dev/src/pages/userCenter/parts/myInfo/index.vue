@@ -1,27 +1,50 @@
 <template>
     <div class="my-info-form">
-        <form >
-            <VMacInput title="账号" :value="userInfo.account" :help="nameHelp" readonly/>
-            <VMacInput title="权限" v-model="userInfo.power"  @keyup="say($event)" readonly/>
-            <VMacInput title="用户名" v-model="userInfo.name" :help="nameHelp"/>
-            <VMacInput title="邮箱" v-model="userInfo.email"  @keyup="say($event)" required/>
-
-            <Button @click="updateInfo" long>保存</Button>
-        </form>
+        <Form :label-width="80" :model="userInfo" :rules="rules">
+            <FormItem label="账号" prop="account">
+                <Input v-model="userInfo.account" disabled />
+            </FormItem>
+            <FormItem label="权限" prop="power">
+                <Input v-model="userInfo.power" disabled />
+            </FormItem>
+            <FormItem label="用户名" prop="name">
+                <Input v-model="userInfo.name" />
+            </FormItem>
+            <FormItem label="邮箱" prop="email">
+                <Input v-model="userInfo.email" />
+            </FormItem>
+            <FormItem>
+                <Button @click="updateInfo" long>保存</Button>
+            </FormItem>
+        </Form>
         
     </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex'
-import VMacInput from '@/components/VMacInput'
 
 export default {
     name: 'userCenter-myInfo',
-    components: { VMacInput },
     data () {
         return {
             nameHelp: {},
+            rules: {
+                account: [],
+                power: [],
+                email: [
+                    {
+                        required: true,
+                        trigger: 'blur',
+                        message: '不能为空'
+                    },
+                    {
+                        type: 'email',
+                        trigger: 'blur',
+                        message: '邮箱格式不正确'
+                    }
+                ]
+            }
         }
     },
     computed: {
@@ -41,16 +64,6 @@ export default {
                 email: this.userInfo.email
             })
         },
-        /**
-         * 测试功能
-         * @param {object} evt 事件
-         */
-        say (evt) {
-            console.log(evt)
-            console.log(this.pwd)
-
-            this.pwd = evt.target.value
-        }
     }
 }
 </script>

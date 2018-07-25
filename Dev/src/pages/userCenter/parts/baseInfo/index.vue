@@ -97,11 +97,19 @@ export default {
 
         // 更新用户信息
         updateInfo (data, callback) {
-            let send = G2Q(data)
             this.$axios.post('/api', {
-                query: `mutation {UserUpdate(data:${send}){success mes}}`
+                query: `mutation updateUserInfo(
+                    $name: String,
+                    $email: String
+                ){updateUserInfo(data:{
+                    name: $name,
+                    email: $email
+                })}`,
+                variables: data
             }).then(res => {
-                if (res.data.UserUpdate.success) {
+                if ('errors' in res) {
+                    this.$Message.success('保存失败')
+                } else {
                     this.$Message.success('保存成功')
                     this['userCenter/setUserInfo']( this.userInfo )
                 }

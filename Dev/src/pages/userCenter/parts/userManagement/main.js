@@ -69,10 +69,6 @@ export default {
 
             pageSize: 10,
 
-            // #### 添加用户弹层 ####
-            showAddUserModal: false,
-            modalLoading: true,
-
             ajax: {
                 add: {
                     url: '/api',
@@ -96,7 +92,7 @@ export default {
                     data: {
                         operationName: 'updateUserInfo',
                         query: `mutation updateUserInfo(
-                            $account: String!,
+                            $account: String,
                             $email: String,
                             $power: String,
                             $character: String
@@ -107,6 +103,17 @@ export default {
                                 power: $power,
                                 character: $character
                             }
+                        )}`
+                    }
+                },
+                delete: {
+                    url: '/api',
+                    data: {
+                        operationName: 'deleteUser',
+                        query: `mutation deleteUser(
+                            $account: String!
+                        ){deleteUser(
+                            account: $account
                         )}`
                     }
                 },
