@@ -1,5 +1,5 @@
 import VMacInput from '@/components/VMacInput'
-import userTable from '../userTable'
+import userTable from '@/modules/userTable'
 
 export default {
     name: 'userCenter-addUser',

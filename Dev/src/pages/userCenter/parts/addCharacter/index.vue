@@ -22,9 +22,4 @@
 </template>
 
 <script src="./main.js"></script>
-<style lang="scss" scoped>
-.userCenter-addCharacter-mod {
-    width: 100%;
-    padding: 1em 2em;
-}
-</style>
+

@@ -18,11 +18,22 @@
             
             <TabPane label="密码管理">
                 <div class="my-info-pass">
-                    <form action="">
-                        <VMacInput title="密码" v-model="pwd"  type="password" @blur="verifyPwd" :help="pwdHelp"/>
-                        <VMacInput title="确认密码" v-model="surepwd" type="password" @blur="verifyPwdSure" :help="surePwdHelp"/>
-                        <Button @click="updatePwd" long>保存</Button>
-                    </form>
+                    <Form 
+                        ref="passForm"
+                        :model="pwd" 
+                        :rules="pwdRule" 
+                        :label-width="80"
+                    >
+                        <FormItem label="密码" prop="first">
+                            <Input type="password" v-model="pwd.first" placeholder="请输入密码"/>
+                        </FormItem>
+                        <FormItem label="确认密码" prop="second">
+                            <Input type="password" v-model="pwd.second" placeholder="请确认密码"/>
+                        </FormItem>
+                        <FormItem>
+                            <Button type="primary" @click="updatePwd">保存</Button>
+                        </FormItem>
+                    </Form>
                 </div>
             </TabPane>
             
@@ -44,54 +55,52 @@ export default {
      },
     data () {
         return {
-            pwdHelp:{},
-            surePwdHelp:{},
-            pwd: '',
-            pwdError: '',
-            surepwd: '',
-            surepwdError: '',
-            pwdErr: ''
+            pwd: {
+                first: '',
+                second: ''
+            },
+            pwdRule: {
+                first: [],
+                second: [
+                    {
+                        validator: this.checkPwd,
+                        trigger: 'blur'
+                    }
+                ]
+            },
         }
     },
     methods: {
-        // 验证密码
-        verifyPwd () {
-            if (this.pwd === ''){
-                this.pwdHelp = {
-                    mes: '此项不能为空',
-                    status: 'error'
-                }
+        checkPwd (rule, val, cb) {
+            if (this.pwd.first !== this.pwd.second) {
+                return cb(new Error('密码不同'))
             } else {
-                this.pwdHelp = {
-                    mes: '',
-                    status: 'success'
-                }
-            }
-        },
-        // 验证密码是否相同
-        verifyPwdSure () {
-            if(this.surepwd === this.pwd){
-                this.surePwdHelp = {
-                    mes: '',
-                    status: 'success'
-                }
-            }else{
-                this.surePwdHelp = {
-                    mes: '密码不一致',
-                    status: 'error'
-                }
+                cb()
             }
         },
 
         // 修改密码
         updatePwd () {
-            this.$axios.post('/api', {
-                query: `mutation {UserUpdate(data:{
-                    pwd: "${this.pwd}"
-                }){success mes}}`
-            }).then(res => {
-                if (res.data.UserUpdate.success)
-                    this.$Message.success('保存成功')
+            console.log(this)
+            this.$refs.passForm.validate(valid => {
+                if (valid) {
+                    this.$axios.post('/api', {
+                        query: `mutation updateUserInfo(
+                            $pwd: String
+                        ){ updateUserInfo(data:{
+                            pwd: $pwd
+                        })}`,
+                        variables: {pwd: this.pwd.first}
+                    }).then(res => {
+                        if ('errors' in res) {
+                            this.$Message.error('密码修改失败')
+                        } else {
+                            this.$Message.success('密码修改成功')
+                        }
+                    })
+                } else {
+                    this.$Message.error('请先确认好表格内容')
+                }
             })
         },
 

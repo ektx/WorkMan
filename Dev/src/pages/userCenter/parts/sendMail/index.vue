@@ -29,9 +29,6 @@
 <script src="./main.js"></script>
 <style lang="less" scoped>
 .userCenter-setUsers-mod {
-    width: 100%;
-    padding: 1em 2em;
-
     header {
         display: flex;
         margin: 10px 0;

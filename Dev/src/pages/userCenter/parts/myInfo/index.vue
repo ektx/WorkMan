@@ -14,10 +14,9 @@
                 <Input v-model="userInfo.email" />
             </FormItem>
             <FormItem>
-                <Button @click="updateInfo" long>保存</Button>
+                <Button type="primary" @click="updateInfo">保存</Button>
             </FormItem>
         </Form>
-        
     </div>
 </template>
 
