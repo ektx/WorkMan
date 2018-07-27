@@ -6,7 +6,7 @@
 			</nav>
 
 			<div class="header-side-box" v-if="asideNav">
-				<VMenuBar :nav="asideNav" />
+				<VMenuBar :nav="asideNav" direction="end"/>
 			</div>
 		</header>
 		
