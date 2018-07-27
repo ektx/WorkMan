@@ -59,8 +59,11 @@ export default {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    text-align: center;
     background: rgba(255, 255, 255, .95);
+
+    header {
+        text-align: center;
+    }
 
     h1 {
         font-weight: 400;
