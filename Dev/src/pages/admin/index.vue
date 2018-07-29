@@ -14,6 +14,7 @@
             </FormItem>
             <FormItem>
                 <Button type="primary" @click="save">保存</Button>
+                <Button class="reset" @click="reset">重写</Button>
             </FormItem>
         </Form>
     </section>
@@ -45,7 +46,17 @@ export default {
     },
     methods: {
         save () {
-            console.log(this.admin)
+            this.$refs.form.validate(valid => {
+                if (valid) {
+
+                } else {
+                    this.$Message.error('请确认表单内容')
+                }
+            })
+        },
+
+        reset () {
+            this.$refs.form.resetFields()
         }
     }
 }
@@ -73,6 +84,10 @@ export default {
     .form-mod {
         margin: 2em 0;
         min-width: 340px;
+    }
+
+    .reset {
+        margin-left: 10px;
     }
 }
 
