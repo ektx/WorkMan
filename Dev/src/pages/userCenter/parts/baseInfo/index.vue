@@ -45,6 +45,7 @@
 import VMacInput from '@/components/VMacInput'
 import MyInfo from '../myInfo'
 import AddCharacter from '../addCharacter'
+import { mapMutations } from 'vuex';
 
 export default {
     name: 'UserCenterBaseInfo',
@@ -71,6 +72,8 @@ export default {
         }
     },
     methods: {
+        ...mapMutations(['userCenter/updateUserInfo']),
+
         checkPwd (rule, val, cb) {
             if (this.pwd.first !== this.pwd.second) {
                 return cb(new Error('密码不同'))
@@ -120,7 +123,7 @@ export default {
                     this.$Message.success('保存失败')
                 } else {
                     this.$Message.success('保存成功')
-                    this['userCenter/setUserInfo']( this.userInfo )
+                    this['userCenter/updateUserInfo']( data )
                 }
             })
         },

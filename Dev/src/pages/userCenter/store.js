@@ -25,11 +25,13 @@ export default {
                 ico: '',
                 power: ''
             }, data)
+        },
+        updateUserInfo (state, data) {
+            state.user = Object.assign({}, state.user, data)
         }
     },
     actions: {
         getUserInfo ({commit}, callback) {
-            console.log('usercenter actions')
             Axios.post('/api', {
                 query: `{ findUser { success mes data{ account name email ico power reset} } } `
             }).then(res => {

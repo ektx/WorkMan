@@ -1,5 +1,4 @@
 import { mapMutations, mapState } from 'vuex'
-import G2Q from '@/assets/js/parse2graphQl.js'
 
 export default {
     name: 'userCenter',

@@ -39,17 +39,12 @@ export default {
         })
     },
     watch: {
-        userName (val, old) {
-            this.userInfo[0].title = val
+        userName (val) {
+            this.updateAside(val)
         }
     },
     mounted: function () {
-        this.userInfo[0].title = this.userName
-
-        this['Main/setNav']({
-            type: 'aside',
-            data: this.userInfo
-        })
+        this.updateAside(this.userName)
     },
     methods: {
         ...mapMutations(['Main/setNav']),
@@ -59,6 +54,16 @@ export default {
         loginOut () {
             localStorage.removeItem('TOKEN')
             this.$router.push({path: '/login'})
+        },
+
+        //
+        updateAside (val) {
+            this.userInfo[0].title = val
+
+            this['Main/setNav']({
+                type: 'aside',
+                data: this.userInfo
+            })
         }
     }
 }
