@@ -113,13 +113,15 @@
 					<dl class="event-make-col">
 						<dt>时间</dt>
 						<dd>
-							<RVCalendar 
-								picker
-								mode="range"
-								:value="selectedDate"
-								@input="selectCalendar"
-								show-caps
-							></RVCalendar>
+							<DatePicker
+								v-model="selectedDate" 
+								type="datetimerange" 
+								placeholder="Select date and time" 
+								format="yyyy-MM-dd HH:mm"
+								:clearable="false"
+								style="width: 300px"
+								@on-ok="selectCalendar"
+							></DatePicker>
 						</dd>
 					</dl>
 					<dl class="event-make-col">

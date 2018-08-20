@@ -71,7 +71,7 @@ export default {
             },
             // 展示状态
             pickTimeShow: false,
-            selectedDate: {},
+            selectedDate: [],
             attributes: [
                 {
                     contentStyle: {
@@ -548,26 +548,56 @@ export default {
                         data: ${P2Q(updateQ)}
                     ) { success mes }
                 }`
-                saveType = 'todo_evt_update'
+                query = `mutation todoEvtUpdate(
+                    $user: String,
+                    $id: String!,
+                    $eventTypeID: String,
+                    $title: String,
+                    $complete: Boolean,
+                    $stime: String,
+                    $etime: String
+                  ) {
+                    todoEvtUpdate(
+                      user: $user,
+                      id: $id,
+                      eventTypeID: $eventTypeID,
+                      title: $title,
+                      complete: $complete,
+                      stime: $stime,
+                      etime: $etime
+                    )
+                  }`
+                saveType = 'todoEvtUpdate'
             }
 
-            this.saveEventAjax({query}, data => {
-                data = data.data[saveType]
-
-                if (data.success) {
-                    if (!eventData.id) {
-                        // 删除新建标识
-                        delete eventData.insert
-                        // 更新 id
-                        eventData.id = data.data
-                        // 恢复可以新加功能
-                        this.createNewEvent = false
-                    }
+            this.saveEventAjax({
+                query,
+                variables: this.holdEvent
+            }, data => {
+                if (data.errors) {
+                    this.$Message.error(data)
                 } else {
-                    console.error(data)
+                    if (saveType === 'todoEvtUpdate') {
+                        this.$Message.success(data.data.todoEvtUpdate)
+                    } else {
+                        data = data.data[saveType]
+        
+                        if (data.success) {
+                            if (!eventData.id) {
+                                // 删除新建标识
+                                delete eventData.insert
+                                // 更新 id
+                                eventData.id = data.data
+                                // 恢复可以新加功能
+                                this.createNewEvent = false
+                            }
+                        } else {
+                            console.error(data)
+                        }
+        
+                        if (callback) callback(data)
+                    }
                 }
-
-                if (callback) callback(data)
             }, err => {
                 console.error(err)
             })
@@ -783,10 +813,10 @@ export default {
         showHoldEvent () {
             let evt = this.events[this.holdEventIndex]
 
-            this.selectedDate = {
-                start: new Date(evt.stime),
-                end: new Date(evt.etime)
-            }
+            this.selectedDate = [
+                new Date(evt.stime), 
+                new Date(evt.etime)
+            ]
             this.holdEvent = evt
         },
 
@@ -844,16 +874,15 @@ export default {
         },
 
         // 日历时间选择时
-        selectCalendar (val) {
-            this.selectedDate = val
-            this.holdEvent.stime = val.start
-            this.holdEvent.etime = val.end
+        selectCalendar () {
+            this.holdEvent.stime = this.selectedDate[0]
+            this.holdEvent.etime = this.selectedDate[1]
             this.saveInsertData()
         },
 
     },
     destroyed: function() {
-        console.log('sss')
+        console.log('退出 todoList')
     }
 }
 
