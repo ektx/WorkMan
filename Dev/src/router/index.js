@@ -38,6 +38,14 @@ export default new Router({
                     component: loadView('mock')
                 },
                 {
+                    path: '/project',
+                    component: loadView('project')
+                },
+                {
+                    path: '/development',
+                    component: loadView('development')
+                },
+                {
                     path: '/user',
                     component: loadView('userCenter'),
                     children: [
