@@ -1,7 +1,4 @@
 import APIFetch from '../../assets/js/AFetch'
-import { VRadio, VRadioGroup } from '@/components/VRadio'
-import { VCheckbox, VCheckboxGroup } from '@/components/VCheckbox'
-import VSearch from '@/components/VSearch'
 import { mapMutations } from 'vuex'
 import TodoArticle from './parts/article'
 import P2Q from '@/assets/js/parse2graphQl'
@@ -9,11 +6,6 @@ import P2Q from '@/assets/js/parse2graphQl'
 export default {
     name: 'todolist',
     components: {
-        VRadio,
-        VRadioGroup,
-        VCheckbox,
-        VCheckboxGroup,
-        VSearch,
         TodoArticle
     },
     data () {
