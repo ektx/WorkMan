@@ -7,6 +7,7 @@
             </TabPane>
 
             <TabPane label="头像管理">
+                <VCropper></VCropper>
                 <form action="http://localhost:9085/upload" method="post" enctype="multipart/form-data">
                     <p><input type="file" name="img" multiple></p>
                     <p><input type="file" name="video"></p>
@@ -43,16 +44,18 @@
 
 <script>
 import VMacInput from '@/components/VMacInput'
+import VCropper from '@/components/VCropper'
 import MyInfo from '../myInfo'
 import AddCharacter from '../addCharacter'
-import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'UserCenterBaseInfo',
      components: { 
         VMacInput,
         AddCharacter,
-        MyInfo
+        MyInfo,
+        VCropper
      },
     data () {
         return {

@@ -14,8 +14,12 @@ export default {
                     to: '/mock'
                 },
                 {
-                    title: '通讯录',
-                    to: '/addressBook'
+                    title: '项目',
+                    to: '/project'
+                },
+                {
+                    title: '开发中心',
+                    to: '/development'
                 },
                 {
                     title: 'Apple',
