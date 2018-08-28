@@ -6,7 +6,7 @@
                 <MyInfo @save="updateInfo"/>
             </TabPane>
 
-            <TabPane label="头像管理">
+            <TabPane label="头像管理" style="width: 100%; height: 300px">
                 <VCropper></VCropper>
                 <form action="http://localhost:9085/upload" method="post" enctype="multipart/form-data">
                     <p><input type="file" name="img" multiple></p>

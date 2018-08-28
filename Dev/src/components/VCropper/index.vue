@@ -5,7 +5,7 @@
             <p>{{helpInfo}}</p>
         </div>
         <div class="img-cropper-box">
-            <img class="origin-img" :src="imgURL">
+            <img class="origin-img" :src="imgURL" :style="imgStyle">
         </div>
     </div>
 </template>
@@ -23,11 +23,14 @@ export default {
             // 图片信息
             imgEl: null,
             imgBCR: {},
+            // 图片样式 控制位置
+            imgStyle: {}
 
         }
     },
-    mounth: function () {
+    mounted: function () {
         this.boxBCR = this.$el.getBoundingClientRect()
+        console.log(this.boxBCR)
     },
     methods: {
         inputChange ({type, target}) {
@@ -42,10 +45,22 @@ export default {
                 reader.readAsDataURL(file)
     
                 reader.onload = readEvt => {
-                    this.imgInfo = readEvt
-                    this.imgURL = readEvt.target.result
+                    let img = new Image
 
-                    this.setImgPosition()
+                    img.onload = () => {
+                        Object.assign(this.imgBCR, {
+                            width: img.width,
+                            height: img.height
+                        })
+
+                        this.setImgPosition()
+                    }
+
+                    img.src = reader.result
+
+                    this.imgInfo = readEvt
+                    this.imgURL = reader.result
+
                 }
 
 
@@ -55,13 +70,12 @@ export default {
         },
 
         setImgPosition () {
-            this.imgEl = this.$el.querySelector('.origin-img')
-
-            this.$nextTick(function () {
-                this.imgBCR = this.imgEl.getBoundingClientRect()
-
-                console.log(this.imgEl, this.imgBCR)
-            })
+            let removeX = (this.boxBCR.width - this.imgBCR.width) / 2
+            let removeY = (this.boxBCR.height - this.imgBCR.height) / 2
+            
+            this.imgStyle = {
+                transform: `translateX(${removeX}px) translateY(${removeY}px)`
+            }
         }
     }
 }
@@ -74,6 +88,7 @@ export default {
     width: 100%;
     height: 100%;
     background: #fff;
+    overflow: hidden;
 
     .file-select-box {
         position: relative;
@@ -98,10 +113,11 @@ export default {
     }
 
     .img-cropper-box {
+        height: 100%;
+        widows: 100%;
+        overflow: hidden;
+
         .origin-img {
-            position: absolute;
-            top: 0;
-            left: 0;
         }
     }
 }
