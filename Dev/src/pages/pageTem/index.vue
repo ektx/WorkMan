@@ -48,7 +48,7 @@ export default {
     },
     mounted: function() {
         // [SYMBOL] 设置缓存应用
-        this['Main/setToAlive'](this.PAGEINFO)
+        this.setToAlive(this.PAGEINFO)
         // [SYMBOL] 设置主菜单
         this.SET_MAIN_NAV()
 
@@ -59,17 +59,21 @@ export default {
     },
     methods: {
         // 引入对主菜单的控制 设置缓存 移除缓存 功能 
-        ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive']),
+        ...mapMutations('Main', [
+            'setNav', 
+            'setToAlive', 
+            'removeAlive'
+        ]),
 
         // 退出时，移除缓存
         EXIT_APP () {
             this.$router.push({path: '/'})
-            this['Main/removeAlive'](pageName)
+            this.removeAlive(pageName)
         },
 
         // 设置主菜单内容
         SET_MAIN_NAV () {
-            this['Main/setNav'](this.NAVS)
+            this.setNav(this.NAVS)
         },
     },
     destroyed: function() {
