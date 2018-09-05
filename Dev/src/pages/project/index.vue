@@ -101,15 +101,11 @@ export default {
         },
         
         typeContextmenu ({index, item, evt}) {
-            console.log(item)
-            console.log(this.setContextmenu)
             this.setContextmenu({
                 show: true,
                 data: [{
                     title: '重命令',
-                    evt: data => {
-                        console.log(data)
-                    }
+                    evt: () => this.renameTypeItem(index, item, evt)
                 }, {
                     title: '删除',
                     evt: () => this.delTypeItem(index, item)
@@ -120,6 +116,11 @@ export default {
 
         delTypeItem (index, item) {
             this.$refs.typelist.del(index, item)
+            this.setContextmenu({show: false})
+        },
+
+        renameTypeItem (index, item, evt) {
+            this.$refs.typelist.rename(index, item, evt)
             this.setContextmenu({show: false})
         }
 

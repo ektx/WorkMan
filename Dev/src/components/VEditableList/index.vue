@@ -33,14 +33,15 @@ export default {
     data () {
         return {
             current: {},
-            iList: []
+            iList: [],
+            intEl: null
         }
     },
     watch: {
         current: {
             handler (val) {
                 console.log('current:', val)
-                
+
                 let data = {}
 
                 if (Object.keys(val).length) {
@@ -102,9 +103,7 @@ export default {
 
         // 添加
         add () {
-            if (this.current) {
-                this.current.classes = ''
-            }
+            if (this.current) this.current.classes = ''
 
             this.current = {
                 id: Date.now(),
@@ -127,6 +126,22 @@ export default {
             if (item.id == this.current.id) {
                 this.current = {}
             }
+        },
+
+        rename (index, item, evt) {
+            if (this.current && item.id !== this.current.id) {
+                this.current.classes = ''
+            }
+
+            this.current = this.iList[index]
+            Object.assign(this.current, {
+                readonly: false,
+                classes: 'current'
+            })
+
+            this.$nextTick(function () {
+                evt.target.focus()
+            })
         },
 
         // 预设当前内容
@@ -162,11 +177,11 @@ export default {
     li {
         width: 100%;
         line-height: 28px;
-        padding: 0 0 0 10px;
-        box-sizing: border-box;
 
         input {
+            width: 100%;
             font-size: 14px;
+            text-indent: 10px;
             color: #333;
             border: none;
             outline: none;
