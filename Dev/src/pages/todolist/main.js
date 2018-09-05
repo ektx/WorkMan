@@ -94,7 +94,7 @@ export default {
     },
     mounted: function() {
         // [SYMBOL] 设置缓存应用
-        this['Main/setToAlive']({
+        this.setToAlive({
             title: '计划',
             cache: 'todolist',
             path: '/todolist'
@@ -196,17 +196,24 @@ export default {
     },
     methods: {
         // [SYMBOL] 
-        ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive']),
+        ...mapMutations('Main', [
+            'setNav', 
+            'setToAlive', 
+            'removeAlive'
+        ]),
+        ...mapMutations([
+            'setContextmenu'
+        ]),
 
         // [SYMBOL] exit app
         EXIT_APP () {
             this.$router.push({path: '/'})
-            this['Main/removeAlive']('todolist')
+            this.removeAlive('todolist')
         },
 
         // [SYMBOL] set default nav
         SET_MAIN_NAV () {
-            this['Main/setNav']({
+            this.setNav({
                 type: 'main',
                 data: [
                     {
@@ -281,16 +288,16 @@ export default {
                 // 更新
                 if (idVal) {
                     if (res.updateTodoListType.success)
-                        alert(res.updateTodoListType.mes)
+                        this.$Message.success(res.updateTodoListType.mes)
                     else
-                        alert(res.updateTodoListType.mes)
+                    this.$Message.success(res.updateTodoListType.mes)
                 } 
                 // 添加
                 else {
                     if (res.addTodoListType.success) {
                         saveData.id = res.addTodoListType.id
                     } else {
-                        alert(res.addTodoListType.mes)
+                        this.$Message.success(res.addTodoListType.mes)
                     }
                 }
             }).catch(err => {
@@ -341,7 +348,7 @@ export default {
                 data: [
                     {
                         title: '重命名',
-                        evt: function (data) {
+                        evt: data => {
                             self.$set(self.typeList[index], 'readonly', true)
                             self.renameStatus = true
                             self.holdTypeIndex = index
