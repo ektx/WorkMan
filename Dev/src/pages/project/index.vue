@@ -1,7 +1,14 @@
 <template>
     <VRow class="project-page">
         <VCol class="aside-box" width="200px">
-            
+            <h3>列表</h3>
+            {{currentType}}
+            <VEditableList 
+                ref="typelist" 
+                v-model="currentType"
+                :list="typeList" 
+                @contextmenu="typeContextmenu"
+            />
         </VCol>
         <VCol class="project-list-box" width="300px">固定 200 px</VCol>
         <VCol class="project-content">
@@ -35,21 +42,25 @@ export default {
                 {
                     title: '文件',
                     children: [{
-                        title: '新建事件',
-                        fun: this.addOneEvent
+                        title: '新建项目',
+                        fun: this.addNewProject
                     },
                     {
-                        title: '新建类别',
+                        title: '新建列表',
                         fun: this.addNewType
                     }]
                 }]
-            }
+            },
+            // 类型列表
+            typeList: [],
+            // 当前类型
+            currentType: {}
         }
     },
     mounted: function() {
         console.log('打开 项目')
         // [SYMBOL] 设置缓存应用
-        this['Main/setToAlive'](this.PAGEINFO)
+        this.setToAlive(this.PAGEINFO)
         // [SYMBOL] 设置主菜单
         this.SET_MAIN_NAV()
 
@@ -61,18 +72,57 @@ export default {
     },
     methods: {
         // 引入对主菜单的控制 设置缓存 移除缓存 功能 
-        ...mapMutations(['Main/setNav', 'Main/setToAlive', 'Main/removeAlive']),
+        ...mapMutations('Main', [
+            'setNav',
+            'setToAlive',
+            'removeAlive'
+        ]),
+        ...mapMutations([
+            'setContextmenu'
+        ]),
 
         // 退出时，移除缓存
         EXIT_APP () {
             this.$router.push({path: '/'})
-            this['Main/removeAlive'](pageName)
+            this.removeAlive(pageName)
         },
 
         // 设置主菜单内容
         SET_MAIN_NAV () {
-            this['Main/setNav'](this.NAVS)
+            this.setNav(this.NAVS)
         },
+
+        addNewType () {
+            this.$refs.typelist.add()
+        },
+
+        addNewProject () {
+            console.log(this)
+        },
+        
+        typeContextmenu ({index, item, evt}) {
+            console.log(item)
+            console.log(this.setContextmenu)
+            this.setContextmenu({
+                show: true,
+                data: [{
+                    title: '重命令',
+                    evt: data => {
+                        console.log(data)
+                    }
+                }, {
+                    title: '删除',
+                    evt: () => this.delTypeItem(index, item)
+                }],
+                evt
+            })
+        },
+
+        delTypeItem (index, item) {
+            this.$refs.typelist.del(index, item)
+            this.setContextmenu({show: false})
+        }
+
     },
     destroyed: function() {
         console.log('退出 项目')
