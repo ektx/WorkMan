@@ -5,9 +5,10 @@ import Login from '@/pages/login'
 
 Vue.use(Router)
 
-function loadView (view) {
-    return () => import(/* webPackChunkName: "view-[reequest]" */ `@/pages/${view}/index.vue`)
-}
+
+// https://webpack.docschina.org/api/module-methods/#import-
+const loadView = view => () => import(/* webpackChunkName: "[request]" */ `@/pages/${view}/index.vue`)
+
 
 export default new Router({
     mode: 'history',
