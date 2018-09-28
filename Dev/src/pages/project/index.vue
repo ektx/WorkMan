@@ -2,12 +2,13 @@
     <VRow class="project-page">
         <VCol class="aside-box" width="200px">
             <h3>列表</h3>
+            {{typeList}}
             {{currentType}}
             <VEditableList 
                 ref="typelist" 
                 v-model="currentType"
                 :list="typeList" 
-                @contextmenu="typeContextmenu"
+                :contextmenu="contextmenu"
             />
         </VCol>
         <VCol class="project-list-box" width="300px">固定 200 px</VCol>
@@ -54,7 +55,17 @@ export default {
             // 类型列表
             typeList: [],
             // 当前类型
-            currentType: {}
+            currentType: {},
+
+            contextmenu: [
+                {
+                    title: '重命令',
+                    evt: this.renameTypeItem
+                }, {
+                    title: '删除',
+                    evt: this.delTypeItem
+                }
+            ]
         }
     },
     mounted: function() {
@@ -100,28 +111,14 @@ export default {
             console.log(this)
         },
         
-        typeContextmenu ({index, item, evt}) {
-            this.setContextmenu({
-                show: true,
-                data: [{
-                    title: '重命令',
-                    evt: () => this.renameTypeItem(index, item, evt)
-                }, {
-                    title: '删除',
-                    evt: () => this.delTypeItem(index, item)
-                }],
-                evt
-            })
+
+        delTypeItem (item) {
+            console.log('del', item)
         },
 
-        delTypeItem (index, item) {
-            this.$refs.typelist.del(index, item)
-            this.setContextmenu({show: false})
-        },
-
-        renameTypeItem (index, item, evt) {
-            this.$refs.typelist.rename(index, item, evt)
-            this.setContextmenu({show: false})
+        renameTypeItem (item) {
+            // debugger
+            console.log('rename', item)
         }
 
     },

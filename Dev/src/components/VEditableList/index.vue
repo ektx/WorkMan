@@ -5,7 +5,7 @@
             :key="item.id"
             :class="item.classes"
             @click="choose(index)"
-            @contextmenu="contextmenu(index, item, $event)"
+            @contextmenu="contextmenuEvt(index, item, $event)"
         >
             <input 
                 type="text" 
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
     name: 'VEditableList',
     props: {
@@ -28,7 +30,8 @@ export default {
         // 默认选择对象
         value: {
             type: Object
-        }
+        },
+        contextmenu: Array
     },
     data () {
         return {
@@ -62,6 +65,7 @@ export default {
         if (this.value) this.presetCurrent()
     },
     methods: {
+        ...mapMutations(['setContextmenu']),
         // 确认
         editEvt (evt) {
             if (evt.which === 13 || evt.key === 'Enter') {
@@ -91,12 +95,24 @@ export default {
             }
         },
 
-        contextmenu (index, item, evt) {
+        contextmenuEvt (index, item, evt) {
             evt.preventDefault()
 
-            this.$emit('contextmenu', {
-                index,
-                item,
+            this.contextmenu.forEach(val => {
+                if (val.hasOwnProperty('evt')) {
+                    let evt = val.evt
+
+                    val.evt = null
+                    val.evt = () => {
+                        evt(item, index)
+                        this.setContextmenu({show: false})
+                    }
+                }
+            })
+
+            this.setContextmenu({
+                show: true,
+                data: this.contextmenu,
                 evt
             })
         },
