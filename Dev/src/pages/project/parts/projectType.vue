@@ -3,11 +3,20 @@
         <h3>项目类别</h3>
         <VEditableList 
             ref="list" 
-            v-model="currentType"
+            v-model="current"
             :list="list" 
             :contextmenu="contextmenu"
             @updated="updatedType"
         />
+
+        <Modal
+            v-model="show"
+            title="删除"
+            @on-ok="confirmDel"
+        >
+            <h3>你确认要删除分类及其内容吗？</h3>
+            <p>删除后不可恢复！</p>
+        </Modal>
     </VCol>
 </template>
 
@@ -19,7 +28,11 @@ export default {
             // 类型列表
             list: [],
             // 当前类型
-            currentType: {},
+            current: {},
+            // 删除提示层
+            show: false,
+            // 删除对象
+            delItem: null,
 
             contextmenu: [
                 {
@@ -63,6 +76,7 @@ export default {
                     break;
                 case 'rename':
                     console.log('更新了名称了')
+                    this.update(item)
                     break;
             }
         },
@@ -72,12 +86,25 @@ export default {
         },
 
         del (item, index) {
-            console.log('del', item, index)
-            this.list.splice(index, 1)
+            this.show = true
+            this.delItem = {item, index}
         },
 
-        rename (item) {
-            console.log('rename', item)
+        confirmDel () {
+            this.$axios.post('/api', {
+                query: `mutation removeProjectType(
+                    $id: String!
+                ) {removeProjectType(id: $id)}`,
+                variables: this.delItem.item
+            }).then(res => {
+                if (res.errors) {
+                    this.$Message.error('删除失败')
+                } else {
+                    this.list.splice(this.delItem.index, 1)
+                    this.$Message.success('删除成功')
+                }
+
+            })
         },
 
         save (item) {
@@ -87,7 +114,23 @@ export default {
                 ) { addProjectType(label: $label) }`,
                 variables: item
             }).then(res => {
-                console.log(res)
+                // 添加上 ID 
+                Object.assign(item, {id: res.data.addProjectType})
+                // 更新最新的列表，确保修改与删除可行
+                this.list.unshift(item)
+                this.$Message.success('添加成功')
+            })
+        },
+
+        update (item) {
+            this.$axios.post('/api', {
+                query: `mutation updateProjectType(
+                    $label: String!,
+                    $id: String!
+                ) {updateProjectType(label: $label, id: $id)}`,
+                variables: item
+            }).then(res => {
+                this.$Message.success('更新成功')
             })
         }
 
