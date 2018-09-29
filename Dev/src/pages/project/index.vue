@@ -1,18 +1,6 @@
 <template>
     <VRow class="project-page">
-        <VCol class="aside-box" width="200px">
-            <h3>列表</h3>
-           
-            <VEditableList 
-                ref="typelist" 
-                v-model="currentType"
-                :list="typeList" 
-                :contextmenu="contextmenu"
-                @updated="updatedType"
-            />
-            <p>{{typeList}}</p>
-            {{currentType}}
-        </VCol>
+        <ProjectType ref="projectType"/>
         <VCol class="project-list-box" width="300px">固定 200 px</VCol>
         <VCol class="project-content">
             
@@ -22,10 +10,15 @@
 
 <script>
 import { mapMutations } from 'vuex'
+import ProjectType from './parts/projectType.vue'
+
 const pageName = 'Project'
 
 export default {
     name: pageName,
+    components: {
+        ProjectType
+    },
     data () {
         return {
             PAGEINFO: {
@@ -54,20 +47,10 @@ export default {
                     }]
                 }]
             },
-            // 类型列表
-            typeList: [],
+            
             // 当前类型
             currentType: {},
-
-            contextmenu: [
-                {
-                    title: '重命令',
-                    eventType: 'rename'
-                }, {
-                    title: '删除',
-                    evt: this.delTypeItem
-                }
-            ]
+            
         }
     },
     mounted () {
@@ -113,35 +96,14 @@ export default {
         },
 
         addNewType () {
-            this.$refs.typelist.add()
+            this.$refs.projectType.add()
         },
 
         addNewProject () {
             console.log(this)
         },
+
         
-
-        delTypeItem (item, index) {
-            console.log('del', item, index)
-            this.typeList.splice(index, 1)
-        },
-
-        renameTypeItem (item) {
-            console.log('rename', item)
-        },
-
-        updatedType (item) {
-            console.log('Updated:', item)
-
-            switch (item._type) {
-                case 'add':
-                    console.log('去保存吧')
-                    break;
-                case 'rename':
-                    console.log('更新了名称了')
-                    break;
-            }
-        }
 
     },
     destroyed () {
@@ -154,16 +116,8 @@ export default {
 .project-page {
     background: #f5f5f5;
 
-    .aside-box {
-        background: #eee;
-    }
-
     .project-list-box {
         border-right: 1px solid #ededed;
-    }
-
-    .project-content {
-
     }
 }
 </style>
