@@ -2,7 +2,7 @@
     <ul class="v-editable-lists">
         <li 
             v-for="(item, index) in iList" 
-            :key="item.id"
+            :key="item.key"
             :class="item.classes"
             @click="choose(index)"
             @contextmenu="contextmenu(index, item, $event)"
@@ -10,11 +10,12 @@
             <input 
                 type="text" 
                 :value="item.label"
-                :readonly="item.readonly"
+                v-if="!item.readonly"
                 v-focus="!item.readonly"
                 @keypress="editEvt($event)"
                 @blur="blurEvt($event, item)"
             >
+            <span v-else>{{item.label}}</span>
         </li>
     </ul>
 </template>
@@ -40,18 +41,13 @@ export default {
     watch: {
         current: {
             handler (val) {
-                console.log('current:', val)
-
                 let data = {}
 
                 if (Object.keys(val).length) {
                    data = Object.assign({}, this.value, val)
                 }
 
-                this.$emit(
-                    'input', 
-                    data
-                )
+                this.$emit('input', data)
             },
             deep: true
         } 
@@ -67,24 +63,27 @@ export default {
             if (evt.which === 13 || evt.key === 'Enter') {
                 let val = evt.target.value
 
-                this.updateCurrent(val)
+                this.updateCurrent(val, false)
             }
         },
 
         blurEvt (evt, item) {
-            if (item.id === this.current.id) {
+            if (item.key === this.current.key) {
                 let val = evt.target.value
 
-                this.updateCurrent(val)
+                this.updateCurrent(val, true)
             }
         },
 
-        updateCurrent (label) {
+        updateCurrent (label, type) {
+            console.log('update', type)
             if (label) {
                 Object.assign(this.current, {
                     readonly: true,
                     label
                 })
+
+                if (type) this.$emit('enter', this.current)
             } else {
                 this.current = {}
                 this.iList.shift()
@@ -93,12 +92,7 @@ export default {
 
         contextmenu (index, item, evt) {
             evt.preventDefault()
-
-            this.$emit('contextmenu', {
-                index,
-                item,
-                evt
-            })
+            this.$emit('contextmenu', {index, item, evt})
         },
 
         // 添加
@@ -106,7 +100,7 @@ export default {
             if (this.current) this.current.classes = ''
 
             this.current = {
-                id: Date.now(),
+                key: this.list.length,
                 label: '',
                 readonly: false,
                 classes: 'current'
@@ -123,13 +117,13 @@ export default {
         del (index, item) {
             this.iList.splice(index, 1)
 
-            if (item.id == this.current.id) {
+            if (item.key == this.current.key) {
                 this.current = {}
             }
         },
 
         rename (index, item, evt) {
-            if (this.current && item.id !== this.current.id) {
+            if (this.current && item.key !== this.current.key) {
                 this.current.classes = ''
             }
 
@@ -147,7 +141,7 @@ export default {
         // 预设当前内容
         presetCurrent () {
             for (let item of this.iList) {
-                if (item.id === this.value.id) {
+                if (item.key === this.value.key) {
                     Object.assign(item, {
                         classes: 'current',
                         readonly: true
@@ -177,16 +171,24 @@ export default {
     li {
         width: 100%;
         line-height: 28px;
+        font-size: 14px;
 
         input {
             width: 100%;
-            font-size: 14px;
             text-indent: 10px;
             color: #333;
             border: none;
             outline: none;
             background-color: transparent;
             cursor: pointer;
+        }
+
+        span {
+            display: block;
+            padding: 0 10px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         &:hover {
@@ -196,7 +198,7 @@ export default {
         &.current {
             background: #f65f54;
 
-            input {
+            input,span {
                 color: #fff;
             }
         }

@@ -8,6 +8,7 @@
                 v-model="currentType"
                 :list="typeList" 
                 @contextmenu="typeContextmenu"
+                @enter="enterProjectType"
             />
         </VCol>
         <VCol class="project-list-box" width="300px">固定 200 px</VCol>
@@ -57,7 +58,7 @@ export default {
             currentType: {}
         }
     },
-    mounted: function() {
+    mounted () {
         console.log('打开 项目')
         // [SYMBOL] 设置缓存应用
         this.setToAlive(this.PAGEINFO)
@@ -65,7 +66,7 @@ export default {
         this.SET_MAIN_NAV()
 
     },
-    activated: function () {
+    activated () {
         console.log('进入 项目')
         // [SYMBOL] 设置主菜单
         this.SET_MAIN_NAV()        
@@ -122,10 +123,14 @@ export default {
         renameTypeItem (index, item, evt) {
             this.$refs.typelist.rename(index, item, evt)
             this.setContextmenu({show: false})
+        },
+
+        enterProjectType (item) {
+            console.log('enter', item)
         }
 
     },
-    destroyed: function() {
+    destroyed () {
         console.log('退出 项目')
     }
 }

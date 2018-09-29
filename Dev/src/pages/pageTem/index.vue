@@ -46,14 +46,14 @@ export default {
             }
         }
     },
-    mounted: function() {
+    mounted () {
         // [SYMBOL] 设置缓存应用
         this.setToAlive(this.PAGEINFO)
         // [SYMBOL] 设置主菜单
         this.SET_MAIN_NAV()
 
     },
-    activated: function () {
+    activated () {
         // [SYMBOL] 设置主菜单
         this.SET_MAIN_NAV()        
     },
@@ -76,7 +76,7 @@ export default {
             this.setNav(this.NAVS)
         },
     },
-    destroyed: function() {
+    destroyed () {
         console.log('退出 项目')
     }
 }
