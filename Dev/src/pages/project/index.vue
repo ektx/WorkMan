@@ -2,14 +2,16 @@
     <VRow class="project-page">
         <VCol class="aside-box" width="200px">
             <h3>列表</h3>
-            {{currentType}}
+           
             <VEditableList 
                 ref="typelist" 
                 v-model="currentType"
                 :list="typeList" 
-                @contextmenu="typeContextmenu"
-                @enter="enterProjectType"
+                :contextmenu="contextmenu"
+                @updated="updatedType"
             />
+            <p>{{typeList}}</p>
+            {{currentType}}
         </VCol>
         <VCol class="project-list-box" width="300px">固定 200 px</VCol>
         <VCol class="project-content">
@@ -55,7 +57,17 @@ export default {
             // 类型列表
             typeList: [],
             // 当前类型
-            currentType: {}
+            currentType: {},
+
+            contextmenu: [
+                {
+                    title: '重命令',
+                    eventType: 'rename'
+                }, {
+                    title: '删除',
+                    evt: this.delTypeItem
+                }
+            ]
         }
     },
     mounted () {
@@ -70,6 +82,13 @@ export default {
         console.log('进入 项目')
         // [SYMBOL] 设置主菜单
         this.SET_MAIN_NAV()        
+    },
+    watch: {
+        currentType (val) {
+            if (!val._type) return
+
+            // this[val._type](val)
+        }
     },
     methods: {
         // 引入对主菜单的控制 设置缓存 移除缓存 功能 
@@ -101,32 +120,27 @@ export default {
             console.log(this)
         },
         
-        typeContextmenu ({index, item, evt}) {
-            this.setContextmenu({
-                show: true,
-                data: [{
-                    title: '重命令',
-                    evt: () => this.renameTypeItem(index, item, evt)
-                }, {
-                    title: '删除',
-                    evt: () => this.delTypeItem(index, item)
-                }],
-                evt
-            })
+
+        delTypeItem (item, index) {
+            console.log('del', item, index)
+            this.typeList.splice(index, 1)
         },
 
-        delTypeItem (index, item) {
-            this.$refs.typelist.del(index, item)
-            this.setContextmenu({show: false})
+        renameTypeItem (item) {
+            console.log('rename', item)
         },
 
-        renameTypeItem (index, item, evt) {
-            this.$refs.typelist.rename(index, item, evt)
-            this.setContextmenu({show: false})
-        },
+        updatedType (item) {
+            console.log('Updated:', item)
 
-        enterProjectType (item) {
-            console.log('enter', item)
+            switch (item._type) {
+                case 'add':
+                    console.log('去保存吧')
+                    break;
+                case 'rename':
+                    console.log('更新了名称了')
+                    break;
+            }
         }
 
     },

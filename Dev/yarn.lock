@@ -572,9 +572,9 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@ektx/v-contextmenu@^0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@ektx/v-contextmenu/-/v-contextmenu-0.2.7.tgz#3b98135986b1bd60237696c32699e9ade2c4ba9b"
+"@ektx/v-contextmenu@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@ektx/v-contextmenu/-/v-contextmenu-0.2.8.tgz#93836ea0b807e0ad1e3ac65ea28b8d11070347f2"
 
 "@ektx/v-menubar@^0.0.5":
   version "0.0.5"

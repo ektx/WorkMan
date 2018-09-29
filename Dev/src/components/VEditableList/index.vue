@@ -5,7 +5,7 @@
             :key="item.key"
             :class="item.classes"
             @click="choose(index)"
-            @contextmenu="contextmenu(index, item, $event)"
+            @contextmenu="contextmenuEvt(index, item, $event)"
         >
             <input 
                 type="text" 
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
     name: 'VEditableList',
     props: {
@@ -29,18 +31,24 @@ export default {
         // 默认选择对象
         value: {
             type: Object
-        }
+        },
+        // 右键菜单内容设置
+        contextmenu: Array
     },
     data () {
         return {
             current: {},
             iList: [],
-            intEl: null
+            intEl: null,
+            formatContextmenu: []
         }
     },
     watch: {
         current: {
-            handler (val) {
+            handler (val, old) {
+                if (old.classes) old.classes = []
+                val.classes = ['current']
+
                 let data = {}
 
                 if (Object.keys(val).length) {
@@ -49,15 +57,16 @@ export default {
 
                 this.$emit('input', data)
             },
-            deep: true
-        } 
+            // deep: true
+        }
     },
-    mounted: function () {
+    mounted () {
         this.iList = this.list
 
-        if (this.value) this.presetCurrent()
+        // if (this.value) this.presetCurrent()
     },
     methods: {
+        ...mapMutations(['setContextmenu']),
         // 确认
         editEvt (evt) {
             if (evt.which === 13 || evt.key === 'Enter') {
@@ -76,34 +85,57 @@ export default {
         },
 
         updateCurrent (label, type) {
-            console.log('update', type)
             if (label) {
                 Object.assign(this.current, {
                     readonly: true,
                     label
                 })
 
-                if (type) this.$emit('enter', this.current)
+                if (type) {
+                    this.$emit('updated', this.current)
+                    this.$emit('input', this.current)
+                }
             } else {
                 this.current = {}
                 this.iList.shift()
             }
         },
 
-        contextmenu (index, item, evt) {
+        contextmenuEvt (index, item, evt) {
             evt.preventDefault()
-            this.$emit('contextmenu', {index, item, evt})
+
+            // 对右键事件扩展
+            this.contextmenu.forEach(val => {
+                if (!val.hasOwnProperty('oldEvt')) {
+                    val.oldEvt = val.evt
+                }
+
+                if (val.eventType) {
+                    val.evt = () => {
+                        this[val.eventType](index, item)
+                        this.setContextmenu({show: false})
+                    } 
+                } else {
+                    val.evt = () => {
+                        val.evt = val.oldEvt(item, index)
+                        this.setContextmenu({show: false})
+                    }
+                }
+
+            })
+
+            // 显示菜单
+            this.setContextmenu({show: true, data: this.contextmenu, evt})
         },
 
         // 添加
         add () {
-            if (this.current) this.current.classes = ''
-
             this.current = {
-                key: this.list.length,
+                key: Date.now(),
                 label: '',
                 readonly: false,
-                classes: 'current'
+                classes: 'current',
+                _type: 'add'
             }
 
             this.iList.unshift( this.current )
@@ -122,41 +154,17 @@ export default {
             }
         },
 
-        rename (index, item, evt) {
-            if (this.current && item.key !== this.current.key) {
-                this.current.classes = ''
-            }
-
+        rename (index, item, cb) {
             this.current = this.iList[index]
             Object.assign(this.current, {
                 readonly: false,
-                classes: 'current'
+                classes: 'current',
+                _type: 'rename'
             })
-
-            this.$nextTick(function () {
-                evt.target.focus()
-            })
-        },
-
-        // 预设当前内容
-        presetCurrent () {
-            for (let item of this.iList) {
-                if (item.key === this.value.key) {
-                    Object.assign(item, {
-                        classes: 'current',
-                        readonly: true
-                    })
-
-                    return this.current = item
-                }
-            }
         },
 
         choose (index) {
-            if (this.current) this.current.classes = ''
-
             this.current = this.iList[index]
-            this.current.classes = 'current'
         }
     }
 }
@@ -172,6 +180,7 @@ export default {
         width: 100%;
         line-height: 28px;
         font-size: 14px;
+        cursor: pointer;
 
         input {
             width: 100%;
