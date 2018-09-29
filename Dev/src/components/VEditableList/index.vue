@@ -57,13 +57,16 @@ export default {
 
                 this.$emit('input', data)
             },
-            // deep: true
+        },
+        list (val) {
+            this.iList = val.map(val => {
+                return {
+                    ...val,
+                    readonly: true,
+                    classes: []
+                }
+            })
         }
-    },
-    mounted () {
-        this.iList = this.list
-
-        // if (this.value) this.presetCurrent()
     },
     methods: {
         ...mapMutations(['setContextmenu']),
@@ -80,7 +83,13 @@ export default {
             if (item.key === this.current.key) {
                 let val = evt.target.value
 
-                this.updateCurrent(val, true)
+                if (val.trim()) {
+                    this.updateCurrent(val, true)
+                } else {
+                    val = this.current.label
+                    this.updateCurrent(val, false)
+                }
+
             }
         },
 
@@ -139,19 +148,6 @@ export default {
             }
 
             this.iList.unshift( this.current )
-        },
-
-        /**
-         * 删除列表对象
-         * @param {Number} index 索引
-         * @param {Object} item 删除对象
-         */
-        del (index, item) {
-            this.iList.splice(index, 1)
-
-            if (item.key == this.current.key) {
-                this.current = {}
-            }
         },
 
         rename (index, item, cb) {
