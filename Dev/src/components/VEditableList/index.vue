@@ -60,11 +60,17 @@ export default {
         },
         list (val) {
             this.iList = val.map(val => {
-                return {
+                let newItem = {
                     ...val,
                     readonly: true,
-                    classes: []
+                    classes: val.classes || []
                 }
+
+                if (val.classes && val.classes.length) {
+                    this.current = newItem
+                }
+
+                return newItem
             })
         }
     },
@@ -176,12 +182,12 @@ export default {
         width: 100%;
         line-height: 28px;
         font-size: 14px;
+        color: #333;
         cursor: pointer;
 
         input {
             width: 100%;
             text-indent: 10px;
-            color: #333;
             border: none;
             outline: none;
             background-color: transparent;
