@@ -75,7 +75,6 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['setContextmenu']),
         // 确认
         editEvt (evt) {
             if (evt.which === 13 || evt.key === 'Enter') {
@@ -128,19 +127,19 @@ export default {
                 if (val.eventType) {
                     val.evt = () => {
                         this[val.eventType](index, item)
-                        this.setContextmenu({show: false})
+                        // this.$VContextmenu.close()
                     } 
                 } else {
                     val.evt = () => {
                         val.evt = val.oldEvt(item, index)
-                        this.setContextmenu({show: false})
+                        // this.$VContextmenu.close()
                     }
                 }
 
             })
 
             // 显示菜单
-            this.setContextmenu({show: true, data: this.contextmenu, evt})
+            this.$VContextmenu.show(this.contextmenu, evt)
         },
 
         // 添加

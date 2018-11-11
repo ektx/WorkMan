@@ -17,9 +17,6 @@
 				</keep-alive>
 			</transition>
 		</main>
-		
-		<!-- 右键菜单 -->
-		<VContextmenu/>
 	</section>
 </template>
 

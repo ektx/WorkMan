@@ -19,7 +19,7 @@ import VSearch from '@/components/VSearch'
     :resetBtn="false"
 	v-on:input="helloTest"
 	v-on:reset="helloTest"
-></VSearch>
+/>
 
 <!-- 如果想要只改变值 -->
 <VSearch 
@@ -27,7 +27,7 @@ import VSearch from '@/components/VSearch'
     :resetBtn="false"
 	v-model="newKey"
 	v-on:reset="helloTest"
-></VSearch>
+/>
 ```
 
 ```javascript
@@ -54,9 +54,9 @@ new Vue({
 
 ### props
 
-| 方法			| 说明                     			|
-| ------- 		| ---------------------- 				|
-| classes 		| 自定义样式                  			|
-| :resetBtn 	| 是否默认显示清空按钮，默认 true（显示） 	|
-| :delay	 	| 设置延迟功能							|
-| placeholder 	| 占位符信息								|
+| 方法 | 说明 | 默认值 |
+| --- | --- |:---:|
+| classes 		| 自定义样式 | - |
+| :resetBtn 	| 是否默认显示清空按钮 | false |
+| :delay	 	| 设置延迟功能 | - |
+| placeholder 	| 占位符信息 | Search... |

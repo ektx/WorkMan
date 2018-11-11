@@ -5,7 +5,7 @@
 			
 			<div class="app-inner-box">
 				<transition name="os">
-					<router-view></router-view>
+					<router-view/>
 				</transition>
 			</div>
 		</div>

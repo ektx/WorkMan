@@ -103,11 +103,9 @@ export default {
         this.SET_MAIN_NAV()
 
         this.$axios.post('/api/', {
-            query: `{ 
-                workTypes(account: "MY_ACCOUNT") { id,name }
-            }`
+            query: `{findEventType{id name}}`
         }).then(res => {
-            this.typeList = res.data.workTypes
+            this.typeList = res.data.findEventType
             // 选择第一条
             this.holdTypeIndex = 0
         }).catch(err => {

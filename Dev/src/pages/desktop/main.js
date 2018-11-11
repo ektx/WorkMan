@@ -83,7 +83,7 @@ export default {
             ]
         }
     },
-    activated: function () {
+    activated () {
         this['Main/setNav']({
             type: 'main',
             data: this.navs

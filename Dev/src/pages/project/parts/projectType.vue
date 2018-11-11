@@ -57,8 +57,7 @@ export default {
         this.$axios.post('/api', {
             query: `{findProjectType {id label}}`
         }).then(res => {
-            console.log(res)
-
+            // 为对象添加 key 
             this.list = res.data.findProjectType.map(val => {
                 return {
                     ...val,
@@ -67,15 +66,18 @@ export default {
             })
         })
     },
+    watch: {
+        current (val) {
+            this.$emit('input', val)
+        }
+    },
     methods: {
         updatedType (item) {
             switch (item._type) {
                 case 'add':
-                    console.log('去保存吧')
                     this.save(item)
                     break;
                 case 'rename':
-                    console.log('更新了名称了')
                     this.update(item)
                     break;
             }
@@ -146,7 +148,7 @@ export default {
         padding: 5px 10px;
         font-size: 16px;
         font-weight: 400;
-        color: #666;
+        color: #777;
     }
 }
 </style>

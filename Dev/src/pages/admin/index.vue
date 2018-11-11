@@ -61,7 +61,7 @@ export default {
             show: false
         }
     },
-    mounted: function () {
+    mounted () {
         this.findAdminList()
     },
     methods: {

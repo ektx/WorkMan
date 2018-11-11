@@ -15,4 +15,20 @@
 </template>
 
 <script src="./main.js"></script>
-<style lang="less" scoped src="./layout.less"></style>
+<style lang="scss" scoped>
+.workman-desktop {
+    padding: 2em;
+    background: rgba(255, 255, 255, .9);
+
+    ul {
+        a {
+            font-size: 14px;
+        }
+    }
+
+    @supports (backdrop-filter: blur(5px)) {
+        background: rgba(255, 255, 255, .8);
+        backdrop-filter: blur(5px);
+    }
+}
+</style>

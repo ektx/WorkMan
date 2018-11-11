@@ -1,7 +1,7 @@
 <template>
     <VRow class="project-page">
-        <ProjectType ref="projectType"/>
-        <VCol class="project-list-box" width="300px">固定 200 px</VCol>
+        <ProjectType ref="projectType" v-model="currentType"/>
+        <ProjectItemList/>
         <VCol class="project-content">
             
         </VCol>
@@ -11,13 +11,15 @@
 <script>
 import { mapMutations } from 'vuex'
 import ProjectType from './parts/projectType.vue'
+import ProjectItemList from './parts/projectItemList.vue'
 
 const pageName = 'Project'
 
 export default {
     name: pageName,
     components: {
-        ProjectType
+        ProjectType,
+        ProjectItemList
     },
     data () {
         return {
@@ -80,9 +82,6 @@ export default {
             'setToAlive',
             'removeAlive'
         ]),
-        ...mapMutations([
-            'setContextmenu'
-        ]),
 
         // 退出时，移除缓存
         EXIT_APP () {
@@ -120,5 +119,6 @@ export default {
         border-right: 1px solid #ededed;
     }
 }
+
 </style>
 
