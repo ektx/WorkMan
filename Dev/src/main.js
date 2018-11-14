@@ -15,7 +15,7 @@ import './assets/js/autoComponent'
 
 // node_modules css
 import 'iview/dist/styles/iview.css'
-import '@ektx/v-contextmenu/style/index.scss'
+import '@ektx/v-contextmenu/dist/vcontextmenu.css'
 
 Vue.use(iView)
 Vue.use(VContextmenu)

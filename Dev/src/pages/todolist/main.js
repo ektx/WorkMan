@@ -199,9 +199,6 @@ export default {
             'setToAlive', 
             'removeAlive'
         ]),
-        ...mapMutations([
-            'setContextmenu'
-        ]),
 
         // [SYMBOL] exit app
         EXIT_APP () {
@@ -333,17 +330,13 @@ export default {
 
                         // 删除数据
                         self.typeList.splice(index, 1)
-
-                        this.$store.commit('setContextmenu', { show: false })
                     }
                 }, err => {
                     console.error(err)
                 })
             }
 
-            this.$store.commit('setContextmenu', {
-                show: true,
-                data: [
+            this.$VContextmenu.show([
                     {
                         title: '重命名',
                         evt: data => {
@@ -354,8 +347,6 @@ export default {
                             self.$nextTick(function () {
                                 self.$el.querySelector('input').focus()
                             })
-
-                            this.$store.commit('setContextmenu', { show: false })
                         }
                     },
                     {
@@ -367,7 +358,7 @@ export default {
                     }
                 ],
                 evt
-            })
+            )
         },
 
         /*
@@ -624,7 +615,6 @@ export default {
                             // 如果移动成功,更新
                             if (data.save.ok && data.save.n) {
                                 that.events.splice(index, 1)
-                                this.$store.commit('setContextmenu', { show: false })
                             }
                         })
                     }
@@ -632,7 +622,6 @@ export default {
             })
 
             let remove = () => {
-                console.log(1)
                 this.$axios.post('/api/', {
                     query: `mutation {
                         todo_evt_remove(
@@ -662,13 +651,10 @@ export default {
                 }, err => {
                     console.error(err)
                 })
-
-                this.$store.commit('setContextmenu', { show: false })
             }
 
             // 生成菜单
-            this.$store.commit('setContextmenu', {
-                data: [
+            this.$VContextmenu.show([
                     {
                         title: '设置',
                         children: moveSubMenu
@@ -682,7 +668,7 @@ export default {
                     }
                 ],
                 evt
-            })
+            )
         },
 
         /*
