@@ -5,9 +5,6 @@
 	</div>
 </template>
 
-<style lang="scss">
-</style>
-
 <script >
 export default {
 	name: 'VRadioGroup',
@@ -35,7 +32,7 @@ export default {
 		},
 
 		update () {
-			let groupName = new Date().getTime()
+			let groupName = Date.now()
 			if (this.$children) {
 				this.$children.forEach(child => {
 					if (child.$options.name === 'v-radio') {
